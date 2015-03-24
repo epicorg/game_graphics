@@ -33,6 +33,7 @@ public class GraphicsView extends GLSurfaceView{
         super(context);
         setEGLContextClientVersion(2);
         this.context=context;
+        setEGLConfigChooser(8 , 8, 8, 8, 16, 0);
         setRenderer(new GraphicsRenderer());
     }
 
