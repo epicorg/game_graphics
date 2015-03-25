@@ -5,74 +5,74 @@ import java.util.LinkedList;
 import shadow.math.SFTransform3f;
 
 public class SFOGLNode {
-	private SFTransform3f transform = new SFTransform3f();
-	private SFTransform3f effectiveTransform = new SFTransform3f();
-	private SFOGLNode father = null;
-	//Really?
-	private LinkedList<SFOGLNode> sons = new LinkedList<SFOGLNode>();
+    private SFTransform3f transform = new SFTransform3f();
+    private SFTransform3f effectiveTransform = new SFTransform3f();
+    private SFOGLNode father = null;
+    //Really?
+    private LinkedList<SFOGLNode> sons = new LinkedList<SFOGLNode>();
 
-	public void update() {
-		if (getFather() == null) {
-			getEffectiveTransform().set(getTransform());
-			sonsUpdate();
-		} else {
-			sonUpdate();
-		}
-	}
+    public void update() {
+        if (getFather() == null) {
+            getEffectiveTransform().set(getTransform());
+            sonsUpdate();
+        } else {
+            sonUpdate();
+        }
+    }
 
-	protected void sonUpdate() {
-		getEffectiveTransform().set(getFather().getEffectiveTransform());
-		getEffectiveTransform().mult(this.getTransform());
-		//System.out.println("Transform "+transform);
-		//System.out.println("Effective Transform "+effectiveTransform);
-		sonsUpdate();
-	}
+    protected void sonUpdate() {
+        getEffectiveTransform().set(getFather().getEffectiveTransform());
+        getEffectiveTransform().mult(this.getTransform());
+        //System.out.println("Transform "+transform);
+        //System.out.println("Effective Transform "+effectiveTransform);
+        sonsUpdate();
+    }
 
-	private void sonsUpdate() {
-		for (SFOGLNode son : getSons()) {
-			son.sonUpdate();
-		}
-	}
+    private void sonsUpdate() {
+        for (SFOGLNode son : getSons()) {
+            son.sonUpdate();
+        }
+    }
 
-	public void attach(SFOGLNode father) {
-		
-		if (this.getFather() != null) {		
-			this.getFather().getSons().remove(this);
-		}
-		this.setFather(father);
-		this.getFather().getSons().add(this);
-		update();
-	}
+    public void attach(SFOGLNode father) {
 
-	public LinkedList<SFOGLNode> getSons() {
-		return sons;
-	}
+        if (this.getFather() != null) {
+            this.getFather().getSons().remove(this);
+        }
+        this.setFather(father);
+        this.getFather().getSons().add(this);
+        update();
+    }
 
-	public void setSons(LinkedList<SFOGLNode> sons) {
-		this.sons = sons;
-	}
+    public LinkedList<SFOGLNode> getSons() {
+        return sons;
+    }
 
-	public SFTransform3f getEffectiveTransform() {
-		return effectiveTransform;
-	}
+    public void setSons(LinkedList<SFOGLNode> sons) {
+        this.sons = sons;
+    }
 
-	public void setEffectiveTransform(SFTransform3f effectiveTransform) {
-		this.effectiveTransform = effectiveTransform;
-	}
+    public SFTransform3f getEffectiveTransform() {
+        return effectiveTransform;
+    }
 
-	public SFTransform3f getTransform() {
-		return transform;
-	}
+    public void setEffectiveTransform(SFTransform3f effectiveTransform) {
+        this.effectiveTransform = effectiveTransform;
+    }
 
-	public void setTransform(SFTransform3f transform) {
-		this.transform = transform;
-	}
+    public SFTransform3f getTransform() {
+        return transform;
+    }
 
-	public SFOGLNode getFather() {
-		return father;
-	}
+    public void setTransform(SFTransform3f transform) {
+        this.transform = transform;
+    }
 
-	public void setFather(SFOGLNode father) {
-		this.father = father;
-	}
+    public SFOGLNode getFather() {
+        return father;
+    }
+
+    public void setFather(SFOGLNode father) {
+        this.father = father;
+    }
 }

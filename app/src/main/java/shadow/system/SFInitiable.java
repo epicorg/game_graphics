@@ -1,21 +1,19 @@
-
 package shadow.system;
 
 /**
  * Something which can be initialized
- * 
+ *
+ * @author Alessandro Martinelli
  * @pattern interface
- * 
- * @author Alessandro Martinelli 
  */
 public interface SFInitiable {
-	/**
-	 * initialize this SFInitiable
-	 */
-	public void init();
-	
-	/**
-	 * Destroy this SFInitiable
-	 */
-	public void destroy();
+    /**
+     * initialize this SFInitiable
+     */
+    public void init();
+
+    /**
+     * Destroy this SFInitiable
+     */
+    public void destroy();
 }
