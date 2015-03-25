@@ -11,28 +11,26 @@ import sfogl2.SFOGLShader;
 
 public class Shaders {
 
-
-    public static ShadingProgram loadShaderModel(Context context,String vertexShader,String fragmentShaderFile,ShadingParameter... parameters){
-
-        SFOGLShader shader=new SFOGLShader(vertexShader, fragmentShaderFile);
-        ShadingProgram program=new ShadingProgram(shader);
+    public static ShadingProgram loadShaderModel(String vertexShader, String fragmentShaderFile, ShadingParameter... parameters) {
+        SFOGLShader shader = new SFOGLShader(vertexShader, fragmentShaderFile);
+        ShadingProgram program = new ShadingProgram(shader);
         program.loadData(parameters);
         program.init();
         return program;
     }
 
-    public static String loadText(Context context,String filename){
-        String text="";
+    public static String loadText(Context context, String filename) {
+        String text = "";
 
-        String line=null;
+        String line = null;
         try {
-            BufferedReader reader=new BufferedReader(new InputStreamReader(context.getAssets().open(filename)));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(context.getAssets().open(filename)));
             line = reader.readLine();
-            while(line!=null){
+            while (line != null) {
 
-                text+=line+"\n";
+                text += line + "\n";
 
-                line=reader.readLine();
+                line = reader.readLine();
             }
             reader.close();
         } catch (FileNotFoundException e) {
@@ -42,6 +40,5 @@ public class Shaders {
         }
         return text;
     }
-
 
 }
