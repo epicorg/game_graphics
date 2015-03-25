@@ -96,12 +96,13 @@ public class GraphicsView extends GLSurfaceView {
             } else {
                 orthoM(projection, 0, -1f, 1f, -aspectRatio, aspectRatio, -1f, 1f);
             }
-            program.setupProjection(projection);
         }
 
         @Override
         public void onDrawFrame(GL10 gl) {
             SFOGLSystemState.cleanupColorAndDepth(1, 1, 0, 1);
+
+            program.setupProjection(projection);
 
             //Change the Node transform
             t += 0.01f;
