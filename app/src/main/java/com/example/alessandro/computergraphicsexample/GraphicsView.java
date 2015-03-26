@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
+import android.view.WindowManager;
 
 import java.util.ArrayList;
 
@@ -37,11 +38,15 @@ public class GraphicsView extends GLSurfaceView {
 
     private final float[] resultMatrix = new float[16];
     private Context context;
+    private WindowManager windowManager;
 
-    public GraphicsView(Context context) {
+    public GraphicsView(Context context, WindowManager windowManager) {
         super(context);
         setEGLContextClientVersion(2);
+
         this.context = context;
+        this.windowManager = windowManager;
+
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         setRenderer(new GraphicsRenderer());
     }
@@ -69,7 +74,6 @@ public class GraphicsView extends GLSurfaceView {
             //Step 3 : create a Material (materials combine shaders+textures+shading parameters)
             Material material = new Material(program);
             material.getTextures().add(texture);
-            Material groundMaterial = new Material(program);
 
             //Step 4: load a Geometry
             ArrayObject[] objects = ObjLoader.arrayObjectFromFile(context, "MonkeyTxN.obj");
@@ -81,7 +85,6 @@ public class GraphicsView extends GLSurfaceView {
             Model monkeyModel = new Model();
             monkeyModel.setRootGeometry(mesh);
             monkeyModel.setMaterialComponent(material);
-            Model groundModel = new Model();
 
             //Step 6: create a Node, that is a reference system where you can place your Model
             node = new Node();
@@ -95,7 +98,7 @@ public class GraphicsView extends GLSurfaceView {
             node.getSonNodes().add(anotherNode);
 
             GroundGenerator groundGenerator = new GroundGenerator(context, program, R.drawable.ground_texture_01, "Ground.obj");
-            groundNodes = groundGenerator.getGround(0, 0, 3, 3);
+            groundNodes = groundGenerator.getGround(0, 0, 3, 3, -1);
         }
 
         @Override

@@ -4,9 +4,6 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 
-import com.example.alessandro.computergraphicsexample.R;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import objLoader.ObjLoader;
@@ -36,7 +33,7 @@ public class GroundGenerator {
         setup(textureId, obj);
     }
 
-    private void setup(int textureId, String obj){
+    private void setup(int textureId, String obj) {
         int textureModel = SFOGLTextureModel.generateTextureObjectModel(SFImageFormat.RGB, GLES20.GL_REPEAT, GLES20.GL_REPEAT, GLES20.GL_LINEAR, GLES20.GL_LINEAR);
         BitmapTexture groundTexture = BitmapTexture.loadBitmapTexture(BitmapFactory.decodeResource(context.getResources(), textureId), textureModel);
         groundTexture.init();
@@ -50,7 +47,7 @@ public class GroundGenerator {
         groundModel.setMaterialComponent(groundMaterial);
     }
 
-    public ArrayList<Node> getGround(int xCenter, int zCenter, int xSize, int zSize) {
+    public ArrayList<Node> getGround(int xCenter, int zCenter, int xSize, int zSize, int yCenter) {
         ArrayList<Node> tempList = new ArrayList<>();
 
         int leftToTheCenter = xSize / 2;
@@ -64,7 +61,7 @@ public class GroundGenerator {
                 tmpNode.setModel(groundModel);
                 int xC = tempX + i;
                 int zC = tempZ + j;
-                tmpNode.getRelativeTransform().setPosition(xC, 0, zC);
+                tmpNode.getRelativeTransform().setPosition(xC, yCenter, zC);
                 tempList.add(tmpNode);
             }
         }
