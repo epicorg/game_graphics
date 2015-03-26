@@ -9,57 +9,14 @@ package shadow.math;
  */
 public class SFVertex2f extends SFValue {
 
-    /**
-     * Return the distance between two vertices
-     *
-     * @param v1
-     * @param v2
-     * @return
-     */
-    public static float getDistance(SFVertex2f v1, SFVertex2f v2) {
-        float x = v1.getX() - v2.getX();
-        float y = v1.getY() - v2.getY();
-        return (float) (Math.sqrt(x * x + y * y));
-    }
+    float[] v = new float[2];
 
-
-    /**
-     * Generate the middle Point between two poits A and B
-     *
-     * @param A the first Point
-     * @param B the second Point
-     * @return the middle Point
-     * @throws ArrayIndexOutOfBoundsException
-     */
-    public static SFVertex2f middle(SFVertex2f A, SFVertex2f B) {
-        return new SFVertex2f((A.getV()[0] + B.getV()[0]) * 0.5f,
-                (A.getV()[1] + B.getV()[1]) * 0.5f);
-    }
 
     /**
      * Create a new 2f value, assigning it (0,0)
-     *
-     * @param x
-     * @param y
      */
     public SFVertex2f() {
         this(0, 0);
-    }
-
-    public SFVertex2f(float[] values) {
-        //super(values);
-    }
-
-    float[] v = new float[2];
-
-    @Override
-    public int getSize() {
-        return 2;
-    }
-
-    @Override
-    public float[] getV() {
-        return v;
     }
 
     /**
@@ -93,6 +50,42 @@ public class SFVertex2f extends SFValue {
     public SFVertex2f(SFVertex2f vertex) {
         //super(2);
         set(vertex);
+    }
+
+    /**
+     * Return the distance between two vertices
+     *
+     * @param v1
+     * @param v2
+     * @return
+     */
+    public static float getDistance(SFVertex2f v1, SFVertex2f v2) {
+        float x = v1.getX() - v2.getX();
+        float y = v1.getY() - v2.getY();
+        return (float) (Math.sqrt(x * x + y * y));
+    }
+
+    /**
+     * Generate the middle Point between two poits A and B
+     *
+     * @param A the first Point
+     * @param B the second Point
+     * @return the middle Point
+     * @throws ArrayIndexOutOfBoundsException
+     */
+    public static SFVertex2f middle(SFVertex2f A, SFVertex2f B) {
+        return new SFVertex2f((A.getV()[0] + B.getV()[0]) * 0.5f,
+                (A.getV()[1] + B.getV()[1]) * 0.5f);
+    }
+
+    @Override
+    public int getSize() {
+        return 2;
+    }
+
+    @Override
+    public float[] getV() {
+        return v;
     }
 
     /**
@@ -134,10 +127,7 @@ public class SFVertex2f extends SFValue {
     }
 
     /**
-     * length of the Vector
-     *
-     * @param vx
-     * @return
+     * @return the length of the Vector
      */
     public float getLength() {
         return (float) (Math.sqrt(getV()[0] * getV()[0] + getV()[1] * getV()[1]));
@@ -150,11 +140,19 @@ public class SFVertex2f extends SFValue {
         return this.getV()[0];
     }
 
+    public void setX(float x) {
+        this.getV()[0] = x;
+    }
+
     /**
      * @return the y value
      */
     public float getY() {
         return getV()[1];
+    }
+
+    public void setY(float y) {
+        getV()[1] = y;
     }
 
     /**
@@ -169,8 +167,6 @@ public class SFVertex2f extends SFValue {
 
     /**
      * Set this vector-vertex to be a unit vector with the same direction
-     *
-     * @param m
      */
     public void normalize2f() {
         float lengthRec = 1 / getLength();
@@ -200,14 +196,6 @@ public class SFVertex2f extends SFValue {
     public void set2f(float x, float y) {
         this.getV()[0] = x;
         this.getV()[1] = y;
-    }
-
-    public void setX(float x) {
-        this.getV()[0] = x;
-    }
-
-    public void setY(float y) {
-        getV()[1] = y;
     }
 
     /**

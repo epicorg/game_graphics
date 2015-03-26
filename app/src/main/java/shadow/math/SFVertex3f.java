@@ -10,6 +10,55 @@ package shadow.math;
  */
 public class SFVertex3f extends SFValue {
 
+    float[] v = new float[3];
+
+    /**
+     * Create a new 3f value, assigning it (0,0)
+     */
+    public SFVertex3f() {
+        this(0, 0, 0);
+    }
+
+    /**
+     * Create a new 3f value from a 4f
+     *
+     * @param value
+     */
+    public SFVertex3f(SFVertex4f value) {
+        this(value.getV()[0], value.getV()[1], value.getV()[2]);
+    }
+
+    /**
+     * Create a new 3f value, assigning it
+     *
+     * @param x
+     * @param y
+     * @param z
+     */
+    public SFVertex3f(double x, double y, double z) {
+        set3f((float) x, (float) y, (float) z);
+    }
+
+    /**
+     * Create a new 3f value, assigning it
+     *
+     * @param x
+     * @param y
+     * @param z
+     */
+    public SFVertex3f(float x, float y, float z) {
+        set3f(x, y, z);
+    }
+
+    /**
+     * Set the elements (x,y,z)
+     */
+    public void set3f(float x, float y, float z) {
+        getV()[0] = x;
+        getV()[1] = y;
+        getV()[2] = z;
+    }
+
     /**
      * Return the distance between two vertices
      *
@@ -38,23 +87,6 @@ public class SFVertex3f extends SFValue {
         );
     }
 
-
-    /**
-     * Create a new 3f value, assigning it (0,0)
-     *
-     * @param x
-     * @param y
-     */
-    public SFVertex3f() {
-        this(0, 0, 0);
-    }
-
-    public SFVertex3f(SFVertex4f value) {
-        this(value.getV()[0], value.getV()[1], value.getV()[2]);
-    }
-
-    float[] v = new float[3];
-
     @Override
     public int getSize() {
         return 3;
@@ -63,45 +95,6 @@ public class SFVertex3f extends SFValue {
     @Override
     public float[] getV() {
         return v;
-    }
-
-    /**
-     */
-    public SFVertex3f(float[] values) {
-        //super(values);
-    }
-
-    /**
-     * Create a new 3f value, assigning it
-     *
-     * @param x
-     * @param y
-     * @param z
-     */
-    public SFVertex3f(double x, double y, double z) {
-        //super(3);
-        set3f((float) x, (float) y, (float) z);
-    }
-
-    /**
-     * Create a new 3f value, assigning it
-     *
-     * @param x
-     * @param y
-     * @param z
-     */
-    public SFVertex3f(float x, float y, float z) {
-        //super(3);
-        set3f(x, y, z);
-    }
-
-    /**
-     * @param vertex
-     * @deprecated please, create a new vertex than call set or set3f
-     */
-    public SFVertex3f(SFVertex3f vx) {
-        //super(3);
-        setArray(vx.getV());
     }
 
     /**
@@ -125,6 +118,27 @@ public class SFVertex3f extends SFValue {
         getV()[0] += vx.getV()[0] * a;
         getV()[1] += vx.getV()[1] * a;
         getV()[2] += vx.getV()[2] * a;
+    }
+
+
+    /**
+     * Specific 3f version of the mult method.
+     */
+    public void mult3f(float a) {
+        getV()[0] *= a;
+        getV()[1] *= a;
+        getV()[2] *= a;
+    }
+
+    /**
+     * Specific 3f version of the subtract method.
+     *
+     * @param vx
+     */
+    public void subtract3f(SFVertex3f vx) {
+        getV()[0] -= vx.getV()[0];
+        getV()[1] -= vx.getV()[1];
+        getV()[2] -= vx.getV()[2];
     }
 
     /**
@@ -157,9 +171,8 @@ public class SFVertex3f extends SFValue {
     }
 
     /**
-     * length of the Vector
+     * length of the vector
      *
-     * @param vx
      * @return
      */
     public float getLength() {
@@ -173,11 +186,19 @@ public class SFVertex3f extends SFValue {
         return this.getV()[0];
     }
 
+    public void setX(float x) {
+        this.getV()[0] = x;
+    }
+
     /**
      * @return the y value
      */
     public float getY() {
         return this.getV()[1];
+    }
+
+    public void setY(float y) {
+        this.getV()[1] = y;
     }
 
     /**
@@ -187,21 +208,12 @@ public class SFVertex3f extends SFValue {
         return getV()[2];
     }
 
-    /**
-     * Specific 3f version of the mult method.
-     *
-     * @param m
-     */
-    public void mult3f(float a) {
-        getV()[0] *= a;
-        getV()[1] *= a;
-        getV()[2] *= a;
+    public void setZ(float z) {
+        getV()[2] = z;
     }
 
     /**
      * Set this vector-vertex to be a unit vector with the same direction
-     *
-     * @param m
      */
     public void normalize3f() {
         float lengthRec = 1 / getLength();
@@ -226,36 +238,4 @@ public class SFVertex3f extends SFValue {
         getV()[2] *= sz;
     }
 
-    /**
-     * Set the elements (x,y,z)
-     */
-    public void set3f(float x, float y, float z) {
-        getV()[0] = x;
-        getV()[1] = y;
-        getV()[2] = z;
-    }
-
-
-    public void setX(float x) {
-        this.getV()[0] = x;
-    }
-
-    public void setY(float y) {
-        this.getV()[1] = y;
-    }
-
-    public void setZ(float z) {
-        getV()[2] = z;
-    }
-
-    /**
-     * Specific 3f version of the subtract method.
-     *
-     * @param vx
-     */
-    public void subtract3f(SFVertex3f vx) {
-        getV()[0] -= vx.getV()[0];
-        getV()[1] -= vx.getV()[1];
-        getV()[2] -= vx.getV()[2];
-    }
 }

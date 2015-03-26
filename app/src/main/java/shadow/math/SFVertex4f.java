@@ -6,27 +6,10 @@ package shadow.math;
  */
 public class SFVertex4f extends SFValue {
 
-    /**
-     * Generate the middle Point between two poits A and B
-     *
-     * @param A the first Point
-     * @param B the second Point
-     * @return the middle Point
-     * @throws ArrayIndexOutOfBoundsException
-     */
-    public static SFVertex4f middle(SFVertex4f A, SFVertex4f B) {
-        return new SFVertex4f(
-                (A.getV()[0] + B.getV()[0]) * 0.5f, (A.getV()[1] + B.getV()[1]) * 0.5f, (A.getV()[2] + B.getV()[2]) * 0.5f, (A.getV()[3] + B.getV()[3]) * 0.5f
-        );
-    }
+    float[] v = new float[4];
 
     /**
      * Create a new 4f value, assigning it (0,0,0,0)
-     *
-     * @param x
-     * @param y
-     * @param z
-     * @param w
      */
     public SFVertex4f() {
         this(0, 0, 0, 0);
@@ -35,10 +18,6 @@ public class SFVertex4f extends SFValue {
     public SFVertex4f(SFVertex3f v) {
         this(0, 0, 0, 0);
         set(v);
-    }
-
-    public SFVertex4f(float[] values) {
-
     }
 
     /**
@@ -53,7 +32,26 @@ public class SFVertex4f extends SFValue {
         this.set4f(x, y, z, w);
     }
 
-    float[] v = new float[4];
+    /**
+     * Generate the middle Point between two poits A and B
+     *
+     * @param A the first Point
+     * @param B the second Point
+     * @return the middle Point
+     * @throws ArrayIndexOutOfBoundsException
+     */
+    public static SFVertex4f middle(SFVertex4f A, SFVertex4f B) {
+        return new SFVertex4f(
+                (A.getV()[0] + B.getV()[0]) * 0.5f, (A.getV()[1] + B.getV()[1]) * 0.5f, (A.getV()[2] + B.getV()[2]) * 0.5f, (A.getV()[3] + B.getV()[3]) * 0.5f
+        );
+    }
+
+    public static SFVertex4f linearVertex(float t1, SFVertex4f v1, SFVertex4f v2) {
+        SFVertex4f v = new SFVertex4f();
+        v.addMult4f(1 - t1, v1);
+        v.addMult4f(t1, v2);
+        return v;
+    }
 
     @Override
     public int getSize() {
@@ -68,7 +66,7 @@ public class SFVertex4f extends SFValue {
     /**
      * Specific 4f version of the add method.
      *
-     * @param vx the constant to be added
+     * @param q
      */
     public void add4f(SFVertex4f q) {
         getV()[0] += q.getV()[0];
@@ -111,11 +109,19 @@ public class SFVertex4f extends SFValue {
         return getV()[3];
     }
 
+    public void setW(float w) {
+        getV()[3] = w;
+    }
+
     /**
      * @return the x value
      */
     public float getX() {
         return this.getV()[0];
+    }
+
+    public void setX(float x) {
+        this.getV()[0] = x;
     }
 
     /**
@@ -125,6 +131,10 @@ public class SFVertex4f extends SFValue {
         return this.getV()[1];
     }
 
+    public void setY(float y) {
+        this.getV()[1] = y;
+    }
+
     /**
      * @return the z value
      */
@@ -132,10 +142,14 @@ public class SFVertex4f extends SFValue {
         return this.getV()[2];
     }
 
+    public void setZ(float z) {
+        this.getV()[2] = z;
+    }
+
     /**
      * Specific 4f version of the mult method.
      *
-     * @param m
+     * @param a
      */
     public void mult4f(float a) {
         getV()[0] *= a;
@@ -146,8 +160,6 @@ public class SFVertex4f extends SFValue {
 
     /**
      * Set this vector-vertex to be a unit vector with the same direction
-     *
-     * @param m
      */
     public void normalize4f() {
         float lengthRec = 1 / (float) (Math.sqrt(getV()[0] * getV()[0] + getV()[1] * getV()[1] + getV()[2] * getV()[2] + getV()[3] * getV()[3]));
@@ -156,14 +168,6 @@ public class SFVertex4f extends SFValue {
         getV()[2] *= lengthRec;
         getV()[3] *= lengthRec;
     }
-
-    public static SFVertex4f linearVertex(float t1, SFVertex4f v1, SFVertex4f v2) {
-        SFVertex4f v = new SFVertex4f();
-        v.addMult4f(1 - t1, v1);
-        v.addMult4f(t1, v2);
-        return v;
-    }
-
 
     /**
      * Scale this vector
@@ -201,27 +205,10 @@ public class SFVertex4f extends SFValue {
         v[2] *= recLength;
     }
 
-    public void setW(float w) {
-        getV()[3] = w;
-    }
-
-    public void setX(float x) {
-        this.getV()[0] = x;
-    }
-
-
-    public void setY(float y) {
-        this.getV()[1] = y;
-    }
-
-    public void setZ(float z) {
-        this.getV()[2] = z;
-    }
-
     /**
      * Specific 4f version of the subtract method.
      *
-     * @param vx
+     * @param q
      */
     public void subtract4f(SFVertex4f q) {
         getV()[0] -= q.getV()[0];

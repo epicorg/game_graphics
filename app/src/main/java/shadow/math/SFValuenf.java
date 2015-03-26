@@ -11,23 +11,6 @@ package shadow.math;
  */
 public class SFValuenf extends SFValue {
 
-    /**
-     * Generate the middle Point between two poits A and B
-     *
-     * @param A the first Point
-     * @param B the second Point
-     * @return the middle Point
-     * @throws ArrayIndexOutOfBoundsException
-     */
-    public static SFValuenf middle(SFValuenf A, SFValuenf B)
-            throws ArrayIndexOutOfBoundsException {
-        SFValuenf value = new SFValuenf(A.getV().length);
-        for (int i = 0; i < A.getV().length; i++) {
-            value.getV()[i] = (A.getV()[i] + B.getV()[i]) * 0.5f;
-        }
-        return value;
-    }
-
     private float[] v;
 
     /**
@@ -57,6 +40,23 @@ public class SFValuenf extends SFValue {
     public SFValuenf(float[] v) {
         super();
         this.v = (v);
+    }
+
+    /**
+     * Generate the middle Point between two poits A and B
+     *
+     * @param A the first Point
+     * @param B the second Point
+     * @return the middle Point
+     * @throws ArrayIndexOutOfBoundsException
+     */
+    public static SFValuenf middle(SFValuenf A, SFValuenf B)
+            throws ArrayIndexOutOfBoundsException {
+        SFValuenf value = new SFValuenf(A.getV().length);
+        for (int i = 0; i < A.getV().length; i++) {
+            value.getV()[i] = (A.getV()[i] + B.getV()[i]) * 0.5f;
+        }
+        return value;
     }
 
     /**

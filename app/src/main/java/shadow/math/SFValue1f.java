@@ -9,6 +9,8 @@ package shadow.math;
  */
 public class SFValue1f extends SFValue {
 
+    float[] v = new float[1];
+
     /**
      * Create a new 1f value, assigning it
      *
@@ -26,8 +28,6 @@ public class SFValue1f extends SFValue {
     public SFValue1f(float x) {
         this.getV()[0] = x;
     }
-
-    float[] v = new float[1];
 
     @Override
     public int getSize() {
@@ -65,21 +65,21 @@ public class SFValue1f extends SFValue {
     }
 
     /**
-     * Mult this 1f value for a constant
-     *
-     * @param m the constant to be multiplied
-     */
-    public void mult1f(float m) {
-        getV()[0] *= m;
-    }
-
-    /**
      * get the 1f content value
      *
      * @return
      */
     public void setX(float x) {
         getV()[0] = x;
+    }
+
+    /**
+     * Mult this 1f value for a constant
+     *
+     * @param m the constant to be multiplied
+     */
+    public void mult1f(float m) {
+        getV()[0] *= m;
     }
 
     /**
