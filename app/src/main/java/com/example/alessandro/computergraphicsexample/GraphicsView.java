@@ -5,9 +5,12 @@ import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 
+import java.util.ArrayList;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import generators.GroundGenerator;
 import objLoader.ObjLoader;
 import sfogl.integration.ArrayObject;
 import sfogl.integration.BitmapTexture;
@@ -45,7 +48,8 @@ public class GraphicsView extends GLSurfaceView {
 
     public class GraphicsRenderer implements Renderer {
 
-        private Node node, groundNode, wallNode;
+        private Node node;
+        private ArrayList<Node> groundNodes;
         private float t = 0;
         private ShadingProgram program;
 
@@ -66,24 +70,18 @@ public class GraphicsView extends GLSurfaceView {
             Material material = new Material(program);
             material.getTextures().add(texture);
             Material groundMaterial = new Material(program);
-            groundMaterial.getTextures().add(groundTexture);
 
             //Step 4: load a Geometry
             ArrayObject[] objects = ObjLoader.arrayObjectFromFile(context, "MonkeyTxN.obj");
-            ArrayObject[] groundObject = ObjLoader.arrayObjectFromFile(context, "Ground.obj");
 
             Mesh mesh = new Mesh(objects[0]);
             mesh.init();
-            Mesh groundMesh = new Mesh(groundObject[0]);
-            groundMesh.init();
 
             //Step 5: create a Model combining material+geometry
             Model monkeyModel = new Model();
             monkeyModel.setRootGeometry(mesh);
             monkeyModel.setMaterialComponent(material);
             Model groundModel = new Model();
-            groundModel.setRootGeometry(groundMesh);
-            groundModel.setMaterialComponent(groundMaterial);
 
             //Step 6: create a Node, that is a reference system where you can place your Model
             node = new Node();
@@ -96,9 +94,8 @@ public class GraphicsView extends GLSurfaceView {
             anotherNode.getRelativeTransform().setMatrix(SFMatrix3f.getScale(0.3f, 0.2f, 0.1f));
             node.getSonNodes().add(anotherNode);
 
-            groundNode = new Node();
-            groundNode.setModel(groundModel);
-            groundNode.getRelativeTransform().setPosition(0, 0, 0);
+            GroundGenerator groundGenerator = new GroundGenerator(context, program, R.drawable.ground_texture_01, "Ground.obj");
+            groundNodes = groundGenerator.getGround(0, 0, 3, 3);
         }
 
         @Override
@@ -131,12 +128,15 @@ public class GraphicsView extends GLSurfaceView {
             //Change the Node transform
             scaling = 1.0f;
             matrix3f = SFMatrix3f.getScale(scaling, scaling, scaling);
-            groundNode.getRelativeTransform().setMatrix(matrix3f);
-            groundNode.updateTree(new SFTransform3f());
 
             //Draw nodes
             node.draw();
-            groundNode.draw();
+
+            for (Node groundNode : groundNodes) {
+                groundNode.getRelativeTransform().setMatrix(matrix3f);
+                groundNode.updateTree(new SFTransform3f());
+                groundNode.draw();
+            }
         }
     }
 }
