@@ -68,8 +68,6 @@ public class GraphicsView extends GLSurfaceView {
             int textureModel = SFOGLTextureModel.generateTextureObjectModel(SFImageFormat.RGB, GLES20.GL_REPEAT, GLES20.GL_REPEAT, GLES20.GL_LINEAR, GLES20.GL_LINEAR);
             BitmapTexture texture = BitmapTexture.loadBitmapTexture(BitmapFactory.decodeResource(context.getResources(), R.drawable.paddedroom_texture_01), textureModel);
             texture.init();
-            BitmapTexture groundTexture = BitmapTexture.loadBitmapTexture(BitmapFactory.decodeResource(context.getResources(), R.drawable.ground_texture_01), textureModel);
-            groundTexture.init();
 
             //Step 3 : create a Material (materials combine shaders+textures+shading parameters)
             Material material = new Material(program);
@@ -127,11 +125,6 @@ public class GraphicsView extends GLSurfaceView {
             matrix3f = matrix3f.MultMatrix(SFMatrix3f.getRotationX(rotation));
             node.getRelativeTransform().setMatrix(matrix3f);
             node.updateTree(new SFTransform3f());
-
-            //Change the Node transform
-            scaling = 1.0f;
-            matrix3f = SFMatrix3f.getScale(scaling, scaling, scaling);
-
             //Draw nodes
             node.draw();
 
