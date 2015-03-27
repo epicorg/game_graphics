@@ -12,6 +12,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import generators.GroundGenerator;
+import generators.ModelGenerator;
 import objLoader.ObjLoader;
 import sfogl.integration.ArrayObject;
 import sfogl.integration.BitmapTexture;
@@ -64,39 +65,22 @@ public class GraphicsView extends GLSurfaceView {
             ShadersKeeper.loadPipelineShaders(context);
             program = ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER);
 
-            //Step 2 : load Textures
-            int textureModel = SFOGLTextureModel.generateTextureObjectModel(SFImageFormat.RGB, GLES20.GL_REPEAT, GLES20.GL_REPEAT, GLES20.GL_LINEAR, GLES20.GL_LINEAR);
-            BitmapTexture texture = BitmapTexture.loadBitmapTexture(BitmapFactory.decodeResource(context.getResources(), R.drawable.paddedroom_texture_01), textureModel);
-            texture.init();
-
-            //Step 3 : create a Material (materials combine shaders+textures+shading parameters)
-            Material material = new Material(program);
-            material.getTextures().add(texture);
-
-            //Step 4: load a Geometry
-            ArrayObject[] objects = ObjLoader.arrayObjectFromFile(context, "MonkeyTxN.obj");
-
-            Mesh mesh = new Mesh(objects[0]);
-            mesh.init();
-
-            //Step 5: create a Model combining material+geometry
-            Model monkeyModel = new Model();
-            monkeyModel.setRootGeometry(mesh);
-            monkeyModel.setMaterialComponent(material);
+            ModelGenerator monkeyModelGenerator = new ModelGenerator(context, program, R.drawable.paddedroom_texture_01, "MonkeyTxN.obj");
 
             //Step 6: create a Node, that is a reference system where you can place your Model
             node = new Node();
-            node.setModel(monkeyModel);
+            node.setModel(monkeyModelGenerator.getModel());
             node.getRelativeTransform().setPosition(0, 0.5f, 0);
 
             Node anotherNode = new Node();
-            anotherNode.setModel(monkeyModel);
+            anotherNode.setModel(monkeyModelGenerator.getModel());
             anotherNode.getRelativeTransform().setPosition(1, 1, 0);
             anotherNode.getRelativeTransform().setMatrix(SFMatrix3f.getScale(0.3f, 0.2f, 0.1f));
             node.getSonNodes().add(anotherNode);
 
-            GroundGenerator groundGenerator = new GroundGenerator(context, program, R.drawable.ground_texture_01, "Ground.obj");
-            groundNodes = groundGenerator.getGround(0, 0, 3, 3, -1);
+            ModelGenerator groundModelGenerator = new ModelGenerator(context, program, R.drawable.ground_texture_01, "Ground.obj");
+            GroundGenerator groundGenerator = new GroundGenerator(groundModelGenerator.getModel());
+            groundNodes = groundGenerator.getGround(0, 0, 5, 4, -1);
         }
 
         @Override
@@ -125,11 +109,9 @@ public class GraphicsView extends GLSurfaceView {
             matrix3f = matrix3f.MultMatrix(SFMatrix3f.getRotationX(rotation));
             node.getRelativeTransform().setMatrix(matrix3f);
             node.updateTree(new SFTransform3f());
-            //Draw nodes
             node.draw();
 
             for (Node groundNode : groundNodes) {
-                groundNode.getRelativeTransform().setMatrix(matrix3f);
                 groundNode.updateTree(new SFTransform3f());
                 groundNode.draw();
             }

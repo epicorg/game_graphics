@@ -22,29 +22,10 @@ import shadow.graphics.SFImageFormat;
  */
 public class GroundGenerator {
 
-    private Context context;
-    private ShadingProgram program;
-    private Model groundModel;
+    private Model model;
 
-    public GroundGenerator(Context context, ShadingProgram program, int textureId, String obj) {
-        this.context = context;
-        this.program = program;
-
-        setup(textureId, obj);
-    }
-
-    private void setup(int textureId, String obj) {
-        int textureModel = SFOGLTextureModel.generateTextureObjectModel(SFImageFormat.RGB, GLES20.GL_REPEAT, GLES20.GL_REPEAT, GLES20.GL_LINEAR, GLES20.GL_LINEAR);
-        BitmapTexture groundTexture = BitmapTexture.loadBitmapTexture(BitmapFactory.decodeResource(context.getResources(), textureId), textureModel);
-        groundTexture.init();
-        ArrayObject[] groundObject = ObjLoader.arrayObjectFromFile(context, obj);
-        Mesh groundMesh = new Mesh(groundObject[0]);
-        groundMesh.init();
-        Material groundMaterial = new Material(program);
-        groundMaterial.getTextures().add(groundTexture);
-        groundModel = new Model();
-        groundModel.setRootGeometry(groundMesh);
-        groundModel.setMaterialComponent(groundMaterial);
+    public GroundGenerator(Model model) {
+        this.model = model;
     }
 
     public ArrayList<Node> getGround(int xCenter, int zCenter, int xSize, int zSize, int yCenter) {
@@ -52,15 +33,15 @@ public class GroundGenerator {
 
         int leftToTheCenter = xSize / 2;
         int nearToTheCenter = zSize / 2;
-        int tempX = xCenter - leftToTheCenter;
-        int tempZ = zCenter - nearToTheCenter;
+        int tempX = xCenter - 2*leftToTheCenter;
+        int tempZ = zCenter - 2*nearToTheCenter;
 
         for (int i = 0; i < xSize; i++) {
             for (int j = 0; j < zSize; j++) {
                 Node tmpNode = new Node();
-                tmpNode.setModel(groundModel);
-                int xC = tempX + i;
-                int zC = tempZ + j;
+                tmpNode.setModel(model);
+                int xC = tempX + 2*i;
+                int zC = tempZ + 2*j;
                 tmpNode.getRelativeTransform().setPosition(xC, yCenter, zC);
                 tempList.add(tmpNode);
             }
