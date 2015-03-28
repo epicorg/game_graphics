@@ -1,4 +1,4 @@
-package generators;
+package game.generators;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;

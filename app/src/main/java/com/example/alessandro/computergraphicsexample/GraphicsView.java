@@ -12,9 +12,12 @@ import java.util.ArrayList;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import generators.ButtonsGenerator;
-import generators.FundamentalGenerator;
-import generators.GroundGenerator;
+import game.generators.ButtonsGenerator;
+import game.generators.FundamentalGenerator;
+import game.generators.GroundGenerator;
+import game.listeners.DirectionDirectionMoveListenerX;
+import game.listeners.DirectionMoveListenerInterface;
+import game.player.Player;
 import sfogl.integration.Model;
 import sfogl.integration.Node;
 import sfogl.integration.ShadingProgram;
@@ -39,21 +42,31 @@ public class GraphicsView extends GLSurfaceView {
     private ShadingProgram program;
     private WindowManager windowManager;
 
+    private Player me;
+    private ArrayList<Player> otherPlayers;
+
     private final float[] orthoMatrix = new float[16];
     private final float[] resultMatrix = new float[16];
 
     private ButtonsGenerator buttonsGenerator;
 
+    private DirectionMoveListenerInterface directionMoveListener;
+
     private boolean isPressing = false;
     private float previousX, previousY;
     private float touchX, touchY;
 
-    public GraphicsView(Context context, WindowManager windowManager) {
+    public GraphicsView(Context context, WindowManager windowManager, Player me, ArrayList<Player> otherPlayers) {
         super(context);
         setEGLContextClientVersion(2);
 
         this.context = context;
         this.windowManager = windowManager;
+
+        this.me = me;
+        this.otherPlayers = otherPlayers;
+
+        directionMoveListener = new DirectionDirectionMoveListenerX(me.getStatus().getDirection());
 
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         setRenderer(new GraphicsRenderer());
@@ -98,6 +111,7 @@ public class GraphicsView extends GLSurfaceView {
                     previousX = touchX;
                     previousY = touchY;
 
+                    directionMoveListener.move(dx, dy);
                     Log.d(LOG_TAG, "Moved of dx: " + dx + ", dy: " + dy);
                 }
                 break;
@@ -145,23 +159,14 @@ public class GraphicsView extends GLSurfaceView {
         @Override
         public void onSurfaceChanged(GL10 gl, int width, int height) {
             glViewport(0, 0, width, height);
-
-            final float[] viewMatrix = new float[16];
-            final float[] projectionMatrix = new float[16];
-            setLookAtM(viewMatrix, 0, 0, 0.5f, +2, 0, 0.5f, 1, 0, 1, 0);
             float ratio = (float) width / height;
-            frustumM(projectionMatrix, 0, -ratio, ratio, -1, 1, 1, 10);
-            multiplyMM(resultMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
 
-            if (width > height) {
-                orthoM(orthoMatrix, 0, -ratio, ratio, -1, 1, -1, 1);
-            } else {
-                orthoM(orthoMatrix, 0, -1, 1, -(1 / ratio), (1 / ratio), -1, 1);
-            }
+            setMatrices(width, height, ratio);
         }
 
         @Override
         public void onDrawFrame(GL10 gl) {
+            setMatrices(getWidth(), getHeight(), (float) getWidth() / getHeight());
             program.setupProjection(resultMatrix);
             SFOGLSystemState.cleanupColorAndDepth(0, 0, 1, 1);
 
@@ -186,6 +191,39 @@ public class GraphicsView extends GLSurfaceView {
                 buttonNode.updateTree(new SFTransform3f());
                 buttonNode.draw();
             }
+        }
+
+        private void setMatrices(int width, int height, float ratio) {
+            setResultMatrix(ratio);
+            setOrthoMatrix(width, height, ratio);
+        }
+
+        private void setOrthoMatrix(int width, int height, float ratio) {
+            if (width > height) {
+                orthoM(orthoMatrix, 0, -ratio, ratio, -1, 1, -1, 1);
+            } else {
+                orthoM(orthoMatrix, 0, -1, 1, -(1 / ratio), (1 / ratio), -1, 1);
+            }
+        }
+
+        private void setResultMatrix(float ratio) {
+            final float[] viewMatrix = new float[16];
+            final float[] projectionMatrix = new float[16];
+            setViewMatrix(viewMatrix);
+            frustumM(projectionMatrix, 0, -ratio, ratio, -1, 1, 1, 10);
+            multiplyMM(resultMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
+        }
+
+        private void setViewMatrix(float[] viewMatrix) {
+            float eyeX, eyeY, eyeZ, centerX, centerY, centerZ;
+            eyeX = me.getStatus().getPosition().getX();
+            eyeY = me.getStatus().getPosition().getY();
+            eyeZ = me.getStatus().getPosition().getZ();
+            centerX = me.getStatus().getPosition().getX() + me.getStatus().getDirection().getX();
+            centerY = me.getStatus().getPosition().getY() + me.getStatus().getDirection().getY();
+            centerZ = me.getStatus().getPosition().getZ() + me.getStatus().getDirection().getZ();
+
+            setLookAtM(viewMatrix, 0, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, 0, 1, 0);
         }
     }
 
