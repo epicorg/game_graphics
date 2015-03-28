@@ -11,6 +11,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 
+import game.listeners.PositionMoveListenerInterface;
+import game.listeners.PositionMoveListenerXZ;
 import sfogl.integration.Material;
 import sfogl.integration.Model;
 import sfogl.integration.Node;
@@ -36,6 +38,7 @@ public class ButtonsGenerator {
 
     private Model model;
     private int width, height;
+    private PositionMoveListenerInterface positionMoveListenerXZ;
 
     private Node leftNode = new Node();
     private Node rightNode = new Node();
@@ -46,10 +49,11 @@ public class ButtonsGenerator {
 
     private ArrayList<Node> buttonsNodes = new ArrayList<>();
 
-    public ButtonsGenerator(Context context, ShadingProgram program, Model model, int width, int height) {
+    public ButtonsGenerator(Context context, ShadingProgram program, Model model, int width, int height, PositionMoveListenerInterface positionMoveListenerXZ) {
         this.model = model;
         this.width = width;
         this.height = height;
+        this.positionMoveListenerXZ = positionMoveListenerXZ;
 
         setup(context, program);
     }
@@ -143,12 +147,16 @@ public class ButtonsGenerator {
     private void pickButtonAndCallListener(int color) {
         if (color == LEFT_COLOR) {
             Log.d(LOG_TAG, "Pressed LEFT.");
+            positionMoveListenerXZ.move((float) +Math.PI / 2, 0);
         } else if (color == RIGHT_COLOR) {
             Log.d(LOG_TAG, "Pressed RIGHT.");
+            positionMoveListenerXZ.move((float) -Math.PI / 2, 0);
         } else if (color == UP_COLOR) {
             Log.d(LOG_TAG, "Pressed UP.");
+            positionMoveListenerXZ.move(0, 0);
         } else if (color == DOWN_COLOR) {
             Log.d(LOG_TAG, "Pressed DOWN.");
+            positionMoveListenerXZ.move((float) -Math.PI, 0);
         }
     }
 

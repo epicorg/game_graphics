@@ -17,6 +17,8 @@ import game.generators.FundamentalGenerator;
 import game.generators.GroundGenerator;
 import game.listeners.DirectionDirectionMoveListenerX;
 import game.listeners.DirectionMoveListenerInterface;
+import game.listeners.PositionMoveListenerInterface;
+import game.listeners.PositionMoveListenerXZ;
 import game.player.Player;
 import sfogl.integration.Model;
 import sfogl.integration.Node;
@@ -50,7 +52,8 @@ public class GraphicsView extends GLSurfaceView {
 
     private ButtonsGenerator buttonsGenerator;
 
-    private DirectionMoveListenerInterface directionMoveListener;
+    private PositionMoveListenerInterface positionMoveListenerXZ;
+    private DirectionMoveListenerInterface directionMoveListenerX;
 
     private boolean isPressing = false;
     private float previousX, previousY;
@@ -66,7 +69,8 @@ public class GraphicsView extends GLSurfaceView {
         this.me = me;
         this.otherPlayers = otherPlayers;
 
-        directionMoveListener = new DirectionDirectionMoveListenerX(me.getStatus().getDirection());
+        positionMoveListenerXZ = new PositionMoveListenerXZ(me.getStatus().getPosition(), me.getStatus().getDirection());
+        directionMoveListenerX = new DirectionDirectionMoveListenerX(me.getStatus().getDirection());
 
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         setRenderer(new GraphicsRenderer());
@@ -111,7 +115,7 @@ public class GraphicsView extends GLSurfaceView {
                     previousX = touchX;
                     previousY = touchY;
 
-                    directionMoveListener.move(dx, dy);
+                    directionMoveListenerX.move(dx, dy);
                     Log.d(LOG_TAG, "Moved of dx: " + dx + ", dy: " + dy);
                 }
                 break;
@@ -152,7 +156,7 @@ public class GraphicsView extends GLSurfaceView {
             windowManager.getDefaultDisplay().getSize(displaySize);
 
             Model arrowModel = FundamentalGenerator.getModel(context, program, R.drawable.arrow_texture_01, "Arrow.obj");
-            buttonsGenerator = new ButtonsGenerator(context, program, arrowModel, displaySize.x, displaySize.y);
+            buttonsGenerator = new ButtonsGenerator(context, program, arrowModel, displaySize.x, displaySize.y, positionMoveListenerXZ);
             buttonsNodes = buttonsGenerator.getButtons();
         }
 
