@@ -15,22 +15,21 @@ import sfogl2.SFOGLTextureModel;
 import shadow.graphics.SFImageFormat;
 
 /**
- * Created by Andrea on 26/03/2015.
+ * Created by Andrea on 27/03/2015.
  */
-public class ModelGenerator {
+public class FundamentalGenerator {
 
-    private Context context;
-    private ShadingProgram program;
-    private Model model;
+    public static Material getMaterial(Context context, ShadingProgram program, int textureId) {
+        int textureModel = SFOGLTextureModel.generateTextureObjectModel(SFImageFormat.RGB, GLES20.GL_REPEAT, GLES20.GL_REPEAT, GLES20.GL_LINEAR, GLES20.GL_LINEAR);
+        BitmapTexture texture = BitmapTexture.loadBitmapTexture(BitmapFactory.decodeResource(context.getResources(), textureId), textureModel);
+        texture.init();
+        Material material = new Material(program);
+        material.getTextures().add(texture);
 
-    public ModelGenerator(Context context, ShadingProgram program, int textureId, String obj) {
-        this.context = context;
-        this.program = program;
-
-        setup(textureId, obj);
+        return material;
     }
 
-    private void setup(int textureId, String obj) {
+    public static Model getModel(Context context, ShadingProgram program, int textureId, String obj) {
         int textureModel = SFOGLTextureModel.generateTextureObjectModel(SFImageFormat.RGB, GLES20.GL_REPEAT, GLES20.GL_REPEAT, GLES20.GL_LINEAR, GLES20.GL_LINEAR);
         BitmapTexture texture = BitmapTexture.loadBitmapTexture(BitmapFactory.decodeResource(context.getResources(), textureId), textureModel);
         texture.init();
@@ -39,12 +38,10 @@ public class ModelGenerator {
         mesh.init();
         Material material = new Material(program);
         material.getTextures().add(texture);
-        model = new Model();
+        Model model = new Model();
         model.setRootGeometry(mesh);
         model.setMaterialComponent(material);
-    }
-
-    public Model getModel() {
         return model;
     }
+
 }
