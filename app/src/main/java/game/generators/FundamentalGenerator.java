@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 
+import game.graphics.TextureKeeper;
 import objLoader.ObjLoader;
 import sfogl.integration.ArrayObject;
 import sfogl.integration.BitmapTexture;
@@ -43,5 +44,20 @@ public class FundamentalGenerator {
         model.setMaterialComponent(material);
         return model;
     }
+
+
+    public static Model loadModel(Context context, ShadingProgram program, int texture_id, String obj){
+        BitmapTexture texture= TextureKeeper.getTexture(context, texture_id);
+        ArrayObject[] object = ObjLoader.arrayObjectFromFile(context, obj);
+        Mesh mesh = new Mesh(object[0]);
+        mesh.init();
+        Material material = new Material(program);
+        material.getTextures().add(texture);
+        Model model = new Model();
+        model.setRootGeometry(mesh);
+        model.setMaterialComponent(material);
+        return model;
+    }
+
 
 }

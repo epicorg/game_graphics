@@ -1,6 +1,7 @@
 package game.listeners;
 
 import shadow.math.SFMatrix3f;
+import shadow.math.SFTransform3f;
 import shadow.math.SFVertex3f;
 
 /**
@@ -18,10 +19,17 @@ public class DirectionDirectionMoveListenerX implements DirectionMoveListenerInt
 
     @Override
     public void move(float dx, float dy) {
-        //Ignore dy for now;
-
+        SFMatrix3f rotx=SFMatrix3f.getRotationX((float) (dy * MOVE_FACTOR * Math.PI));
         SFMatrix3f rotationMatrix = SFMatrix3f.getRotationY((float) (dx * MOVE_FACTOR * Math.PI));
-        SFVertex3f tmp = rotationMatrix.Mult(direction);
-        direction.set3f(tmp.getX(), tmp.getY(), tmp.getZ());
+
+        SFTransform3f trfx=new SFTransform3f(),trfy=new SFTransform3f();
+
+        trfx.setMatrix(rotx);
+        trfy.setMatrix(rotationMatrix);
+
+        trfy.mult(trfx);
+
+        trfy.transform(direction);
+
     }
 }

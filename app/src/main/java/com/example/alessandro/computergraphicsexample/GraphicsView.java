@@ -19,13 +19,18 @@ import game.listeners.DirectionDirectionMoveListenerX;
 import game.listeners.DirectionMoveListenerInterface;
 import game.listeners.PositionMoveListenerInterface;
 import game.listeners.PositionMoveListenerXZ;
+import game.physics.Box;
+import game.physics.CollisionMediator;
+import game.physics.Wall;
 import game.player.Player;
+import game.graphics.Mappa;
 import sfogl.integration.Model;
 import sfogl.integration.Node;
 import sfogl.integration.ShadingProgram;
 import sfogl2.SFOGLSystemState;
 import shadow.math.SFMatrix3f;
 import shadow.math.SFTransform3f;
+import shadow.math.SFVertex3f;
 
 import static android.opengl.GLES20.glViewport;
 import static android.opengl.Matrix.frustumM;
@@ -59,12 +64,20 @@ public class GraphicsView extends GLSurfaceView {
     private float previousX, previousY;
     private float touchX, touchY;
 
+
+    private Mappa mappa;
+
+
     public GraphicsView(Context context, WindowManager windowManager, Player me, ArrayList<Player> otherPlayers) {
         super(context);
         setEGLContextClientVersion(2);
 
         this.context = context;
         this.windowManager = windowManager;
+
+
+        this.mappa=new Mappa(context);
+
 
         this.me = me;
         this.otherPlayers = otherPlayers;
@@ -152,6 +165,19 @@ public class GraphicsView extends GLSurfaceView {
             GroundGenerator groundGenerator = new GroundGenerator(FundamentalGenerator.getModel(context, program, R.drawable.ground_texture_01, "Ground.obj"));
             groundNodes = groundGenerator.getGround(0, 0, 9, 4, -1);
 
+
+
+            mappa.addObjects("cube.obj",R.drawable.wall_texture_01,new Wall(new SFVertex3f(1,1,0),new Box(2,1,2)),
+                    new Wall(new SFVertex3f(4,1,-4),new Box(1,1,2)),
+                    new Wall(new SFVertex3f(6,1,0),new Box(1,1,2)),
+                    new Wall(new SFVertex3f(2,1,2),new Box(1,1,2)),
+                    new Wall(new SFVertex3f(4,1,-2),new Box(1,1,2)));
+
+            mappa.load(new CollisionMediator());
+
+
+
+
             Point displaySize = new Point();
             windowManager.getDefaultDisplay().getSize(displaySize);
 
@@ -189,12 +215,16 @@ public class GraphicsView extends GLSurfaceView {
                 groundNode.draw();
             }
 
+            mappa.draw();
+
             program.setupProjection(orthoMatrix);
 
             for (Node buttonNode : buttonsNodes) {
                 buttonNode.updateTree(new SFTransform3f());
                 buttonNode.draw();
             }
+
+
         }
 
         private void setMatrices(int width, int height, float ratio) {
