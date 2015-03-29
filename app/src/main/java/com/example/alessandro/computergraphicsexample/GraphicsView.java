@@ -167,11 +167,11 @@ public class GraphicsView extends GLSurfaceView {
 
 
 
-            mappa.addObjects("cube.obj",R.drawable.wall_texture_01,new Wall(new SFVertex3f(1,1,0),new Box(2,1,2)),
-                    new Wall(new SFVertex3f(4,1,-4),new Box(1,1,2)),
-                    new Wall(new SFVertex3f(6,1,0),new Box(1,1,2)),
-                    new Wall(new SFVertex3f(2,1,2),new Box(1,1,2)),
-                    new Wall(new SFVertex3f(4,1,-2),new Box(1,1,2)));
+            mappa.addObjects("cube.obj",R.drawable.wall_texture_01,new Wall(new SFVertex3f(1,1,0),new Box(2,2,1)),
+                    new Wall(new SFVertex3f(4,1,-4),new Box(1,2,1)),
+                    new Wall(new SFVertex3f(6,1,0),new Box(1,2,1)),
+                    new Wall(new SFVertex3f(2,1,2),new Box(1,2,1)),
+                    new Wall(new SFVertex3f(4,1,-2),new Box(1,2,1)));
 
             mappa.load(new CollisionMediator());
 

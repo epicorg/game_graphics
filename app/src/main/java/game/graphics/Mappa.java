@@ -44,7 +44,7 @@ public class Mappa {
                 Node node = new Node();
                 node.setModel(map.get(c));
                 Box b=(Box) w.getBox();
-                node.getRelativeTransform().setMatrix(SFMatrix3f.getScale(b.getWidth(),b.getHeight(),b.getLength()));
+                node.getRelativeTransform().setMatrix(SFMatrix3f.getScale(b.getWidth(),b.getLength(),b.getHeight()));
                 node.getRelativeTransform().setPosition(w.getPos().getX(), w.getPos().getY(), w.getPos().getZ());
                 rootNode.getSonNodes().add(node);
             }
