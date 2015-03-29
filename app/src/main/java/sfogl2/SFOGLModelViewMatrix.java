@@ -24,7 +24,7 @@ public class SFOGLModelViewMatrix {
 
     private void applyM(SFMatrix3f m) {
         /* Implements M=(M*(newM*P))+T
-		 */
+         */
         matrix.set(matrix.MultMatrix(m));
     }
 

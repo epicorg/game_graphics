@@ -2,6 +2,6 @@ package game.physics;
 
 public interface Collidable {
 
-	public CollisionBox getBox();
+    public CollisionBox getBox();
 
 }

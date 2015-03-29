@@ -15,6 +15,7 @@ import javax.microedition.khronos.opengles.GL10;
 import game.generators.ButtonsGenerator;
 import game.generators.FundamentalGenerator;
 import game.generators.GroundGenerator;
+import game.graphics.Map;
 import game.listeners.DirectionDirectionMoveListenerX;
 import game.listeners.DirectionMoveListenerInterface;
 import game.listeners.PositionMoveListenerInterface;
@@ -23,7 +24,6 @@ import game.physics.Box;
 import game.physics.CollisionMediator;
 import game.physics.Wall;
 import game.player.Player;
-import game.graphics.Mappa;
 import sfogl.integration.Model;
 import sfogl.integration.Node;
 import sfogl.integration.ShadingProgram;
@@ -64,9 +64,7 @@ public class GraphicsView extends GLSurfaceView {
     private float previousX, previousY;
     private float touchX, touchY;
 
-
-    private Mappa mappa;
-
+    private Map map;
 
     public GraphicsView(Context context, WindowManager windowManager, Player me, ArrayList<Player> otherPlayers) {
         super(context);
@@ -74,14 +72,10 @@ public class GraphicsView extends GLSurfaceView {
 
         this.context = context;
         this.windowManager = windowManager;
-
-
-        this.mappa=new Mappa(context);
-
-
         this.me = me;
         this.otherPlayers = otherPlayers;
 
+        map = new Map(context);
         positionMoveListenerXZ = new PositionMoveListenerXZ(me.getStatus().getPosition(), me.getStatus().getDirection());
         directionMoveListenerX = new DirectionDirectionMoveListenerX(me.getStatus().getDirection());
 
@@ -165,18 +159,12 @@ public class GraphicsView extends GLSurfaceView {
             GroundGenerator groundGenerator = new GroundGenerator(FundamentalGenerator.getModel(context, program, R.drawable.ground_texture_01, "Ground.obj"));
             groundNodes = groundGenerator.getGround(0, 0, 9, 4, -1);
 
-
-
-            mappa.addObjects("cube.obj",R.drawable.wall_texture_01,new Wall(new SFVertex3f(1,1,0),new Box(2,2,1)),
-                    new Wall(new SFVertex3f(4,1,-4),new Box(1,2,1)),
-                    new Wall(new SFVertex3f(6,1,0),new Box(1,2,1)),
-                    new Wall(new SFVertex3f(2,1,2),new Box(1,2,1)),
-                    new Wall(new SFVertex3f(4,1,-2),new Box(1,2,1)));
-
-            mappa.load(new CollisionMediator());
-
-
-
+            map.addObjects("cube.obj", R.drawable.wall_texture_01, new Wall(new SFVertex3f(1, 1, 0), new Box(2, 2, 1)),
+                    new Wall(new SFVertex3f(4, 1, -4), new Box(1, 2, 1)),
+                    new Wall(new SFVertex3f(6, 1, 0), new Box(1, 2, 1)),
+                    new Wall(new SFVertex3f(2, 1, 2), new Box(1, 2, 1)),
+                    new Wall(new SFVertex3f(4, 1, -2), new Box(1, 2, 1)));
+            map.load(new CollisionMediator());
 
             Point displaySize = new Point();
             windowManager.getDefaultDisplay().getSize(displaySize);
@@ -215,7 +203,7 @@ public class GraphicsView extends GLSurfaceView {
                 groundNode.draw();
             }
 
-            mappa.draw();
+            map.draw();
 
             program.setupProjection(orthoMatrix);
 

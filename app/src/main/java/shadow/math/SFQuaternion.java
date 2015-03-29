@@ -80,7 +80,8 @@ public class SFQuaternion extends SFVertex4f {
     /**
      * Apply this quaternion as a rotation to a Vertex3f
      *
-     * @param q
+     * @param a
+     * @return
      */
     public SFVertex3f applyRotation(SFVertex3f a) {
         SFVertex3f b = new SFVertex3f(a.getV()[0], a.getV()[1], a.getV()[2]);
@@ -103,7 +104,7 @@ public class SFQuaternion extends SFVertex4f {
 
         //But the true formula that should be used is based on alpha/2
         /*
-		 * v' = v 2 cos(alpha/2)sin(alpha/2) d x v + 2 sin^2(alpha/2) d x (d x d)
+         * v' = v 2 cos(alpha/2)sin(alpha/2) d x v + 2 sin^2(alpha/2) d x (d x d)
 		 * 
 		 * q = (sin(alpha/2)dx i + sin(alpha/2)dy j + sin(alpha/2)dz k + cos(alpha/2));
 		 */
@@ -128,7 +129,7 @@ public class SFQuaternion extends SFVertex4f {
     /**
      * Get the Rotation Matrix related to this quaternion
      *
-     * @param q
+     * @return
      */
     public SFMatrix3f getRotationMatrix() {
         SFMatrix3f m = new SFMatrix3f();

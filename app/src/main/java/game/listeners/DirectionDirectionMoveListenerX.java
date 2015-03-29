@@ -19,10 +19,10 @@ public class DirectionDirectionMoveListenerX implements DirectionMoveListenerInt
 
     @Override
     public void move(float dx, float dy) {
-        SFMatrix3f rotx=SFMatrix3f.getRotationX((float) (dy * MOVE_FACTOR * Math.PI));
+        SFMatrix3f rotx = SFMatrix3f.getRotationX((float) (dy * MOVE_FACTOR * Math.PI));
         SFMatrix3f rotationMatrix = SFMatrix3f.getRotationY((float) (dx * MOVE_FACTOR * Math.PI));
 
-        SFTransform3f trfx=new SFTransform3f(),trfy=new SFTransform3f();
+        SFTransform3f trfx = new SFTransform3f(), trfy = new SFTransform3f();
 
         trfx.setMatrix(rotx);
         trfy.setMatrix(rotationMatrix);

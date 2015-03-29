@@ -30,10 +30,8 @@ public class FundamentalGenerator {
         return material;
     }
 
-    public static Model getModel(Context context, ShadingProgram program, int textureId, String obj) {
-        int textureModel = SFOGLTextureModel.generateTextureObjectModel(SFImageFormat.RGB, GLES20.GL_REPEAT, GLES20.GL_REPEAT, GLES20.GL_LINEAR, GLES20.GL_LINEAR);
-        BitmapTexture texture = BitmapTexture.loadBitmapTexture(BitmapFactory.decodeResource(context.getResources(), textureId), textureModel);
-        texture.init();
+    public static Model getModel(Context context, ShadingProgram program, int texture_id, String obj) {
+        BitmapTexture texture = TextureKeeper.getTexture(context, texture_id);
         ArrayObject[] object = ObjLoader.arrayObjectFromFile(context, obj);
         Mesh mesh = new Mesh(object[0]);
         mesh.init();
@@ -44,20 +42,5 @@ public class FundamentalGenerator {
         model.setMaterialComponent(material);
         return model;
     }
-
-
-    public static Model loadModel(Context context, ShadingProgram program, int texture_id, String obj){
-        BitmapTexture texture= TextureKeeper.getTexture(context, texture_id);
-        ArrayObject[] object = ObjLoader.arrayObjectFromFile(context, obj);
-        Mesh mesh = new Mesh(object[0]);
-        mesh.init();
-        Material material = new Material(program);
-        material.getTextures().add(texture);
-        Model model = new Model();
-        model.setRootGeometry(mesh);
-        model.setMaterialComponent(material);
-        return model;
-    }
-
 
 }

@@ -31,8 +31,8 @@ public class ShadersKeeper {
     private static ShadingParameter pTextureHigh = new ShadingParameter("textureHigh", ShadingParameter.ParameterType.GLOBAL_TEXTURE);
 
     public static void loadPipelineShaders(Context context) {
-        String vertexShader = Shaders.loadText(context, "stdVertexShader.vsh");
-        String fragmentShader = Shaders.loadText(context, "stdFragmentShader.fsh");
+        String vertexShader = Shaders.loadText(context, "shaders/stdVertexShader.vsh");
+        String fragmentShader = Shaders.loadText(context, "shaders/stdFragmentShader.fsh");
 
         ShadingProgram program = Shaders.loadShaderModel(vertexShader, fragmentShader, pTextureMaterial);
         program.init();

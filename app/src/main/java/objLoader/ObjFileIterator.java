@@ -1,6 +1,7 @@
 package objLoader;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -16,12 +17,15 @@ import java.util.Iterator;
  */
 public class ObjFileIterator implements Iterator<String> {
 
+    public static final String LOG_TAG = "ObjFileIterator";
+
     private BufferedReader reader;
     private String nextLine;
 
     public ObjFileIterator(Context context, String filename) {
         try {
-            InputStream stream = context.getAssets().open(filename);
+            Log.d(LOG_TAG, "Opening: " + "objects/" + filename);
+            InputStream stream = context.getAssets().open("objects/" + filename);
             reader = new BufferedReader(new InputStreamReader(stream));
         } catch (FileNotFoundException e) {
             e.printStackTrace();

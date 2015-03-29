@@ -1,7 +1,10 @@
 package game.graphics;
 
 import android.content.Context;
+
 import com.example.alessandro.computergraphicsexample.ShadersKeeper;
+
+import java.util.HashMap;
 
 import game.generators.FundamentalGenerator;
 import game.physics.Box;
@@ -14,37 +17,35 @@ import sfogl.integration.ShadingProgram;
 import shadow.math.SFMatrix3f;
 import shadow.math.SFTransform3f;
 
-import java.util.HashMap;
+public class Map {
 
-public class Mappa {
-
-    private HashMap<Collidable,Model> map=new HashMap<Collidable,Model>();
+    private HashMap<Collidable, Model> map = new HashMap<Collidable, Model>();
     private Node rootNode;
     private Context context;
 
-    public Mappa(Context context){
-        this.context=context;
+    public Map(Context context) {
+        this.context = context;
     }
 
-    public void addObjects(String obj, int texture_id, Collidable... collidables){
+    public void addObjects(String obj, int texture_id, Collidable... collidables) {
         ShadingProgram program = ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER);
-        Model model= FundamentalGenerator.loadModel(context, program, texture_id, obj);
-        for (Collidable c: collidables){
-            map.put(c,model);
+        Model model = FundamentalGenerator.getModel(context, program, texture_id, obj);
+        for (Collidable c : collidables) {
+            map.put(c, model);
         }
     }
 
-    public void load(CollisionMediator cm){
-        rootNode=new Node();
+    public void load(CollisionMediator cm) {
+        rootNode = new Node();
         rootNode.setup();
-        for (Collidable c : map.keySet()){
+        for (Collidable c : map.keySet()) {
             cm.addObject(c);
-            if (c instanceof  Wall){
-                Wall w=(Wall) c;
+            if (c instanceof Wall) {
+                Wall w = (Wall) c;
                 Node node = new Node();
                 node.setModel(map.get(c));
-                Box b=(Box) w.getBox();
-                node.getRelativeTransform().setMatrix(SFMatrix3f.getScale(b.getWidth(),b.getLength(),b.getHeight()));
+                Box b = (Box) w.getBox();
+                node.getRelativeTransform().setMatrix(SFMatrix3f.getScale(b.getWidth(), b.getLength(), b.getHeight()));
                 node.getRelativeTransform().setPosition(w.getPos().getX(), w.getPos().getY(), w.getPos().getZ());
                 rootNode.getSonNodes().add(node);
             }

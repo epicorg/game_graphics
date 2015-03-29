@@ -190,7 +190,7 @@ public class SFOGLShader {
     public static String compiledProgramInfo(int program) {
 
         int[] status = new int[1];
-		/* TODO : this is boring :(
+        /* TODO : this is boring :(
 		GLES20.glGetObjectParameterivARB(program, GLES20.GL_OBJECT_LINK_STATUS_ARB, status,0);
 		
 		//System.out.println("Status "+status2[0]);
