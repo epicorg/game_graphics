@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
         Player me = new Player(new PlayerStatus(position, direction), "Me");
         ArrayList<Player> otherPlayers = new ArrayList<Player>();
 
-        setContentView(new GraphicsView(this, getWindowManager(), me, otherPlayers));
+        setContentView(new GraphicsView(this, me, otherPlayers));
     }
 
 }

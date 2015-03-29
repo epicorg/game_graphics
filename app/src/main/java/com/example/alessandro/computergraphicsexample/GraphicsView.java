@@ -1,7 +1,6 @@
 package com.example.alessandro.computergraphicsexample;
 
 import android.content.Context;
-import android.graphics.Point;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -66,18 +65,15 @@ public class GraphicsView extends GLSurfaceView {
 
     private Map map;
 
-    public GraphicsView(Context context, WindowManager windowManager, Player me, ArrayList<Player> otherPlayers) {
+    public GraphicsView(Context context, Player me, ArrayList<Player> otherPlayers) {
         super(context);
         setEGLContextClientVersion(2);
 
         this.context = context;
-        this.windowManager = windowManager;
         this.me = me;
         this.otherPlayers = otherPlayers;
 
         map = new Map(context);
-        positionMoveListenerXZ = new PositionMoveListenerXZ(me.getStatus().getPosition(), me.getStatus().getDirection());
-        directionMoveListenerX = new DirectionDirectionMoveListenerX(me.getStatus().getDirection());
 
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         setRenderer(new GraphicsRenderer());
@@ -122,8 +118,8 @@ public class GraphicsView extends GLSurfaceView {
                     previousX = touchX;
                     previousY = touchY;
 
-                    directionMoveListenerX.move(dx, dy);
                     Log.d(LOG_TAG, "Moved of dx: " + dx + ", dy: " + dy);
+                    directionMoveListenerX.move(dx, dy);
                 }
                 break;
         }
@@ -165,20 +161,19 @@ public class GraphicsView extends GLSurfaceView {
                     new Wall(new SFVertex3f(2, 1, 2), new Box(1, 2, 1)),
                     new Wall(new SFVertex3f(4, 1, -2), new Box(1, 2, 1)));
             map.load(new CollisionMediator());
-
-            Point displaySize = new Point();
-            windowManager.getDefaultDisplay().getSize(displaySize);
-
-            Model arrowModel = FundamentalGenerator.getModel(context, program, R.drawable.arrow_texture_01, "Arrow.obj");
-            buttonsGenerator = new ButtonsGenerator(context, program, arrowModel, displaySize.x, displaySize.y, positionMoveListenerXZ);
-            buttonsNodes = buttonsGenerator.getButtons();
         }
 
         @Override
         public void onSurfaceChanged(GL10 gl, int width, int height) {
             glViewport(0, 0, width, height);
-            float ratio = (float) width / height;
 
+            positionMoveListenerXZ = new PositionMoveListenerXZ(me.getStatus().getPosition(), me.getStatus().getDirection());
+            directionMoveListenerX = new DirectionDirectionMoveListenerX(me.getStatus().getDirection(), getWidth(), getHeight());
+            Model arrowModel = FundamentalGenerator.getModel(context, program, R.drawable.arrow_texture_01, "Arrow.obj");
+            buttonsGenerator = new ButtonsGenerator(context, program, arrowModel, getWidth(), getHeight(), positionMoveListenerXZ);
+            buttonsNodes = buttonsGenerator.getButtons();
+
+            float ratio = (float) width / height;
             setMatrices(width, height, ratio);
         }
 
@@ -211,8 +206,6 @@ public class GraphicsView extends GLSurfaceView {
                 buttonNode.updateTree(new SFTransform3f());
                 buttonNode.draw();
             }
-
-
         }
 
         private void setMatrices(int width, int height, float ratio) {
