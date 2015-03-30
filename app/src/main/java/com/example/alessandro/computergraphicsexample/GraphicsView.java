@@ -15,7 +15,7 @@ import game.generators.ButtonsGenerator;
 import game.generators.FundamentalGenerator;
 import game.generators.GroundGenerator;
 import game.graphics.Map;
-import game.listeners.DirectionDirectionMoveListenerX;
+import game.listeners.DirectionDirectionMoveListener;
 import game.listeners.DirectionMoveListenerInterface;
 import game.listeners.PositionMoveListenerInterface;
 import game.listeners.PositionMoveListenerXZ;
@@ -57,7 +57,7 @@ public class GraphicsView extends GLSurfaceView {
     private ButtonsGenerator buttonsGenerator;
 
     private PositionMoveListenerInterface positionMoveListenerXZ;
-    private DirectionMoveListenerInterface directionMoveListenerX;
+    private DirectionMoveListenerInterface directionMoveListener;
 
     private boolean isPressing = false;
     private float previousX, previousY;
@@ -119,7 +119,7 @@ public class GraphicsView extends GLSurfaceView {
                     previousY = touchY;
 
                     Log.d(LOG_TAG, "Moved of dx: " + dx + ", dy: " + dy);
-                    directionMoveListenerX.move(dx, dy);
+                    directionMoveListener.move(dx, dy);
                 }
                 break;
         }
@@ -168,7 +168,7 @@ public class GraphicsView extends GLSurfaceView {
             glViewport(0, 0, width, height);
 
             positionMoveListenerXZ = new PositionMoveListenerXZ(me.getStatus().getPosition(), me.getStatus().getDirection());
-            directionMoveListenerX = new DirectionDirectionMoveListenerX(me.getStatus().getDirection(), getWidth(), getHeight());
+            directionMoveListener = new DirectionDirectionMoveListener(me.getStatus().getDirection(), getWidth(), getHeight());
             Model arrowModel = FundamentalGenerator.getModel(context, program, R.drawable.arrow_texture_01, "Arrow.obj");
             buttonsGenerator = new ButtonsGenerator(context, program, arrowModel, getWidth(), getHeight(), positionMoveListenerXZ);
             buttonsNodes = buttonsGenerator.getButtons();
