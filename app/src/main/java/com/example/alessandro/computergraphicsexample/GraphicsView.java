@@ -59,6 +59,7 @@ public class GraphicsView extends GLSurfaceView {
     private PositionMoveListenerInterface positionMoveListenerXZ;
     private DirectionMoveListenerInterface directionMoveListener;
 
+    private boolean isReady = false;
     private boolean isPressing = false;
     private float previousX, previousY;
     private float touchX, touchY;
@@ -81,6 +82,9 @@ public class GraphicsView extends GLSurfaceView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if(!isReady)
+            return true;
+
         touchX = event.getX();
         touchY = event.getY();
 
@@ -174,6 +178,8 @@ public class GraphicsView extends GLSurfaceView {
 
             float ratio = (float) width / height;
             setMatrices(width, height, ratio);
+
+            isReady = true;
         }
 
         @Override
