@@ -191,7 +191,7 @@ public class SFOGLShader {
 
         int[] status = new int[1];
         /* TODO : this is boring :(
-		GLES20.glGetObjectParameterivARB(program, GLES20.GL_OBJECT_LINK_STATUS_ARB, status,0);
+        GLES20.glGetObjectParameterivARB(program, GLES20.GL_OBJECT_LINK_STATUS_ARB, status,0);
 		
 		//System.out.println("Status "+status2[0]);
 		if(status[0]==0){

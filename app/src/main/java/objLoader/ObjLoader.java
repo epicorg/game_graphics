@@ -108,61 +108,51 @@ public class ObjLoader {
     }
 
     private static ArrayObject generateModel(ObjObject object) {
-
-        float[] vertices = new float[3 * object.getVertices().size()];
-        float[] normals = new float[3 * object.getNormals().size()];
-        float[] txCoords = new float[3 * object.getTxCoord().size()];
-        //ArrayList<SFVertex3f> vertices=new ArrayList<SFVertex3f>();
-        //ArrayList<SFVertex3f> normals=new ArrayList<SFVertex3f>();
-        //ArrayList<SFVertex3f> indices=new ArrayList<SFVertex3f>();
-        ArrayList<Integer> indices_ = new ArrayList<Integer>();
-
         ArrayList<ObjIndex[]> indices__ = object.getIndices();
+
+        float[] verticesFinal = new float[9 * indices__.size()];
+        float[] normalsFinal = new float[9 * indices__.size()];
+        float[] txCoordsFinal = new float[9 * indices__.size()];
+
         for (int i = 0; i < indices__.size(); i++) {
             ObjIndex[] set = indices__.get(i);
-            if (set.length == 4) {
-                indices_.add(set[0].getvIndex());
-                indices_.add(set[1].getvIndex());
-                indices_.add(set[2].getvIndex());
-                indices_.add(set[0].getvIndex());
-                indices_.add(set[2].getvIndex());
-                indices_.add(set[3].getvIndex());
-            } else {
-                indices_.add(set[0].getvIndex());
-                indices_.add(set[1].getvIndex());
-                indices_.add(set[2].getvIndex());
-            }
+            verticesFinal[i * 9 + 0] = object.getVertices().get(set[0].getvIndex() - 1).getX();
+            normalsFinal[i * 9 + 0] = object.getNormals().get(set[0].getVnIndex() - 1).getX();
+            txCoordsFinal[i * 9 + 0] = object.getTxCoord().get(set[0].getVtIndex() - 1).getX();
+            verticesFinal[i * 9 + 1] = object.getVertices().get(set[0].getvIndex() - 1).getY();
+            normalsFinal[i * 9 + 1] = object.getNormals().get(set[0].getVnIndex() - 1).getY();
+            txCoordsFinal[i * 9 + 1] = object.getTxCoord().get(set[0].getVtIndex() - 1).getY();
+            verticesFinal[i * 9 + 2] = object.getVertices().get(set[0].getvIndex() - 1).getZ();
+            normalsFinal[i * 9 + 2] = object.getNormals().get(set[0].getVnIndex() - 1).getZ();
+            txCoordsFinal[i * 9 + 2] = object.getTxCoord().get(set[0].getVtIndex() - 1).getZ();
+
+            verticesFinal[i * 9 + 3] = object.getVertices().get(set[1].getvIndex() - 1).getX();
+            normalsFinal[i * 9 + 3] = object.getNormals().get(set[1].getVnIndex() - 1).getX();
+            txCoordsFinal[i * 9 + 3] = object.getTxCoord().get(set[1].getVtIndex() - 1).getX();
+            verticesFinal[i * 9 + 4] = object.getVertices().get(set[1].getvIndex() - 1).getY();
+            normalsFinal[i * 9 + 4] = object.getNormals().get(set[1].getVnIndex() - 1).getY();
+            txCoordsFinal[i * 9 + 4] = object.getTxCoord().get(set[1].getVtIndex() - 1).getY();
+            verticesFinal[i * 9 + 5] = object.getVertices().get(set[1].getvIndex() - 1).getZ();
+            normalsFinal[i * 9 + 5] = object.getNormals().get(set[1].getVnIndex() - 1).getZ();
+            txCoordsFinal[i * 9 + 5] = object.getTxCoord().get(set[1].getVtIndex() - 1).getZ();
+
+            verticesFinal[i * 9 + 6] = object.getVertices().get(set[2].getvIndex() - 1).getX();
+            normalsFinal[i * 9 + 6] = object.getNormals().get(set[2].getVnIndex() - 1).getX();
+            txCoordsFinal[i * 9 + 6] = object.getTxCoord().get(set[2].getVtIndex() - 1).getX();
+            verticesFinal[i * 9 + 7] = object.getVertices().get(set[2].getvIndex() - 1).getY();
+            normalsFinal[i * 9 + 7] = object.getNormals().get(set[2].getVnIndex() - 1).getY();
+            txCoordsFinal[i * 9 + 7] = object.getTxCoord().get(set[2].getVtIndex() - 1).getY();
+            verticesFinal[i * 9 + 8] = object.getVertices().get(set[2].getvIndex() - 1).getZ();
+            normalsFinal[i * 9 + 8] = object.getNormals().get(set[2].getVnIndex() - 1).getZ();
+            txCoordsFinal[i * 9 + 8] = object.getTxCoord().get(set[2].getVtIndex() - 1).getZ();
         }
 
-
-        for (int i = 0; i < object.getVertices().size(); i++) {
-            SFVertex4f v = object.getVertices().get(i);
-            vertices[3 * i] = v.getX();
-            vertices[3 * i + 1] = v.getY();
-            vertices[3 * i + 2] = v.getZ();
+        short[] indices = new short[3 * indices__.size()];
+        for (short i = 0; i < (3 * indices__.size()); i++) {
+            indices[i] = i;
         }
 
-        for (int i = 0; i < object.getNormals().size(); i++) {
-            SFVertex4f n = object.getNormals().get(i);
-            n.normalize3f();
-            normals[3 * i] = n.getX();
-            normals[3 * i + 1] = n.getY();
-            normals[3 * i + 2] = n.getZ();
-        }
-
-        for (int i = 0; i < object.getTxCoord().size(); i++) {
-            SFVertex4f texCoord = object.getTxCoord().get(i);
-            txCoords[3 * i] = texCoord.getX();
-            txCoords[3 * i + 1] = texCoord.getY();
-            txCoords[3 * i + 2] = texCoord.getZ();
-        }
-
-        short[] indices = new short[indices_.size()];
-        for (int i = 0; i < indices_.size(); i++) {
-            indices[i] = (short) (indices_.get(i) - 1);
-        }
-
-        return new ArrayObject(vertices, normals, txCoords, indices);
+        return new ArrayObject(verticesFinal, normalsFinal, txCoordsFinal, indices);
     }
 
     private static SFVertex4f readValue(String line) {

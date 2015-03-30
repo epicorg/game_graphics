@@ -1,6 +1,7 @@
 package sfogl.integration;
 
 import android.opengl.GLES20;
+import android.util.Log;
 
 import sfogl2.SFOGLBufferObject;
 import sfogl2.SFOGLShader;
@@ -8,6 +9,8 @@ import shadow.system.SFInitiable;
 
 
 public class Mesh implements SFInitiable {
+
+    public static final String LOG_TAG = "Mesh";
 
     private SFOGLBufferObject vertices = new SFOGLBufferObject();
     private SFOGLBufferObject normals = new SFOGLBufferObject();
@@ -54,7 +57,6 @@ public class Mesh implements SFInitiable {
 
     @Override
     public void init() {
-
         //Log.e("Mesh","Initialized");
         indices.loadData(arrayObject.getIndicesBuffer());
 
@@ -63,7 +65,6 @@ public class Mesh implements SFInitiable {
         normals.loadData(arrayObject.getNormalsBuffer());
         if (isTxCoord())
             txCoords.loadData(arrayObject.getTxCoordsBuffer());
-
     }
 
     @Override

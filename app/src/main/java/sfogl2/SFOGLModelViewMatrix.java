@@ -49,7 +49,7 @@ public class SFOGLModelViewMatrix {
     }
 
     public void translate3f(float x, float y, float z) {
-		/* Implements M=(M*(P+newT))+T
+        /* Implements M=(M*(P+newT))+T
 		 * 
 		 * T' = M*newT+T
 		 */

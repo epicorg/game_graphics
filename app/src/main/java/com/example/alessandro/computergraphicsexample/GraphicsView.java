@@ -140,7 +140,7 @@ public class GraphicsView extends GLSurfaceView {
             ShadersKeeper.loadPipelineShaders(context);
             program = ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER);
 
-            Model monkeyModel = FundamentalGenerator.getModel(context, program, R.drawable.paddedroom_texture_01, "MonkeyTxN.obj");
+            Model monkeyModel = FundamentalGenerator.getModel(context, program, R.drawable.animal_texture_01, "Monkey.obj");
 
             node = new Node();
             node.setModel(monkeyModel);
@@ -155,11 +155,10 @@ public class GraphicsView extends GLSurfaceView {
             GroundGenerator groundGenerator = new GroundGenerator(FundamentalGenerator.getModel(context, program, R.drawable.ground_texture_01, "Ground.obj"));
             groundNodes = groundGenerator.getGround(0, 0, 9, 4, -1);
 
-            map.addObjects("cube.obj", R.drawable.wall_texture_01, new Wall(new SFVertex3f(1, 1, 0), new Box(2, 2, 1)),
-                    new Wall(new SFVertex3f(4, 1, -4), new Box(1, 2, 1)),
-                    new Wall(new SFVertex3f(6, 1, 0), new Box(1, 2, 1)),
-                    new Wall(new SFVertex3f(2, 1, 2), new Box(1, 2, 1)),
-                    new Wall(new SFVertex3f(4, 1, -2), new Box(1, 2, 1)));
+            map.addObjects("Wall.obj", R.drawable.wall_texture_02,
+                    new Wall(new SFVertex3f(4, -1, -4), new Box(1, 1, 1)),
+                    new Wall(new SFVertex3f(6, -1, 0), new Box(1, 1, 1)),
+                    new Wall(new SFVertex3f(4, -1, -2), new Box(1, 1, 1)));
             map.load(new CollisionMediator());
         }
 
@@ -169,7 +168,7 @@ public class GraphicsView extends GLSurfaceView {
 
             positionMoveListenerXZ = new PositionMoveListenerXZ(me.getStatus().getPosition(), me.getStatus().getDirection());
             directionMoveListener = new DirectionDirectionMoveListener(me.getStatus().getDirection(), getWidth(), getHeight());
-            Model arrowModel = FundamentalGenerator.getModel(context, program, R.drawable.arrow_texture_01, "Arrow.obj");
+            Model arrowModel = FundamentalGenerator.getModel(context, program, R.drawable.arrow_texture_02, "Arrow.obj");
             buttonsGenerator = new ButtonsGenerator(context, program, arrowModel, getWidth(), getHeight(), positionMoveListenerXZ);
             buttonsNodes = buttonsGenerator.getButtons();
 
