@@ -1,6 +1,7 @@
 package com.example.alessandro.computergraphicsexample;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -16,13 +17,16 @@ import game.generators.FundamentalGenerator;
 import game.generators.GroundGenerator;
 import game.graphics.Map;
 import game.listeners.DirectionDirectionMoveListener;
+
 import game.listeners.DirectionMoveListenerInterface;
+
 import game.listeners.PositionMoveListenerInterface;
 import game.listeners.PositionMoveListenerXZ;
 import game.physics.Box;
 import game.physics.CollisionMediator;
 import game.physics.Wall;
 import game.player.Player;
+
 import sfogl.integration.Model;
 import sfogl.integration.Node;
 import sfogl.integration.ShadingProgram;
@@ -57,24 +61,28 @@ public class GraphicsView extends GLSurfaceView {
     private ButtonsGenerator buttonsGenerator;
 
     private PositionMoveListenerInterface positionMoveListenerXZ;
-    private DirectionMoveListenerInterface directionMoveListener;
+    private DirectionMoveListenerInterface directionMoveListenerX;
 
-    private boolean isReady = false;
     private boolean isPressing = false;
     private float previousX, previousY;
     private float touchX, touchY;
 
-    private Map map;
 
-    public GraphicsView(Context context, Player me, ArrayList<Player> otherPlayers) {
+    private Map mappa;
+    private CollisionMediator cm=new CollisionMediator();
+
+    public GraphicsView(Context context, WindowManager windowManager, Player me, ArrayList<Player> otherPlayers) {
         super(context);
         setEGLContextClientVersion(2);
 
         this.context = context;
+        this.windowManager = windowManager;
+
+        this.mappa=new Map(context);
+
+
         this.me = me;
         this.otherPlayers = otherPlayers;
-
-        map = new Map(context);
 
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         setRenderer(new GraphicsRenderer());
@@ -82,9 +90,6 @@ public class GraphicsView extends GLSurfaceView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(!isReady)
-            return true;
-
         touchX = event.getX();
         touchY = event.getY();
 
@@ -122,8 +127,8 @@ public class GraphicsView extends GLSurfaceView {
                     previousX = touchX;
                     previousY = touchY;
 
+                    directionMoveListenerX.move(dx, dy);
                     Log.d(LOG_TAG, "Moved of dx: " + dx + ", dy: " + dy);
-                    directionMoveListener.move(dx, dy);
                 }
                 break;
         }
@@ -151,6 +156,7 @@ public class GraphicsView extends GLSurfaceView {
             node.getRelativeTransform().setPosition(0, 0.5f, 0);
 
             Node anotherNode = new Node();
+
             anotherNode.setModel(monkeyModel);
             anotherNode.getRelativeTransform().setPosition(1, 1, 0);
             anotherNode.getRelativeTransform().setMatrix(SFMatrix3f.getScale(0.3f, 0.2f, 0.1f));
@@ -159,27 +165,38 @@ public class GraphicsView extends GLSurfaceView {
             GroundGenerator groundGenerator = new GroundGenerator(FundamentalGenerator.getModel(context, program, R.drawable.ground_texture_01, "Ground.obj"));
             groundNodes = groundGenerator.getGround(0, 0, 9, 4, -1);
 
-            map.addObjects("Wall.obj", R.drawable.wall_texture_02,
-                    new Wall(new SFVertex3f(4, -1, -4), new Box(1, 1, 1)),
-                    new Wall(new SFVertex3f(6, -1, 0), new Box(1, 1, 1)),
-                    new Wall(new SFVertex3f(4, -1, -2), new Box(1, 1, 1)));
-            map.load(new CollisionMediator());
+
+
+            mappa.addObjects("Wall.obj",R.drawable.wall_texture_02,new Wall(new SFVertex3f(1,-1,0),new Box(2,2,1)),
+                    new Wall(new SFVertex3f(4,-1,-4),new Box(1,2,1)),
+                    new Wall(new SFVertex3f(6,-1,0),new Box(1,2,1)),
+                    new Wall(new SFVertex3f(2,-1,2),new Box(1,2,1)),
+                    new Wall(new SFVertex3f(4,-1,-2),new Box(1,2,1)));
+
+            mappa.load(cm);
+
+
+
+
+            Point displaySize = new Point();
+            windowManager.getDefaultDisplay().getSize(displaySize);
+
+
         }
 
         @Override
         public void onSurfaceChanged(GL10 gl, int width, int height) {
             glViewport(0, 0, width, height);
-
-            positionMoveListenerXZ = new PositionMoveListenerXZ(me.getStatus().getPosition(), me.getStatus().getDirection());
-            directionMoveListener = new DirectionDirectionMoveListener(me.getStatus().getDirection(), getWidth(), getHeight());
-            Model arrowModel = FundamentalGenerator.getModel(context, program, R.drawable.arrow_texture_02, "Arrow.obj");
-            buttonsGenerator = new ButtonsGenerator(context, program, arrowModel, getWidth(), getHeight(), positionMoveListenerXZ);
-            buttonsNodes = buttonsGenerator.getButtons();
-
             float ratio = (float) width / height;
+
             setMatrices(width, height, ratio);
 
-            isReady = true;
+            positionMoveListenerXZ = new PositionMoveListenerXZ(me.getStatus().getPosition(), me.getStatus().getDirection(),cm,me.getStatus().getBox());
+            directionMoveListenerX = new DirectionDirectionMoveListener(me.getStatus().getDirection(),getWidth(),getHeight());
+
+            Model arrowModel = FundamentalGenerator.getModel(context, program, R.drawable.arrow_texture_01, "Arrow.obj");
+            buttonsGenerator = new ButtonsGenerator(context, program, arrowModel, getWidth(), getHeight(), positionMoveListenerXZ);
+            buttonsNodes = buttonsGenerator.getButtons();
         }
 
         @Override
@@ -203,7 +220,7 @@ public class GraphicsView extends GLSurfaceView {
                 groundNode.draw();
             }
 
-            map.draw();
+            mappa.draw();
 
             program.setupProjection(orthoMatrix);
 
@@ -211,6 +228,8 @@ public class GraphicsView extends GLSurfaceView {
                 buttonNode.updateTree(new SFTransform3f());
                 buttonNode.draw();
             }
+
+
         }
 
         private void setMatrices(int width, int height, float ratio) {

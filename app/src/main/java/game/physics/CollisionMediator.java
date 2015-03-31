@@ -21,6 +21,16 @@ public class CollisionMediator {
         return null;
     }
 
+    public Collidable collide(CollisionBox box) {
+        for (Collidable c : list) {
+            if (c.getBox() == box)
+                continue;
+            if (box.checkCollision(c.getBox()))
+                return c;
+        }
+        return null;
+    }
+
     public void clear() {
         list.clear();
     }
