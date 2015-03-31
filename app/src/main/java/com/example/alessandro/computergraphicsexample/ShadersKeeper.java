@@ -1,7 +1,9 @@
 package com.example.alessandro.computergraphicsexample;
 
 import android.content.Context;
+
 import java.util.HashMap;
+
 import sfogl.integration.Shaders;
 import sfogl.integration.ShadingParameter;
 import sfogl.integration.ShadingProgram;

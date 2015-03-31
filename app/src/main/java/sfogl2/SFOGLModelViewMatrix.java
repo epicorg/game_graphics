@@ -50,7 +50,7 @@ public class SFOGLModelViewMatrix {
 
     public void translate3f(float x, float y, float z) {
         /* Implements M=(M*(P+newT))+T
-		 * 
+         *
 		 * T' = M*newT+T
 		 */
         position.add(this.matrix.Mult(new SFVertex3f(x, y, z)));

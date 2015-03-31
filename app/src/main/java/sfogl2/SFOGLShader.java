@@ -221,9 +221,9 @@ public class SFOGLShader {
         GLES20.glCompileShader(shaderID);
         return shaderID;
     }
-	
+
 	/*public static int loadShader(String[] shaderSource, int shaderType) {
-		int shaderID = GLES20.glCreateShader(shaderType);
+        int shaderID = GLES20.glCreateShader(shaderType);
 		int[] shaderLength=new int[shaderSource.length];
 		for (int i = 0; i < shaderLength.length; i++) {
 			shaderLength[i]=shaderSource.length;

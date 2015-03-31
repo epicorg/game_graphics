@@ -1,7 +1,6 @@
 package sfogl.integration;
 
 import android.opengl.GLES20;
-import android.util.Log;
 
 import sfogl2.SFOGLBufferObject;
 import sfogl2.SFOGLShader;
