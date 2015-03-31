@@ -34,7 +34,7 @@ public class Vector3D {
 	}
 	
 	public float squareModulus(){
-		return x*x+y*y;
+		return x*x+y*y+z*z;
 	}
 	
 	public float dotP(Vector3D v){

@@ -175,9 +175,6 @@ public class GraphicsView extends GLSurfaceView {
 
             mappa.load(cm);
 
-
-
-
             Point displaySize = new Point();
             windowManager.getDefaultDisplay().getSize(displaySize);
 
