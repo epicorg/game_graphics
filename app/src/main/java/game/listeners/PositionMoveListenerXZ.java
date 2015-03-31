@@ -5,7 +5,6 @@ import android.util.Log;
 import game.physics.Collidable;
 import game.physics.CollisionBox;
 import game.physics.CollisionMediator;
-import game.physics.Vector3D;
 import shadow.math.SFMatrix3f;
 import shadow.math.SFTransform3f;
 import shadow.math.SFVertex3f;
@@ -43,7 +42,7 @@ public class PositionMoveListenerXZ implements PositionMoveListenerInterface {
         Collidable c = cm.collide(box);
         if (c != null) {
             Log.d("Collision", "Coll. with: " + c);
-            float s = (float) Math.sqrt(new Vector3D(tmp2).squareModulus());
+            float s = tmp2.getLength();
             position.set3f(v0.getX(), v0.getY(), v0.getZ());
             correctMotion(c, s, 20);
             box.setPos(position);
@@ -60,26 +59,25 @@ public class PositionMoveListenerXZ implements PositionMoveListenerInterface {
         SFVertex3f motion = new SFVertex3f(direction.getX(), 0, direction.getZ());
         motion.normalize3f();
         motion.mult3f(s);
-        Vector3D v, v0 = new Vector3D(position);
+        SFVertex3f vbackup=new SFVertex3f(position);
         SFVertex3f position0 = new SFVertex3f(position.getX(), position.getY(), position.getZ());
-        Vector3D k, v1 = new Vector3D(motion), w;
         SFTransform3f rot = new SFTransform3f();
         mainloop:
         for (int i = 1; i < n; i++) {
             for (int j = 0; j < 2; j++) {
-                v = v0;
                 rot.setMatrix(SFMatrix3f.getRotationY((float) ((1 - 2 * j) * Math.PI * 0.5 * i / n)));
                 SFVertex3f kv = new SFVertex3f(motion.getX(), motion.getY(), motion.getZ());
                 rot.transform(kv);
-                k = new Vector3D(kv);
-                w = k.mul(v1.dotP(k) / k.squareModulus());
-                v = v.add(w);
-                position.set3f(v.getX(), v.getY(), v.getZ());
+
+                SFVertex3f motion2=new SFVertex3f(motion);
+                kv.mult3f(motion2.dot3f(kv)/(kv.getSquareModulus()));
+                position.add(kv);
+
                 box.setPos(position);
                 if (!box.checkCollision(c.getBox())) {
                     break mainloop;
                 } else {
-                    position.set3f(position0.getX(), position0.getY(), position0.getZ());
+                    position.set(vbackup);
                 }
             }
         }

@@ -13,7 +13,7 @@ public class CircleBox implements CollisionBox {
     }
 
     public CircleBox(Box box) {
-        this.radius = (float) Math.sqrt(new Vector3D(box.getLength(), box.getWidth(), 0).squareModulus() / 4);
+        this.radius = new SFVertex3f(box.getLength(), box.getWidth(), 0).getLength() / 4;
     }
 
     public float getRadius() {
@@ -22,7 +22,9 @@ public class CircleBox implements CollisionBox {
 
     @Override
     public boolean checkPoint(SFVertex3f v) {
-        return (new Vector3D(this.v).sub(new Vector3D(v)).squareModulus() < radius * radius);
+        SFVertex3f v0=new SFVertex3f(this.v);
+        v0.subtract(v);
+        return (v0.getSquareModulus() < radius * radius);
     }
 
     @Override
@@ -36,7 +38,9 @@ public class CircleBox implements CollisionBox {
         if (box instanceof CircleBox) {
             CircleBox b = (CircleBox) box;
             float d = radius + b.radius;
-            return (new Vector3D(v).sub(new Vector3D(b.v)).squareModulus() < d * d);
+            SFVertex3f v0=new SFVertex3f(v);
+            v0.subtract(b.v);
+            return (v0.getSquareModulus() < d * d);
         } else if (box instanceof Box) {
             Box b = (Box) box;
             float w = b.getWidth() / 2, h = b.getLength() / 2;

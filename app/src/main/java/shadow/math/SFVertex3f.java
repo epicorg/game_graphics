@@ -19,6 +19,10 @@ public class SFVertex3f extends SFValue {
         this(0, 0, 0);
     }
 
+    public SFVertex3f(SFVertex3f v){
+        set3f(v.getV()[0],v.getV()[1],v.getV()[2]);
+    }
+
     /**
      * Create a new 3f value from a 4f
      *
@@ -177,6 +181,10 @@ public class SFVertex3f extends SFValue {
      */
     public float getLength() {
         return (float) (Math.sqrt(getV()[0] * getV()[0] + getV()[1] * getV()[1] + getV()[2] * getV()[2]));
+    }
+
+    public float getSquareModulus() {
+        return (float) (getV()[0] * getV()[0] + getV()[1] * getV()[1] + getV()[2] * getV()[2]);
     }
 
     /**
