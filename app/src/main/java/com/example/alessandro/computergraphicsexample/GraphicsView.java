@@ -14,6 +14,7 @@ import game.generators.ButtonsGenerator;
 import game.generators.FundamentalGenerator;
 import game.generators.GroundGenerator;
 import game.graphics.Map;
+import game.graphics.Sky;
 import game.listeners.DirectionDirectionMoveListener;
 import game.listeners.DirectionMoveListenerInterface;
 import game.listeners.PositionMoveListenerInterface;
@@ -61,7 +62,6 @@ public class GraphicsView extends GLSurfaceView {
     private float previousX, previousY;
     private float touchX, touchY;
 
-    private Map mappa;
     private CollisionMediator cm = new CollisionMediator();
 
     public GraphicsView(Context context, Player me, ArrayList<Player> otherPlayers) {
@@ -72,7 +72,6 @@ public class GraphicsView extends GLSurfaceView {
         this.me = me;
         this.otherPlayers = otherPlayers;
 
-        this.mappa = new Map(context);
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         setRenderer(new GraphicsRenderer());
     }
@@ -127,6 +126,9 @@ public class GraphicsView extends GLSurfaceView {
 
     public class GraphicsRenderer implements Renderer {
 
+        private Sky sky;
+        private Map mappa;
+
         private Node node;
         private ArrayList<Node> groundNodes;
         private ArrayList<Node> buttonsNodes;
@@ -137,6 +139,9 @@ public class GraphicsView extends GLSurfaceView {
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {
             ShadersKeeper.loadPipelineShaders(context);
             program = ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER);
+
+            sky = new Sky(context, program, me.getStatus().getPosition());
+            mappa = new Map(context);
 
             Model monkeyModel = FundamentalGenerator.getModel(context, program, R.drawable.animal_texture_01, "Monkey.obj");
 
@@ -152,7 +157,7 @@ public class GraphicsView extends GLSurfaceView {
             node.getSonNodes().add(anotherNode);
 
             GroundGenerator groundGenerator = new GroundGenerator(FundamentalGenerator.getModel(context, program, R.drawable.ground_texture_01, "Ground.obj"));
-            groundNodes = groundGenerator.getGround(0, 0, 9, 4, -1);
+            groundNodes = groundGenerator.getGround(0, 0, 15, 15, -1);
 
             mappa.addObjects("Wall.obj", R.drawable.wall_texture_02,
                     new Wall(new SFVertex3f(4, -1, -1), new Box(1, 2, 1)),
@@ -169,9 +174,6 @@ public class GraphicsView extends GLSurfaceView {
         @Override
         public void onSurfaceChanged(GL10 gl, int width, int height) {
             glViewport(0, 0, width, height);
-            float ratio = (float) width / height;
-
-            setMatrices(width, height, ratio);
 
             positionMoveListenerXZ = new PositionMoveListenerXZ(me.getStatus().getPosition(), me.getStatus().getDirection(), cm, me.getStatus().getBox());
             directionMoveListenerX = new DirectionDirectionMoveListener(me.getStatus().getDirection(), getWidth(), getHeight());
@@ -203,6 +205,7 @@ public class GraphicsView extends GLSurfaceView {
             }
 
             mappa.draw();
+            sky.draw();
 
             program.setupProjection(orthoMatrix);
 
@@ -229,7 +232,7 @@ public class GraphicsView extends GLSurfaceView {
             final float[] viewMatrix = new float[16];
             final float[] projectionMatrix = new float[16];
             setViewMatrix(viewMatrix);
-            frustumM(projectionMatrix, 0, -ratio, ratio, -1, 1, 1, 10);
+            frustumM(projectionMatrix, 0, -ratio, ratio, -1, 1, 1, 50);
             multiplyMM(resultMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
         }
 
