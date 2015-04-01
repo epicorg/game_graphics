@@ -140,7 +140,7 @@ public class GraphicsView extends GLSurfaceView {
             ShadersKeeper.loadPipelineShaders(context);
             program = ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER);
 
-//            sky = new Sky(context, program, me.getStatus().getPosition());
+            sky = new Sky(context, program, me.getStatus().getPosition());
             mappa = new Map(context);
 
             Model monkeyModel = FundamentalGenerator.getModel(context, program, R.drawable.animal_texture_01, "Monkey.obj");
@@ -208,7 +208,7 @@ public class GraphicsView extends GLSurfaceView {
             }
 
             mappa.draw();
-//            sky.draw();
+            sky.draw();
 
             program.setupProjection(orthoMatrix);
 

@@ -40,7 +40,7 @@ public class Sky {
         mainNode.getSonNodes().add(generateNode(arrayObjectPosY, R.drawable.skybox_posy));
         mainNode.getSonNodes().add(generateNode(arrayObjectPosZ, R.drawable.skybox_negz));
         mainNode.getSonNodes().add(generateNode(arrayObjectNegX, R.drawable.skybox_negx));
-        mainNode.getSonNodes().add(generateNode(arrayObjectNegY, R.drawable.skybox_negy));
+        //mainNode.getSonNodes().add(generateNode(arrayObjectNegY, R.drawable.skybox_negy));
         mainNode.getSonNodes().add(generateNode(arrayObjectNegZ, R.drawable.skybox_posz));
 
         mainNode.getRelativeTransform().setPosition(0, 4, 0);
@@ -157,7 +157,7 @@ public class Sky {
                     0,1,2,3,4,5
             }
     );
-    private ArrayObject arrayObjectNegY = new ArrayObject(
+    /*private ArrayObject arrayObjectNegY = new ArrayObject(
             new float[]{
                     +SKY_DISTANCE, -SKY_DISTANCE, +SKY_DISTANCE,
                     +SKY_DISTANCE, -SKY_DISTANCE, -SKY_DISTANCE,
@@ -179,7 +179,7 @@ public class Sky {
             new short[]{
                     0,1,2,3,4,5
             }
-    );
+    );*/
     private ArrayObject arrayObjectNegZ = new ArrayObject(
             new float[]{
                     +SKY_DISTANCE, -SKY_DISTANCE, -SKY_DISTANCE,

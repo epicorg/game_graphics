@@ -18,7 +18,6 @@ public class FundamentalGenerator {
 
     public static Material getMaterial(Context context, ShadingProgram program, int textureId) {
         BitmapTexture texture = TextureKeeper.getTexture(context, textureId);
-        texture.init();
         Material material = new Material(program);
         material.getTextures().add(texture);
 

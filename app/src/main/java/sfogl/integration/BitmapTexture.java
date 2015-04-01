@@ -36,6 +36,8 @@ public class BitmapTexture implements SFInitiable {
     public void init() {
         texture = new SFOGLTexture2D(textureModel);
         texture.setup(bitmap);
+
+        bitmap = null;
     }
 
 
