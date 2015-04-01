@@ -23,13 +23,13 @@ public class Mesh implements SFInitiable {
         super();
     }
 
-    public boolean isTxCoord() {
-        return arrayObject.isTxCoord();
-    }
-
     public Mesh(ArrayObject arrayObject) {
         super();
         this.arrayObject = arrayObject;
+    }
+
+    public boolean isTxCoord() {
+        return arrayObject.isTxCoord();
     }
 
     public void draw(SFOGLShader shader) {

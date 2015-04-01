@@ -7,6 +7,8 @@ package shadow.math;
  */
 public class SFMatrix2f extends SFValue {
 
+    float[] v = new float[4];
+
     public SFMatrix2f() {
     }
 
@@ -15,22 +17,6 @@ public class SFMatrix2f extends SFValue {
         getV()[1] = b;
         getV()[2] = c;
         getV()[3] = d;
-    }
-
-    float[] v = new float[4];
-
-    @Override
-    public int getSize() {
-        return 4;
-    }
-
-    @Override
-    public float[] getV() {
-        return v;
-    }
-
-    public SFMatrix2f cloneValue() {
-        return new SFMatrix2f(getV()[0], getV()[1], getV()[2], getV()[3]);
     }
 
     public static SFMatrix2f getRotationZ(float angle) {
@@ -94,6 +80,20 @@ public class SFMatrix2f extends SFValue {
         }
 
         return n;
+    }
+
+    @Override
+    public int getSize() {
+        return 4;
+    }
+
+    @Override
+    public float[] getV() {
+        return v;
+    }
+
+    public SFMatrix2f cloneValue() {
+        return new SFMatrix2f(getV()[0], getV()[1], getV()[2], getV()[3]);
     }
 
     public void set(SFMatrix2f m) {

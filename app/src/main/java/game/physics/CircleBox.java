@@ -22,7 +22,7 @@ public class CircleBox implements CollisionBox {
 
     @Override
     public boolean checkPoint(SFVertex3f v) {
-        SFVertex3f v0=new SFVertex3f(this.v);
+        SFVertex3f v0 = new SFVertex3f(this.v);
         v0.subtract(v);
         return (v0.getSquareModulus() < radius * radius);
     }
@@ -38,7 +38,7 @@ public class CircleBox implements CollisionBox {
         if (box instanceof CircleBox) {
             CircleBox b = (CircleBox) box;
             float d = radius + b.radius;
-            SFVertex3f v0=new SFVertex3f(v);
+            SFVertex3f v0 = new SFVertex3f(v);
             v0.subtract(b.v);
             return (v0.getSquareModulus() < d * d);
         } else if (box instanceof Box) {

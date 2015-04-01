@@ -15,22 +15,22 @@ public class Box implements CollisionBox {
     }
 
     @Override
-    public Box setPos(SFVertex3f v) {
-        this.pos = v;
-        return this;
-    }
-
-    @Override
     public boolean checkPoint(SFVertex3f v) {
-        SFVertex3f w=new SFVertex3f(v);
+        SFVertex3f w = new SFVertex3f(v);
         w.subtract3f(pos);
-        return ((w.getX()*w.getX()<width*width/4) &&
-                (w.getY()*w.getY()<length*length/4) &&
-                (w.getZ()*w.getZ()<height*height/4));
+        return ((w.getX() * w.getX() < width * width / 4) &&
+                (w.getY() * w.getY() < length * length / 4) &&
+                (w.getZ() * w.getZ() < height * height / 4));
     }
 
     public SFVertex3f getPos() {
         return pos;
+    }
+
+    @Override
+    public Box setPos(SFVertex3f v) {
+        this.pos = v;
+        return this;
     }
 
     public float getWidth() {

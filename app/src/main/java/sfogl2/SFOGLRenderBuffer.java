@@ -6,18 +6,6 @@ public class SFOGLRenderBuffer {
 
     private int renderBufferObject;
 
-    public void setup(int width, int height) {
-        this.renderBufferObject = createRenderBuffer(width, height);
-    }
-
-    public int getRenderBufferObject() {
-        return renderBufferObject;
-    }
-
-    public void destroy() {
-        destroyRenderBuffer(renderBufferObject);
-    }
-
     public static int createRenderBuffer(int width, int height) {
         //Create a RenderBuffer to Be Used As Depth Buffer in the FrameBufferObject
         int rbo[] = new int[1];
@@ -32,5 +20,17 @@ public class SFOGLRenderBuffer {
     public static void destroyRenderBuffer(int renderBufferObject) {
         int[] textures = {renderBufferObject};
         GLES20.glDeleteRenderbuffers(GLES20.GL_TEXTURE_2D, textures, 1);
+    }
+
+    public void setup(int width, int height) {
+        this.renderBufferObject = createRenderBuffer(width, height);
+    }
+
+    public int getRenderBufferObject() {
+        return renderBufferObject;
+    }
+
+    public void destroy() {
+        destroyRenderBuffer(renderBufferObject);
     }
 }

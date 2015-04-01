@@ -46,7 +46,7 @@ public class Map {
                 node.setModel(map.get(c));
                 Box b = (Box) w.getBox();
                 node.getRelativeTransform().setMatrix(SFMatrix3f.getScale(b.getWidth() / 2, b.getLength() / 2, b.getHeight() / 2));
-                node.getRelativeTransform().setPosition(w.getPos().getX(), w.getPos().getY()-b.getLength()/2, w.getPos().getZ());
+                node.getRelativeTransform().setPosition(w.getPos().getX(), w.getPos().getY() - b.getLength() / 2, w.getPos().getZ());
                 rootNode.getSonNodes().add(node);
             }
 

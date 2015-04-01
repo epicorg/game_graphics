@@ -9,13 +9,7 @@ package shadow.math;
  */
 public class SFMatrix4f extends SFValue {
 
-    public SFMatrix4f cloneValue() {
-        return new SFMatrix4f(
-                getV()[0], getV()[1], getV()[2], getV()[3],
-                getV()[4], getV()[5], getV()[6], getV()[7],
-                getV()[8], getV()[9], getV()[10], getV()[11],
-                getV()[12], getV()[13], getV()[14], getV()[15]);
-    }
+    float[] v = new float[16];
 
 
     public SFMatrix4f() {
@@ -23,18 +17,6 @@ public class SFMatrix4f extends SFValue {
         getV()[5] = 1;
         getV()[10] = 1;
         getV()[15] = 1;
-    }
-
-    float[] v = new float[16];
-
-    @Override
-    public int getSize() {
-        return 16;
-    }
-
-    @Override
-    public float[] getV() {
-        return v;
     }
 
     public SFMatrix4f(float a, float b, float c, float d,
@@ -121,7 +103,6 @@ public class SFMatrix4f extends SFValue {
         v[15] = v1[3] * v2[12] + v1[7] * v2[13] + v1[11] * v2[14] + v1[15] * v2[15];
     }
 
-
     public static void multTransform(SFMatrix4f result, SFMatrix4f matrix1, SFTransform3f transform) {
         float[] v = result.getV();
         float[] v1 = matrix1.getV();
@@ -146,5 +127,23 @@ public class SFMatrix4f extends SFValue {
         v[13] = v1[1] * v2[9] + v1[5] * v2[10] + v1[9] * v2[11] + v1[13];
         v[14] = v1[2] * v2[9] + v1[6] * v2[10] + v1[10] * v2[11] + v1[14];
         v[15] = v1[3] * v2[9] + v1[7] * v2[10] + v1[11] * v2[11] + v1[15];
+    }
+
+    public SFMatrix4f cloneValue() {
+        return new SFMatrix4f(
+                getV()[0], getV()[1], getV()[2], getV()[3],
+                getV()[4], getV()[5], getV()[6], getV()[7],
+                getV()[8], getV()[9], getV()[10], getV()[11],
+                getV()[12], getV()[13], getV()[14], getV()[15]);
+    }
+
+    @Override
+    public int getSize() {
+        return 16;
+    }
+
+    @Override
+    public float[] getV() {
+        return v;
     }
 }

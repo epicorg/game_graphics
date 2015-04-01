@@ -19,28 +19,6 @@ public class BitmapTexture implements SFInitiable {
         this.textureModel = textureModel;
     }
 
-    public SFOGLTexture2D getTexture() {
-        return texture;
-    }
-
-    public void setTexture(SFOGLTexture2D texture) {
-        this.texture = texture;
-    }
-
-    @Override
-    public void destroy() {
-
-    }
-
-    @Override
-    public void init() {
-        texture = new SFOGLTexture2D(textureModel);
-        texture.setup(bitmap);
-
-        bitmap = null;
-    }
-
-
     public static BitmapTexture loadBitmapTexture(Bitmap image, int textureModel) {
 
         int width = image.getWidth();
@@ -63,5 +41,26 @@ public class BitmapTexture implements SFInitiable {
         SFBitmap bitmap = new SFBitmap();
         bitmap.generateBitmap(width, height, values, SFImageFormat.RGB);
         return new BitmapTexture(bitmap, textureModel);
+    }
+
+    public SFOGLTexture2D getTexture() {
+        return texture;
+    }
+
+    public void setTexture(SFOGLTexture2D texture) {
+        this.texture = texture;
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+
+    @Override
+    public void init() {
+        texture = new SFOGLTexture2D(textureModel);
+        texture.setup(bitmap);
+
+        bitmap = null;
     }
 }

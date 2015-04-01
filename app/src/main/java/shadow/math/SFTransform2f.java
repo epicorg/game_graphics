@@ -7,10 +7,10 @@ package shadow.math;
  */
 public class SFTransform2f extends SFValue {
 
+    float[] v = new float[6];
+
     public SFTransform2f() {
     }
-
-    float[] v = new float[6];
 
     @Override
     public int getSize() {

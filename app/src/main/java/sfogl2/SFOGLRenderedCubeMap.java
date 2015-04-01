@@ -15,14 +15,14 @@ public class SFOGLRenderedCubeMap {
 
     }
 
-    public SFOGLCubeMap getTexture() {
-        return texture;
-    }
-
     public SFOGLRenderedCubeMap(int sizeX, int sizeY, boolean useDepth) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.useDepth = useDepth ? 1 : 0;
+    }
+
+    public SFOGLCubeMap getTexture() {
+        return texture;
     }
 
     public int getTextureObject() {

@@ -9,6 +9,23 @@ import java.nio.ByteBuffer;
  */
 public class SFBitmap {
 
+    /**
+     * width of the image in pixels
+     */
+    private int width;
+    /**
+     * height of the image in pixels
+     */
+    private int height;
+    /**
+     * format of the image
+     */
+    private SFImageFormat format = SFImageFormat.RGBA;
+    /**
+     * data type depends on Image generation mode
+     */
+    private ByteBuffer data;
+
     public SFBitmap() {
         super();
     }
@@ -44,35 +61,17 @@ public class SFBitmap {
         return ret;
     }
 
-    /**
-     * width of the image in pixels
-     */
-    private int width;
-    /**
-     * height of the image in pixels
-     */
-    private int height;
-    /**
-     * format of the image
-     */
-    private SFImageFormat format = SFImageFormat.RGBA;
-
-    /**
-     * data type depends on Image generation mode
-     */
-    private ByteBuffer data;
-
     public int getWidth() {
         return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
     }
 
     public int getGray(int x, int y) {
         byte b = data.get(getSize() * (x + width * y));
         return (b >= 0 ? b : b + 256);
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
     }
 
     public int getHeight() {

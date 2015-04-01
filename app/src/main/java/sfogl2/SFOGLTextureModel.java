@@ -8,14 +8,12 @@ import shadow.graphics.SFImageFormat;
 
 public class SFOGLTextureModel {
 
+    private static ArrayList<SFOGLTextureModel> models = new ArrayList<SFOGLTextureModel>();
     private int textureWrapS;
     private int textureWrapT;
     private int minFilter;
     private int maxFilter;
-
     private int internalFormat;
-
-    private static ArrayList<SFOGLTextureModel> models = new ArrayList<SFOGLTextureModel>();
 
     private SFOGLTextureModel(int internalFormat, int textureWrapS, int textureWrapT,
                               int minFilter, int maxFilter) {
@@ -44,19 +42,6 @@ public class SFOGLTextureModel {
         SFOGLTextureModel textureModel = new SFOGLTextureModel(getInternalFormat(internalFormat), textureWrapS, textureWrapT, minFilter, maxFilter);
         models.add(textureModel);
         return models.size() - 1;
-    }
-
-    public void generateTexturesParameters(int target) {
-        setupTextureParameters(target, textureWrapS, textureWrapT,
-                minFilter, maxFilter);
-    }
-
-    private void setupTextureParameters(int target,
-                                        int textureWrapS, int textureWrapT, int minFilter, int maxFilter) {
-        GLES20.glTexParameteri(target, GLES20.GL_TEXTURE_MIN_FILTER, minFilter);
-        GLES20.glTexParameteri(target, GLES20.GL_TEXTURE_MAG_FILTER, maxFilter);
-        GLES20.glTexParameteri(target, GLES20.GL_TEXTURE_WRAP_S, textureWrapS);
-        GLES20.glTexParameteri(target, GLES20.GL_TEXTURE_WRAP_T, textureWrapT);
     }
 
     public static int getType(SFImageFormat format) {
@@ -127,5 +112,18 @@ public class SFOGLTextureModel {
             default:
                 return GLES20.GL_RGBA;
         }
+    }
+
+    public void generateTexturesParameters(int target) {
+        setupTextureParameters(target, textureWrapS, textureWrapT,
+                minFilter, maxFilter);
+    }
+
+    private void setupTextureParameters(int target,
+                                        int textureWrapS, int textureWrapT, int minFilter, int maxFilter) {
+        GLES20.glTexParameteri(target, GLES20.GL_TEXTURE_MIN_FILTER, minFilter);
+        GLES20.glTexParameteri(target, GLES20.GL_TEXTURE_MAG_FILTER, maxFilter);
+        GLES20.glTexParameteri(target, GLES20.GL_TEXTURE_WRAP_S, textureWrapS);
+        GLES20.glTexParameteri(target, GLES20.GL_TEXTURE_WRAP_T, textureWrapT);
     }
 }

@@ -3,18 +3,6 @@ package sfogl.integration;
 
 public class ShadingParameter {
 
-    public enum ParameterType {
-        GLOBAL_GENERIC,
-        GLOBAL_FLOAT,
-        GLOBAL_FLOAT2,
-        GLOBAL_FLOAT3,
-        GLOBAL_FLOAT4,
-        GLOBAL_MATRIX2,
-        GLOBAL_MATRIX3,
-        GLOBAL_MATRIX4,
-        GLOBAL_TEXTURE,
-    }
-
     protected String name;
     protected ParameterType type = ParameterType.GLOBAL_GENERIC;
 
@@ -39,5 +27,17 @@ public class ShadingParameter {
     @Override
     public String toString() {
         return name + "(" + type + ")";
+    }
+
+    public enum ParameterType {
+        GLOBAL_GENERIC,
+        GLOBAL_FLOAT,
+        GLOBAL_FLOAT2,
+        GLOBAL_FLOAT3,
+        GLOBAL_FLOAT4,
+        GLOBAL_MATRIX2,
+        GLOBAL_MATRIX3,
+        GLOBAL_MATRIX4,
+        GLOBAL_TEXTURE,
     }
 }

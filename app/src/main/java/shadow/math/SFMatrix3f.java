@@ -8,6 +8,8 @@ package shadow.math;
  */
 public class SFMatrix3f extends SFValue {
 
+    float[] v = new float[9];
+
     public SFMatrix3f() {
         getV()[0] = 1;
         getV()[4] = 1;
@@ -30,22 +32,6 @@ public class SFMatrix3f extends SFValue {
         getV()[6] = g;
         getV()[7] = h;
         getV()[8] = i;
-    }
-
-    float[] v = new float[9];
-
-    @Override
-    public int getSize() {
-        return 9;
-    }
-
-    @Override
-    public float[] getV() {
-        return v;
-    }
-
-    public SFMatrix3f cloneValue() {
-        return new SFMatrix3f(getV()[0], getV()[1], getV()[2], getV()[3], getV()[4], getV()[5], getV()[6], getV()[7], getV()[8]);
     }
 
     public static SFMatrix3f getRotationZ(float angle) {
@@ -118,7 +104,6 @@ public class SFMatrix3f extends SFValue {
         return n;
     }
 
-
     public static SFMatrix3f getIdentity() {
         SFMatrix3f n = new SFMatrix3f();
 
@@ -171,6 +156,20 @@ public class SFMatrix3f extends SFValue {
         }
 
         return n;
+    }
+
+    @Override
+    public int getSize() {
+        return 9;
+    }
+
+    @Override
+    public float[] getV() {
+        return v;
+    }
+
+    public SFMatrix3f cloneValue() {
+        return new SFMatrix3f(getV()[0], getV()[1], getV()[2], getV()[3], getV()[4], getV()[5], getV()[6], getV()[7], getV()[8]);
     }
 
 //	public static SFMatrix3f getRotationMatrix(SFVertex4f q){

@@ -7,13 +7,14 @@ package shadow.math;
  */
 public class SFTransform3f extends SFValue {
 
+    private static float[] multTmpVal = new float[12];
+    float[] v = new float[12];
+
     public SFTransform3f() {
         getV()[0] = 1;
         getV()[4] = 1;
         getV()[8] = 1;
     }
-
-    float[] v = new float[12];
 
     @Override
     public int getSize() {
@@ -74,7 +75,6 @@ public class SFTransform3f extends SFValue {
         }
     }
 
-
     public void transform(SFValue position) {
         float x = position.getV()[0];
         float y = position.getV()[1];
@@ -92,8 +92,6 @@ public class SFTransform3f extends SFValue {
         dir.getV()[1] = x * getV()[3] + y * getV()[4] + z * getV()[5];
         dir.getV()[2] = x * getV()[6] + y * getV()[7] + z * getV()[8];
     }
-
-    private static float[] multTmpVal = new float[12];
 
     public synchronized void mult(SFTransform3f transform) {
 

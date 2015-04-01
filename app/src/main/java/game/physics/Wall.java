@@ -23,8 +23,8 @@ public class Wall implements Collidable {
         return box;
     }
 
-    public String toString(){
-        return "["+v+";"+box+"]";
+    public String toString() {
+        return "[" + v + ";" + box + "]";
     }
 
 }

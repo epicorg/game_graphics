@@ -56,20 +56,20 @@ public class ObjIndex implements Comparable<ObjIndex> {
         return vIndex;
     }
 
-    public int getVnIndex() {
-        return vnIndex;
-    }
-
-    public int getVtIndex() {
-        return vtIndex;
-    }
-
     public void setvIndex(int vIndex) {
         this.vIndex = vIndex;
     }
 
+    public int getVnIndex() {
+        return vnIndex;
+    }
+
     public void setVnIndex(int vnIndex) {
         this.vnIndex = vnIndex;
+    }
+
+    public int getVtIndex() {
+        return vtIndex;
     }
 
     public void setVtIndex(int vtIndex) {

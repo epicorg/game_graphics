@@ -2,7 +2,6 @@ package com.example.alessandro.computergraphicsexample;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
@@ -10,6 +9,7 @@ import java.util.ArrayList;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import game.controls.ButtonsControl;
 import game.generators.ButtonsGenerator;
 import game.generators.FundamentalGenerator;
 import game.generators.GroundGenerator;
@@ -19,6 +19,8 @@ import game.listeners.DirectionDirectionMoveListener;
 import game.listeners.DirectionMoveListenerInterface;
 import game.listeners.PositionMoveListenerInterface;
 import game.listeners.PositionMoveListenerXZWithCollisions;
+import game.listeners.TouchListener;
+import game.listeners.TouchListenerInterface;
 import game.physics.Box;
 import game.physics.CollisionMediator;
 import game.physics.Wall;
@@ -43,30 +45,27 @@ import static android.opengl.Matrix.setLookAtM;
 public class GraphicsView extends GLSurfaceView {
 
     public static final String LOG_TAG = "GraphicsView";
-
-    private Context context;
-    private ShadingProgram program;
-
-    private Player me;
-    private ArrayList<Player> otherPlayers;
-
     private final float[] orthoMatrix = new float[16];
     private final float[] resultMatrix = new float[16];
-
+    private GLSurfaceView surfaceView;
+    private Context context;
+    private ShadingProgram program;
+    private Player me;
+    private ArrayList<Player> otherPlayers;
+    private TouchListenerInterface touchListener;
     private ButtonsGenerator buttonsGenerator;
-
+    private ButtonsControl buttonsControl;
     private PositionMoveListenerInterface positionMoveListener;
     private DirectionMoveListenerInterface directionMoveListener;
 
-    private boolean isPressing = false;
-    private float previousX, previousY;
-    private float touchX, touchY;
-
     private CollisionMediator cm = new CollisionMediator();
+
 
     public GraphicsView(Context context, Player me, ArrayList<Player> otherPlayers) {
         super(context);
         setEGLContextClientVersion(2);
+
+        this.surfaceView = this;
 
         this.context = context;
         this.me = me;
@@ -78,56 +77,13 @@ public class GraphicsView extends GLSurfaceView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        touchX = event.getX();
-        touchY = event.getY();
-
-        int action = event.getAction();
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
-                queueEvent(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (buttonsGenerator.isInsideAButton(touchX, touchY, getHeight())) {
-                            isPressing = true;
-                        } else {
-                            previousX = touchX;
-                            previousY = touchY;
-                        }
-                    }
-                });
-                break;
-            case MotionEvent.ACTION_UP:
-                if (isPressing) {
-                    isPressing = false;
-                    queueEvent(new Runnable() {
-                        @Override
-                        public void run() {
-                            program.setupProjection(orthoMatrix);
-                            buttonsGenerator.startColorPicking(touchX, touchY, getHeight());
-                        }
-                    });
-                }
-                break;
-            case MotionEvent.ACTION_MOVE:
-                if (!isPressing) {
-                    float dx = touchX - previousX;
-                    float dy = touchY - previousY;
-                    previousX = touchX;
-                    previousY = touchY;
-
-                    directionMoveListener.move(dx, dy);
-                    Log.d(LOG_TAG, "Moved of dx: " + dx + ", dy: " + dy);
-                }
-                break;
-        }
-
+        touchListener.onTouchEvent(event);
         return true;
     }
 
     public class GraphicsRenderer implements Renderer {
-
         private Sky sky;
-        private Map mappa;
+        private Map map;
 
         private Node node;
         private ArrayList<Node> groundNodes;
@@ -141,7 +97,7 @@ public class GraphicsView extends GLSurfaceView {
             program = ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER);
 
             sky = new Sky(context, program, me.getStatus().getPosition());
-            mappa = new Map(context);
+            map = new Map(context);
 
             Model monkeyModel = FundamentalGenerator.getModel(context, program, R.drawable.animal_texture_01, "Monkey.obj");
 
@@ -159,7 +115,7 @@ public class GraphicsView extends GLSurfaceView {
             GroundGenerator groundGenerator = new GroundGenerator(FundamentalGenerator.getModel(context, program, R.drawable.ground_texture_01, "Ground.obj"));
             groundNodes = groundGenerator.getGround(0, 0, 15, 15, -1);
 
-            mappa.addObjects("Wall.obj", R.drawable.wall_texture_02,
+            map.addObjects("Wall.obj", R.drawable.wall_texture_02,
                     new Wall(new SFVertex3f(4, 0, -1), new Box(1, 2, 1)),
                     new Wall(new SFVertex3f(4, 0, -2), new Box(1, 2, 1)),
                     new Wall(new SFVertex3f(4, 0, -3), new Box(1, 2, 1)),
@@ -171,7 +127,7 @@ public class GraphicsView extends GLSurfaceView {
                     new Wall(new SFVertex3f(-1, 0, 0), new Box(1, 2, 1)),
                     new Wall(new SFVertex3f(-2, 0, 0), new Box(1, 2, 1)),
                     new Wall(new SFVertex3f(-3, 0, 0), new Box(1, 2, 1)));
-            mappa.load(cm);
+            map.load(cm);
         }
 
         @Override
@@ -182,7 +138,10 @@ public class GraphicsView extends GLSurfaceView {
             directionMoveListener = new DirectionDirectionMoveListener(me.getStatus().getDirection(), getWidth(), getHeight());
 
             Model arrowModel = FundamentalGenerator.getModel(context, program, R.drawable.arrow_texture_02, "Arrow.obj");
-            buttonsGenerator = new ButtonsGenerator(context, program, arrowModel, getWidth(), getHeight(), positionMoveListener);
+            buttonsGenerator = new ButtonsGenerator(arrowModel);
+            buttonsControl = new ButtonsControl(context, program, orthoMatrix, buttonsGenerator.getLeftNode(), buttonsGenerator.getRightNode(), buttonsGenerator.getUpNode(), buttonsGenerator.getDownNode());
+            touchListener = new TouchListener(surfaceView, buttonsControl, positionMoveListener, directionMoveListener);
+
             buttonsNodes = buttonsGenerator.getButtons();
         }
 
@@ -207,7 +166,7 @@ public class GraphicsView extends GLSurfaceView {
                 groundNode.draw();
             }
 
-            mappa.draw();
+            map.draw();
             sky.draw();
 
             program.setupProjection(orthoMatrix);

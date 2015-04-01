@@ -6,25 +6,6 @@ import shadow.math.SFVertex4f;
 
 public class SFOGLStateEngine {
 
-    public enum SFOGLFacingState {
-        /**
-         * Does Not apply Face Culling. Front faces are CounterClockWise, Back Faces are ClockWise
-         */
-        FRONT_CCW,
-        /**
-         * Does Not apply Face Culling. Front faces are ClockWise, Back Faces are CounterClockWise
-         */
-        FRONT_CW,
-        /**
-         * Apply Face Culling on ClockWise Faces. Front faces are CounterClockWise.
-         */
-        CULL_CW,
-        /**
-         * Apply Face Culling on CounterClockWise Faces. Front faces are ClockWise.
-         */
-        CULL_CCW
-    }
-
     public static SFOGLState glClear(final int mask) {
         return new SFOGLState() {
             @Override
@@ -88,7 +69,6 @@ public class SFOGLStateEngine {
         };
     }
 
-
     public static SFOGLState glClearDepth(final double depth) {
         return new SFOGLState() {
             @Override
@@ -107,7 +87,6 @@ public class SFOGLStateEngine {
         };
     }
 
-
     public static SFOGLState glColorMask(final boolean red, final boolean green, final boolean blue, final boolean alpha) {
         return new SFOGLState() {
             @Override
@@ -125,7 +104,6 @@ public class SFOGLStateEngine {
             }
         };
     }
-
 
     public static SFOGLState glDepthMask(final boolean depth) {
         return new SFOGLState() {
@@ -177,7 +155,6 @@ public class SFOGLStateEngine {
             }
         };
     }
-
 
     public static SFOGLState glSampleCoverage(final float value, final boolean invert) {
         return new SFOGLState() {
@@ -231,5 +208,24 @@ public class SFOGLStateEngine {
                 GLES20.glScissor(x, y, width, height);
             }
         };
+    }
+
+    public enum SFOGLFacingState {
+        /**
+         * Does Not apply Face Culling. Front faces are CounterClockWise, Back Faces are ClockWise
+         */
+        FRONT_CCW,
+        /**
+         * Does Not apply Face Culling. Front faces are ClockWise, Back Faces are CounterClockWise
+         */
+        FRONT_CW,
+        /**
+         * Apply Face Culling on ClockWise Faces. Front faces are CounterClockWise.
+         */
+        CULL_CW,
+        /**
+         * Apply Face Culling on CounterClockWise Faces. Front faces are ClockWise.
+         */
+        CULL_CCW
     }
 }

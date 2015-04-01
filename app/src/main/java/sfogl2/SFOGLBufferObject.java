@@ -18,27 +18,6 @@ public class SFOGLBufferObject {
 
     }
 
-    public int getBufferObject() {
-        return bufferObject;
-    }
-
-    public void setBufferObject(int bufferObject) {
-        this.bufferObject = bufferObject;
-    }
-
-    public void loadData(float[] data) {
-        this.bufferObject = loadBufferObjectf(data);
-    }
-
-    public void loadData(short[] data) {
-        this.bufferObject = loadBufferObjects(data);
-    }
-
-    public void drawAsIndexedBuffer(int primitiveType, int primitiveIndicesSize) {
-        GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, bufferObject);
-        GLES20.glDrawElements(primitiveType, primitiveIndicesSize, GLES20.GL_UNSIGNED_SHORT, 0);
-    }
-
     public static ByteBuffer loadFloatBuffer(float[] data) {
 
         ByteBuffer buffer = ByteBuffer.allocateDirect(data.length * SIZE_OF_FLOAT);
@@ -87,6 +66,27 @@ public class SFOGLBufferObject {
         GLES20.glGenBuffers(1, vbos, 0);
         int vbo = vbos[0];
         return vbo;
+    }
+
+    public int getBufferObject() {
+        return bufferObject;
+    }
+
+    public void setBufferObject(int bufferObject) {
+        this.bufferObject = bufferObject;
+    }
+
+    public void loadData(float[] data) {
+        this.bufferObject = loadBufferObjectf(data);
+    }
+
+    public void loadData(short[] data) {
+        this.bufferObject = loadBufferObjects(data);
+    }
+
+    public void drawAsIndexedBuffer(int primitiveType, int primitiveIndicesSize) {
+        GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, bufferObject);
+        GLES20.glDrawElements(primitiveType, primitiveIndicesSize, GLES20.GL_UNSIGNED_SHORT, 0);
     }
 
 }

@@ -15,10 +15,6 @@ public class SFOGLRenderedTexture {
 
     }
 
-    public SFOGLTexture2D getTexture() {
-        return texture;
-    }
-
     public SFOGLRenderedTexture(int sizeX, int sizeY, boolean useDepth) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
@@ -29,6 +25,10 @@ public class SFOGLRenderedTexture {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.useDepth = useDepth ? 1 : 0;
+    }
+
+    public SFOGLTexture2D getTexture() {
+        return texture;
     }
 
     public int getTextureObject() {

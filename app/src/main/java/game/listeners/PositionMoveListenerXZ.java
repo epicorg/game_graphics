@@ -1,12 +1,6 @@
 package game.listeners;
 
-import android.util.Log;
-
-import game.physics.Collidable;
-import game.physics.CollisionBox;
-import game.physics.CollisionMediator;
 import shadow.math.SFMatrix3f;
-import shadow.math.SFTransform3f;
 import shadow.math.SFVertex3f;
 
 /**

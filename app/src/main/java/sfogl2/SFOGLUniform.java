@@ -18,14 +18,6 @@ public class SFOGLUniform {
         return value;
     }
 
-    public int getUniformLocation() {
-        return uniformLocation;
-    }
-
-    public void init(int shadingProgram) {
-        uniformLocation = GLES20.glGetUniformLocation(shadingProgram, name);
-    }
-
     public void setValue(float... value) {
         this.value = value;
         if (uniformLocation != -1) {
@@ -51,6 +43,14 @@ public class SFOGLUniform {
                 default:
             }
         }
+    }
+
+    public int getUniformLocation() {
+        return uniformLocation;
+    }
+
+    public void init(int shadingProgram) {
+        uniformLocation = GLES20.glGetUniformLocation(shadingProgram, name);
     }
 
     public void setValuei(int... value) {

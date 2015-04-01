@@ -19,8 +19,8 @@ public class SFVertex3f extends SFValue {
         this(0, 0, 0);
     }
 
-    public SFVertex3f(SFVertex3f v){
-        set3f(v.getV()[0],v.getV()[1],v.getV()[2]);
+    public SFVertex3f(SFVertex3f v) {
+        set3f(v.getV()[0], v.getV()[1], v.getV()[2]);
     }
 
     /**
@@ -55,15 +55,6 @@ public class SFVertex3f extends SFValue {
     }
 
     /**
-     * Set the elements (x,y,z)
-     */
-    public void set3f(float x, float y, float z) {
-        getV()[0] = x;
-        getV()[1] = y;
-        getV()[2] = z;
-    }
-
-    /**
      * Return the distance between two vertices
      *
      * @param v1
@@ -89,6 +80,15 @@ public class SFVertex3f extends SFValue {
         return new SFVertex3f(
                 (A.getV()[0] + B.getV()[0]) * 0.5f, (A.getV()[1] + B.getV()[1]) * 0.5f, (A.getV()[2] + B.getV()[2]) * 0.5f
         );
+    }
+
+    /**
+     * Set the elements (x,y,z)
+     */
+    public void set3f(float x, float y, float z) {
+        getV()[0] = x;
+        getV()[1] = y;
+        getV()[2] = z;
     }
 
     @Override

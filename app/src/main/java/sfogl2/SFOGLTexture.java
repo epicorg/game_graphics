@@ -17,8 +17,17 @@ public class SFOGLTexture {
     public SFOGLTexture() {
     }
 
-    public void setTextureModel(int textureModel) {
-        this.textureModel = textureModel;
+    public static void generateMipmap(int target, int textureObject) {
+        GLES20.glBindTexture(target, textureObject);
+        GLES20.glGenerateMipmap(target);
+        GLES20.glBindTexture(target, 0);
+    }
+
+    public static int generateTexture() {
+        int txo[] = new int[1];
+        GLES20.glGenTextures(1, txo, 0);
+        int tx = txo[0];
+        return tx;
     }
 
     public void delete() {
@@ -40,20 +49,11 @@ public class SFOGLTexture {
         return textureModel;
     }
 
+    public void setTextureModel(int textureModel) {
+        this.textureModel = textureModel;
+    }
+
     public void setupParameters() {
         SFOGLTextureModel.applyModel(GLES20.GL_TEXTURE_2D, textureModel);
-    }
-
-    public static void generateMipmap(int target, int textureObject) {
-        GLES20.glBindTexture(target, textureObject);
-        GLES20.glGenerateMipmap(target);
-        GLES20.glBindTexture(target, 0);
-    }
-
-    public static int generateTexture() {
-        int txo[] = new int[1];
-        GLES20.glGenTextures(1, txo, 0);
-        int tx = txo[0];
-        return tx;
     }
 }

@@ -8,11 +8,27 @@ import shadow.math.SFVertex3f;
 
 public class Node {
 
-    private ArrayList<Node> sonNodes;
     protected SFTransform3f relativeTransform;
     protected SFTransform3f effeciveTransform;
+    private ArrayList<Node> sonNodes;
     private boolean enabled;
     private Model model;
+
+    public Node() {
+        setup();
+    }
+
+
+    public Node(SFTransform3f relativeTransform) {
+        setup();
+        this.relativeTransform = relativeTransform;
+    }
+
+    public Node(SFTransform3f relativeTransform, Model model) {
+        setup();
+        this.relativeTransform = relativeTransform;
+        this.model = model;
+    }
 
     public void setup() {
         relativeTransform = new SFTransform3f();
@@ -20,16 +36,6 @@ public class Node {
         sonNodes = new ArrayList<Node>();
         model = null;
         enabled = true;
-    }
-
-
-    public Node() {
-        setup();
-    }
-
-    public Node(SFTransform3f relativeTransform) {
-        setup();
-        this.relativeTransform = relativeTransform;
     }
 
     public Node clodeNode() {
@@ -40,12 +46,6 @@ public class Node {
             node.getSonNodes().add(getSonNodes().get(i).clodeNode());
         }
         return node;
-    }
-
-    public Node(SFTransform3f relativeTransform, Model model) {
-        setup();
-        this.relativeTransform = relativeTransform;
-        this.model = model;
     }
 
     public float getX() {
@@ -64,20 +64,20 @@ public class Node {
         return model;
     }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public void setModel(Model model) {
+        this.model = model;
     }
 
     public boolean getEnabled() {
         return enabled;
     }
 
-    public ArrayList<Node> getSonNodes() {
-        return sonNodes;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
-    public void setModel(Model model) {
-        this.model = model;
+    public ArrayList<Node> getSonNodes() {
+        return sonNodes;
     }
 
     public SFTransform3f getRelativeTransform() {

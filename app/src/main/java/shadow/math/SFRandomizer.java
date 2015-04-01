@@ -12,9 +12,8 @@ public class SFRandomizer {
     private static final int a = 40;
     private static final int b = 1000000;
     private static final int size = b + 1;
-    private static final int beginTimes = 4;
     private static final float step = 1.0f / b;
-
+    private static final int beginTimes = 4;
     private int seed, value;
 
     /**

@@ -23,37 +23,11 @@ public class SFOGLCubeMap extends SFOGLTexture {
         super(textureModel);
     }
 
-    public void destroy() {
-        destroyTexture(textureObject);
-    }
-
-
     public static void destroyTexture(int textureObject) {
         if (textureObject != -1) {
             int[] textures = {textureObject};
             GLES20.glDeleteTextures(GLES20.GL_TEXTURE_CUBE_MAP, textures, 0);
         }
-    }
-
-    public void generateMipmap() {
-        generateMipmap(GLES20.GL_TEXTURE_CUBE_MAP, textureObject);
-    }
-
-    public void bind() {
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_CUBE_MAP, textureObject);
-    }
-
-    public void setup(int width, int height) {
-        this.textureObject = createTextureCuberMap(textureModel, width, height);
-    }
-
-
-    public void setup(SFBitmap[] bitmap) {
-        this.textureObject = createTextureCuberMap(textureModel, bitmap);
-    }
-
-    public int getTextureObject() {
-        return textureObject;
     }
 
     public static void generateMipmap(int textureObject) {
@@ -109,5 +83,29 @@ public class SFOGLCubeMap extends SFOGLTexture {
         GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_CUBE_MAP);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_CUBE_MAP, 0);
         return tx;
+    }
+
+    public void destroy() {
+        destroyTexture(textureObject);
+    }
+
+    public void generateMipmap() {
+        generateMipmap(GLES20.GL_TEXTURE_CUBE_MAP, textureObject);
+    }
+
+    public void bind() {
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_CUBE_MAP, textureObject);
+    }
+
+    public void setup(int width, int height) {
+        this.textureObject = createTextureCuberMap(textureModel, width, height);
+    }
+
+    public void setup(SFBitmap[] bitmap) {
+        this.textureObject = createTextureCuberMap(textureModel, bitmap);
+    }
+
+    public int getTextureObject() {
+        return textureObject;
     }
 }

@@ -7,6 +7,27 @@ public class SFOGLFrameBuffer {
 
     private int frameBufferObject;
 
+    public static int createFrameBuffer() {
+        int fbo[] = new int[1];
+        GLES20.glGenFramebuffers(1, fbo, 0);
+        int frameBuffer = fbo[0];
+        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, frameBuffer);
+        return frameBuffer;
+    }
+
+    public static void destroyFrameBuffer(int frameBufferObject) {
+        int nfbo[] = new int[1];
+        nfbo[0] = frameBufferObject;
+        GLES20.glDeleteFramebuffers(1, nfbo, 0);
+    }
+
+    public static void checkFrameBuffer() {
+        if (GLES20.glCheckFramebufferStatus(GLES20.GL_FRAMEBUFFER) != GLES20.GL_FRAMEBUFFER_COMPLETE) {
+            System.err.println("Framebuffer is not complete");
+            throw new RuntimeException();
+        }
+    }
+
     public void prepare() {
         this.frameBufferObject = createFrameBuffer();
     }
@@ -39,29 +60,7 @@ public class SFOGLFrameBuffer {
         destroyFrameBuffer(frameBufferObject);
     }
 
-
-    public static int createFrameBuffer() {
-        int fbo[] = new int[1];
-        GLES20.glGenFramebuffers(1, fbo, 0);
-        int frameBuffer = fbo[0];
-        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, frameBuffer);
-        return frameBuffer;
-    }
-
-    public static void destroyFrameBuffer(int frameBufferObject) {
-        int nfbo[] = new int[1];
-        nfbo[0] = frameBufferObject;
-        GLES20.glDeleteFramebuffers(1, nfbo, 0);
-    }
-
     public void attachRenderBuffer(int attachment, int renderBuffer) {
         GLES20.glFramebufferRenderbuffer(GLES20.GL_FRAMEBUFFER, attachment, GLES20.GL_RENDERBUFFER, renderBuffer);
-    }
-
-    public static void checkFrameBuffer() {
-        if (GLES20.glCheckFramebufferStatus(GLES20.GL_FRAMEBUFFER) != GLES20.GL_FRAMEBUFFER_COMPLETE) {
-            System.err.println("Framebuffer is not complete");
-            throw new RuntimeException();
-        }
     }
 }
