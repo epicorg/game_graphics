@@ -140,7 +140,7 @@ public class GraphicsView extends GLSurfaceView {
             ShadersKeeper.loadPipelineShaders(context);
             program = ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER);
 
-            sky = new Sky(context, program, me.getStatus().getPosition());
+//            sky = new Sky(context, program, me.getStatus().getPosition());
             mappa = new Map(context);
 
             Model monkeyModel = FundamentalGenerator.getModel(context, program, R.drawable.animal_texture_01, "Monkey.obj");
@@ -160,14 +160,17 @@ public class GraphicsView extends GLSurfaceView {
             groundNodes = groundGenerator.getGround(0, 0, 15, 15, -1);
 
             mappa.addObjects("Wall.obj", R.drawable.wall_texture_02,
-                    new Wall(new SFVertex3f(4, -1, -1), new Box(1, 2, 1)),
-                    new Wall(new SFVertex3f(4, -1, -2), new Box(1, 2, 1)),
-                    new Wall(new SFVertex3f(4, -1, -3), new Box(1, 2, 1)),
-                    new Wall(new SFVertex3f(-1, -1, -4), new Box(1, 2, 1)),
-                    new Wall(new SFVertex3f(-1, -1, -3), new Box(1, 2, 1)),
-                    new Wall(new SFVertex3f(-1, -1, 0), new Box(1, 2, 1)),
-                    new Wall(new SFVertex3f(-2, -1, 0), new Box(1, 2, 1)),
-                    new Wall(new SFVertex3f(-3, -1, 0), new Box(1, 2, 1)));
+                    new Wall(new SFVertex3f(4, 0, -1), new Box(1, 2, 1)),
+                    new Wall(new SFVertex3f(4, 0, -2), new Box(1, 2, 1)),
+                    new Wall(new SFVertex3f(4, 0, -3), new Box(1, 2, 1)),
+                    new Wall(new SFVertex3f(3, 0, -4), new Box(1, 2, 1)),
+                    new Wall(new SFVertex3f(2, 0, -4), new Box(1, 2, 1)),
+                    new Wall(new SFVertex3f(1, 0, -4), new Box(1, 2, 1)),
+                    new Wall(new SFVertex3f(-1, 0, -4), new Box(1, 2, 1)),
+                    new Wall(new SFVertex3f(-1, 0, -3), new Box(1, 2, 1)),
+                    new Wall(new SFVertex3f(-1, 0, 0), new Box(1, 2, 1)),
+                    new Wall(new SFVertex3f(-2, 0, 0), new Box(1, 2, 1)),
+                    new Wall(new SFVertex3f(-3, 0, 0), new Box(1, 2, 1)));
             mappa.load(cm);
         }
 
@@ -205,7 +208,7 @@ public class GraphicsView extends GLSurfaceView {
             }
 
             mappa.draw();
-            sky.draw();
+//            sky.draw();
 
             program.setupProjection(orthoMatrix);
 
@@ -232,7 +235,7 @@ public class GraphicsView extends GLSurfaceView {
             final float[] viewMatrix = new float[16];
             final float[] projectionMatrix = new float[16];
             setViewMatrix(viewMatrix);
-            frustumM(projectionMatrix, 0, -ratio, ratio, -1, 1, 1, 50);
+            frustumM(projectionMatrix, 0, -ratio, ratio, -1, 1, 0.7f, 50);
             multiplyMM(resultMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
         }
 

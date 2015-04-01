@@ -30,7 +30,7 @@ public class PositionMoveListenerXZ implements PositionMoveListenerInterface {
 
     @Override
     public void move(float angleXZ, float angleYZ) {
-        SFVertex3f v0 = new SFVertex3f(position.getX(), position.getY(), position.getZ());
+        SFVertex3f v0 = new SFVertex3f(position);
         SFMatrix3f rotationMatrix = SFMatrix3f.getRotationY(angleXZ);
         SFVertex3f tmp1 = new SFVertex3f(direction.getX(), 0, direction.getZ());
         SFVertex3f tmp2 = rotationMatrix.Mult(tmp1);
@@ -41,32 +41,33 @@ public class PositionMoveListenerXZ implements PositionMoveListenerInterface {
         box.setPos(position);
         Collidable c = cm.collide(box);
         if (c != null) {
-            Log.d("Collision", "Coll. with: " + c);
-            float s = tmp2.getLength();
-            position.set3f(v0.getX(), v0.getY(), v0.getZ());
-            correctMotion(c, s, 20);
+            Log.d("Collision", "Coll. of"+box+" with: " + c);
+            position.set(v0);
             box.setPos(position);
-            if (cm.collide(box) != null) {
-                Log.d("Collision", "Other coll. with: " + cm.collide(box));
-                position.set3f(v0.getX(), v0.getY(), v0.getZ());
+            SFVertex3f corr=correctMotion(c, tmp2,20);
+            Log.d("Collision", "Corrected to "+corr);
+            box.setPos(position);
+            int i=0,n=4;
+            Collidable c2=cm.collide(box);
+            while (cm.collide(box)!=null && i<n){
+                position.set(v0);
+                box.setPos(position);
+                correctMotion(c2,corr,20);
+                i++;
             }
         }
     }
 
-    private void correctMotion(Collidable c, float s, int n) {
+    private SFVertex3f correctMotion(Collidable c, SFVertex3f motion, int n) {
         if (n < 2)
             n = 2;
-        SFVertex3f motion = new SFVertex3f(direction.getX(), 0, direction.getZ());
-        motion.normalize3f();
-        motion.mult3f(s);
-        SFVertex3f vbackup=new SFVertex3f(position);
-        SFVertex3f position0 = new SFVertex3f(position.getX(), position.getY(), position.getZ());
+        SFVertex3f vbackup=new SFVertex3f(position),kv=new SFVertex3f(motion);
         SFTransform3f rot = new SFTransform3f();
         mainloop:
         for (int i = 1; i < n; i++) {
             for (int j = 0; j < 2; j++) {
                 rot.setMatrix(SFMatrix3f.getRotationY((float) ((1 - 2 * j) * Math.PI * 0.5 * i / n)));
-                SFVertex3f kv = new SFVertex3f(motion.getX(), motion.getY(), motion.getZ());
+                kv = new SFVertex3f(motion);
                 rot.transform(kv);
 
                 SFVertex3f motion2=new SFVertex3f(motion);
@@ -81,5 +82,7 @@ public class PositionMoveListenerXZ implements PositionMoveListenerInterface {
                 }
             }
         }
+        return kv;
     }
+
 }

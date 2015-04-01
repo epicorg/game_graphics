@@ -57,7 +57,7 @@ public class Box implements CollisionBox {
                     && (Math.abs(y1 - y2) < (length + b.length) / 2)
                     && (Math.abs(z1 - z2) < (height + b.height) / 2));
         } else if (box instanceof CircleBox) {
-            return ((CircleBox) box).checkCollision(this);
+            return box.checkCollision(this);
         }
         return false;
     }
