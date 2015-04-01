@@ -18,7 +18,7 @@ import game.graphics.Sky;
 import game.listeners.DirectionDirectionMoveListener;
 import game.listeners.DirectionMoveListenerInterface;
 import game.listeners.PositionMoveListenerInterface;
-import game.listeners.PositionMoveListenerXZ;
+import game.listeners.PositionMoveListenerXZWithCollisions;
 import game.physics.Box;
 import game.physics.CollisionMediator;
 import game.physics.Wall;
@@ -55,8 +55,8 @@ public class GraphicsView extends GLSurfaceView {
 
     private ButtonsGenerator buttonsGenerator;
 
-    private PositionMoveListenerInterface positionMoveListenerXZ;
-    private DirectionMoveListenerInterface directionMoveListenerX;
+    private PositionMoveListenerInterface positionMoveListener;
+    private DirectionMoveListenerInterface directionMoveListener;
 
     private boolean isPressing = false;
     private float previousX, previousY;
@@ -115,7 +115,7 @@ public class GraphicsView extends GLSurfaceView {
                     previousX = touchX;
                     previousY = touchY;
 
-                    directionMoveListenerX.move(dx, dy);
+                    directionMoveListener.move(dx, dy);
                     Log.d(LOG_TAG, "Moved of dx: " + dx + ", dy: " + dy);
                 }
                 break;
@@ -178,11 +178,11 @@ public class GraphicsView extends GLSurfaceView {
         public void onSurfaceChanged(GL10 gl, int width, int height) {
             glViewport(0, 0, width, height);
 
-            positionMoveListenerXZ = new PositionMoveListenerXZ(me.getStatus().getPosition(), me.getStatus().getDirection(), cm, me.getStatus().getBox());
-            directionMoveListenerX = new DirectionDirectionMoveListener(me.getStatus().getDirection(), getWidth(), getHeight());
+            positionMoveListener = new PositionMoveListenerXZWithCollisions(me.getStatus().getPosition(), me.getStatus().getDirection(), cm, me.getStatus().getBox());
+            directionMoveListener = new DirectionDirectionMoveListener(me.getStatus().getDirection(), getWidth(), getHeight());
 
             Model arrowModel = FundamentalGenerator.getModel(context, program, R.drawable.arrow_texture_02, "Arrow.obj");
-            buttonsGenerator = new ButtonsGenerator(context, program, arrowModel, getWidth(), getHeight(), positionMoveListenerXZ);
+            buttonsGenerator = new ButtonsGenerator(context, program, arrowModel, getWidth(), getHeight(), positionMoveListener);
             buttonsNodes = buttonsGenerator.getButtons();
         }
 
