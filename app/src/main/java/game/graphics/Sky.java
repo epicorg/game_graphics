@@ -184,15 +184,15 @@ public class Sky {
     }
 
     private Node generateNode(ArrayObject arrayObject, int texture) {
-        Mesh meshPosX = new Mesh(arrayObject);
-        meshPosX.init();
-        Model modelPosX = new Model();
-        modelPosX.setRootGeometry(meshPosX);
-        modelPosX.setMaterialComponent(FundamentalGenerator.getMaterial(context, program, texture));
-        Node nodePosX = new Node();
-        nodePosX.setModel(modelPosX);
+        Mesh meshPos = new Mesh(arrayObject);
+        meshPos.init();
+        Model modelPos = new Model();
+        modelPos.setRootGeometry(meshPos);
+        modelPos.setMaterialComponent(FundamentalGenerator.getMaterial(context, program, texture));
+        Node nodePos = new Node();
+        nodePos.setModel(modelPos);
 
-        return nodePosX;
+        return nodePos;
     }
 
     public void draw() {

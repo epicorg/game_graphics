@@ -12,6 +12,7 @@ import sfogl.integration.Model;
 import sfogl.integration.Node;
 import sfogl.integration.ShadingProgram;
 import shadow.math.SFTransform3f;
+import shadow.math.SFVertex3f;
 
 public class Map {
 
@@ -31,11 +32,7 @@ public class Map {
 
         for (Square s : squares) {
             collisionMediator.addObject(s);
-
-            Node node = new Node();
-            node.setModel(model);
-            node.getRelativeTransform().setPosition(s.getPos().getX(), s.getPos().getY(), s.getPos().getZ());
-            rootNode.getSonNodes().add(node);
+            rootNode.getSonNodes().add(createNodeWithModel(model, s.getPos()));
         }
     }
 
@@ -45,12 +42,15 @@ public class Map {
 
         for (Circle c : circles) {
             collisionMediator.addObject(c);
-
-            Node node = new Node();
-            node.setModel(model);
-            node.getRelativeTransform().setPosition(c.getPos().getX(), c.getPos().getY(), c.getPos().getZ());
-            rootNode.getSonNodes().add(node);
+            rootNode.getSonNodes().add(createNodeWithModel(model, c.getPos()));
         }
+    }
+
+    private Node createNodeWithModel(Model model, SFVertex3f pos) {
+        Node node = new Node();
+        node.setModel(model);
+        node.getRelativeTransform().setPosition(pos.getX(), pos.getY(), pos.getZ());
+        return node;
     }
 
     public void draw() {
