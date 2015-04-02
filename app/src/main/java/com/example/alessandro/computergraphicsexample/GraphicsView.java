@@ -21,9 +21,8 @@ import game.listeners.PositionMoveListenerInterface;
 import game.listeners.PositionMoveListenerXZWithCollisions;
 import game.listeners.TouchListener;
 import game.listeners.TouchListenerInterface;
-import game.physics.Box;
 import game.physics.CollisionMediator;
-import game.physics.Wall;
+import game.physics.Square;
 import game.player.Player;
 import sfogl.integration.Model;
 import sfogl.integration.Node;
@@ -59,7 +58,6 @@ public class GraphicsView extends GLSurfaceView {
     private DirectionMoveListenerInterface directionMoveListener;
 
     private CollisionMediator cm = new CollisionMediator();
-
 
     public GraphicsView(Context context, Player me, ArrayList<Player> otherPlayers) {
         super(context);
@@ -97,13 +95,13 @@ public class GraphicsView extends GLSurfaceView {
             program = ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER);
 
             sky = new Sky(context, program, me.getStatus().getPosition());
-            map = new Map(context);
+            map = new Map(context, cm);
 
             Model monkeyModel = FundamentalGenerator.getModel(context, program, R.drawable.animal_texture_01, "Monkey.obj");
 
             node = new Node();
             node.setModel(monkeyModel);
-            node.getRelativeTransform().setPosition(0, 0.5f, 0);
+            node.getRelativeTransform().setPosition(3, 0.5f, 0);
 
             Node anotherNode = new Node();
 
@@ -116,25 +114,22 @@ public class GraphicsView extends GLSurfaceView {
             groundNodes = groundGenerator.getGround(0, 0, 15, 15, -1);
 
             map.addObjects("Wall.obj", R.drawable.wall_texture_02,
-                    new Wall(new SFVertex3f(4, 0, -1), new Box(1, 2, 1)),
-                    new Wall(new SFVertex3f(4, 0, -2), new Box(1, 2, 1)),
-                    new Wall(new SFVertex3f(4, 0, -3), new Box(1, 2, 1)),
-                    new Wall(new SFVertex3f(3, 0, -4), new Box(1, 2, 1)),
-                    new Wall(new SFVertex3f(2, 0, -4), new Box(1, 2, 1)),
-                    new Wall(new SFVertex3f(1, 0, -4), new Box(1, 2, 1)),
-                    new Wall(new SFVertex3f(-1, 0, -4), new Box(1, 2, 1)),
-                    new Wall(new SFVertex3f(-1, 0, -3), new Box(1, 2, 1)),
-                    new Wall(new SFVertex3f(-1, 0, 0), new Box(1, 2, 1)),
-                    new Wall(new SFVertex3f(-2, 0, 0), new Box(1, 2, 1)),
-                    new Wall(new SFVertex3f(-3, 0, 0), new Box(1, 2, 1)));
-            map.load(cm);
+                    new Square(new SFVertex3f(5, -1, -1), 2, 2, 2),
+                    new Square(new SFVertex3f(5, -1, -3), 2, 2, 2),
+                    new Square(new SFVertex3f(3, -1, -5), 2, 2, 2),
+                    new Square(new SFVertex3f(1, -1, -5), 2, 2, 2),
+                    new Square(new SFVertex3f(-1, -1, -5), 2, 2, 2),
+                    new Square(new SFVertex3f(-1, -1, -3), 2, 2, 2),
+                    new Square(new SFVertex3f(-1, -1, 0), 2, 2, 2),
+                    new Square(new SFVertex3f(-3, -1, 0), 2, 2, 2)
+            );
         }
 
         @Override
         public void onSurfaceChanged(GL10 gl, int width, int height) {
             glViewport(0, 0, width, height);
 
-            positionMoveListener = new PositionMoveListenerXZWithCollisions(me.getStatus().getPosition(), me.getStatus().getDirection(), cm, me.getStatus().getBox());
+            positionMoveListener = new PositionMoveListenerXZWithCollisions(me.getStatus(), cm);
             directionMoveListener = new DirectionDirectionMoveListener(me.getStatus().getDirection(), getWidth(), getHeight());
 
             Model arrowModel = FundamentalGenerator.getModel(context, program, R.drawable.arrow_texture_02, "Arrow.obj");
@@ -194,7 +189,7 @@ public class GraphicsView extends GLSurfaceView {
             final float[] viewMatrix = new float[16];
             final float[] projectionMatrix = new float[16];
             setViewMatrix(viewMatrix);
-            frustumM(projectionMatrix, 0, -ratio, ratio, -1, 1, 0.7f, 50);
+            frustumM(projectionMatrix, 0, -ratio, ratio, -1, 1, 0.8f, 50);
             multiplyMM(resultMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
         }
 
