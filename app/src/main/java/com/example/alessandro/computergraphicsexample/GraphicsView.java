@@ -44,13 +44,9 @@ public class GraphicsView extends GLSurfaceView {
     private Player me;
     private ArrayList<Player> otherPlayers;
     private TouchListenerInterface touchListener;
-    private ButtonsGenerator buttonsGenerator;
-    private ButtonsControl buttonsControl;
     private PositionMoveListenerInterface positionMoveListener;
     private DirectionMoveListenerInterface directionMoveListener;
     private Map map;
-
-    private CollisionMediator cm = new CollisionMediator();
 
     public GraphicsView(Context context, Player me, ArrayList<Player> otherPlayers, Map map) {
         super(context);
@@ -65,10 +61,15 @@ public class GraphicsView extends GLSurfaceView {
 
         this.map=map;
 
+        CollisionMediator cm=new CollisionMediator();
+
         this.map.loadMap(cm,false);
 
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         setRenderer(new GraphicsRenderer());
+
+        positionMoveListener = new PositionMoveListenerXZWithCollisions(me.getStatus(), cm);
+        directionMoveListener = new DirectionDirectionMoveListener(me.getStatus().getDirection(), getWidth(), getHeight());
     }
 
     @Override
@@ -84,7 +85,6 @@ public class GraphicsView extends GLSurfaceView {
         private ArrayList<Node> buttonsNodes;
         private float t = 0;
 
-
         @Override
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {
             ShadersKeeper.loadPipelineShaders(context);
@@ -96,8 +96,8 @@ public class GraphicsView extends GLSurfaceView {
 
             createMonkeys();
 
-            GroundGenerator groundGenerator = new GroundGenerator(FundamentalGenerator.getModel(context, program, R.drawable.ground_texture_01, "Ground.obj"));
-            groundNode=groundGenerator.getGroundNode(0, 0, 15, 15, -1);
+            groundNode=new GroundGenerator(FundamentalGenerator.getModel(context, program, R.drawable.ground_texture_01, "Ground.obj"))
+                    .getGroundNode(0, 0, 15, 15, -1);
 
         }
 
@@ -120,15 +120,13 @@ public class GraphicsView extends GLSurfaceView {
         public void onSurfaceChanged(GL10 gl, int width, int height) {
             glViewport(0, 0, width, height);
 
-            positionMoveListener = new PositionMoveListenerXZWithCollisions(me.getStatus(), cm);
-            directionMoveListener = new DirectionDirectionMoveListener(me.getStatus().getDirection(), getWidth(), getHeight());
+            directionMoveListener.update(width,height);
 
             Model arrowModel = FundamentalGenerator.getModel(context, program, R.drawable.arrow_texture_02, "Arrow.obj");
-            buttonsGenerator = new ButtonsGenerator(arrowModel);
-            buttonsControl = new ButtonsControl(context, program, camera.getOrthoMatrix(), buttonsGenerator.getLeftNode(),
+            ButtonsGenerator buttonsGenerator = new ButtonsGenerator(arrowModel);
+            ButtonsControl buttonsControl = new ButtonsControl(context, program, camera.getOrthoMatrix(), buttonsGenerator.getLeftNode(),
                     buttonsGenerator.getRightNode(), buttonsGenerator.getUpNode(), buttonsGenerator.getDownNode());
             touchListener = new TouchListener(surfaceView, buttonsControl, positionMoveListener, directionMoveListener);
-
             buttonsNodes = buttonsGenerator.getButtons();
 
         }

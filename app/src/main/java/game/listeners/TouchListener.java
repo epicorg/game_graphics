@@ -21,6 +21,7 @@ public class TouchListener implements TouchListenerInterface {
     private boolean isPressing = false;
     private float previousX, previousY;
     private float touchX, touchY;
+    private ButtonsControl.ButtonPositions positions;
 
     public TouchListener(GLSurfaceView surfaceView, ButtonsControl buttonsControl, PositionMoveListenerInterface positionMoveListener, DirectionMoveListenerInterface directionMoveListener) {
         this.surfaceView = surfaceView;
@@ -40,8 +41,27 @@ public class TouchListener implements TouchListenerInterface {
                 surfaceView.queueEvent(new Runnable() {
                     @Override
                     public void run() {
-                        if (buttonsControl.isInsideAButton(touchX, surfaceView.getHeight() - touchY)) {
+                        if (buttonsControl.isInsideAButton(touchX, surfaceView.getHeight() - touchY) && !isPressing) {
                             isPressing = true;
+                            positions=buttonsControl.getPressedButton(touchX, surfaceView.getHeight() - touchY);
+                            new Thread(
+                                    new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Log.d("thread","started for moving "+positions);
+                                            while(isPressing){
+                                                Log.d("loop","moved "+positions);
+                                                callPositionListener(positions);
+                                                try{
+                                                    Thread.sleep(200);
+                                                }catch (InterruptedException e){
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                            Log.d("thread","ended for moving "+positions);
+                                        }
+                                    }
+                            ).start();
                         } else {
                             previousX = touchX;
                             previousY = touchY;

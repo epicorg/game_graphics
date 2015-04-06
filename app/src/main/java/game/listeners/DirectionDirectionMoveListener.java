@@ -25,6 +25,11 @@ public class DirectionDirectionMoveListener implements DirectionMoveListenerInte
         oldXZLenght = (float) Math.sqrt(direction.getX() * direction.getX() + direction.getZ() * direction.getZ());
     }
 
+    public void update(int width, int height){
+        this.moveFactorX = 1 /(float) width;
+        this.moveFactorY = 1 /(float) height;
+    }
+
     @Override
     public void move(float dx, float dy) {
         float oldLenght = direction.getLength();
