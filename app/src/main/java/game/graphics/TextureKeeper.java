@@ -33,4 +33,14 @@ public class TextureKeeper {
         }
     }
 
+    public static void reload(Context context){
+        for (int i :map.keySet()){
+            int textureModel = SFOGLTextureModel.generateTextureObjectModel(SFImageFormat.RGB, GLES20.GL_REPEAT, GLES20.GL_REPEAT, GLES20.GL_LINEAR, GLES20.GL_LINEAR);
+            BitmapTexture tex = BitmapTexture.loadBitmapTexture(BitmapFactory.decodeResource(context.getResources(), i), textureModel);
+            tex.init();
+            Log.d(LOG_TAG, "Reloaded Texture: " + i);
+            map.put(i, tex);
+        }
+    }
+
 }

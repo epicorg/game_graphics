@@ -1,48 +1,42 @@
 package game.graphics;
 
 import android.content.Context;
-
-import com.example.alessandro.computergraphicsexample.ShadersKeeper;
-
-import game.generators.FundamentalGenerator;
-import game.physics.Circle;
+import java.util.HashMap;
+import game.physics.CollisionBox;
 import game.physics.CollisionMediator;
-import game.physics.Square;
 import sfogl.integration.Model;
 import sfogl.integration.Node;
-import sfogl.integration.ShadingProgram;
 import shadow.math.SFTransform3f;
 import shadow.math.SFVertex3f;
 
 public class Map {
 
     private Context context;
-    private CollisionMediator collisionMediator;
 
     private Node rootNode = new Node();
+    private HashMap<CollisionBox[],GraphicObject> map=new HashMap<>();
 
-    public Map(Context context, CollisionMediator collisionMediator) {
+    public Map(Context context) {
         this.context = context;
-        this.collisionMediator = collisionMediator;
     }
 
-    public void addObjects(String obj, int textureId, Square... squares) {
-        ShadingProgram program = ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER);
-        Model model = FundamentalGenerator.getModel(context, program, textureId, obj);
-
-        for (Square s : squares) {
-            collisionMediator.addObject(s);
-            rootNode.getSonNodes().add(createNodeWithModel(model, s.getPos()));
-        }
+    public void addObjects(String obj, int textureId, CollisionBox... boxes) {
+        map.put(boxes,new GraphicObject(textureId,obj));
     }
 
-    public void addObjects(String obj, int textureId, Circle... circles) {
-        ShadingProgram program = ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER);
-        Model model = FundamentalGenerator.getModel(context, program, textureId, obj);
-
-        for (Circle c : circles) {
-            collisionMediator.addObject(c);
-            rootNode.getSonNodes().add(createNodeWithModel(model, c.getPos()));
+    public void loadMap(CollisionMediator cm, boolean graphics){
+        for (CollisionBox[] boxes: map.keySet()){
+            Model model=null;
+            if (graphics) {
+                model= map.get(boxes).createModel(context);
+                rootNode.getSonNodes().clear();
+            }
+            for (CollisionBox c: boxes){
+                if (cm!=null)
+                    c.add(cm);
+                if (graphics)
+                    rootNode.getSonNodes().add(createNodeWithModel(model, c.getPos()));
+            }
         }
     }
 

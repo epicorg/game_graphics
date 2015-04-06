@@ -25,6 +25,7 @@ public class CollisionMediator {
         circleList.add(c);
     }
 
+
     public boolean collide(Square square) {
         for (Square s : squareList) {
             if (checkCollision(s, square)) {

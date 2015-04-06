@@ -1,7 +1,6 @@
 package game.generators;
 
 import android.content.Context;
-
 import game.graphics.TextureKeeper;
 import objLoader.ObjLoader;
 import sfogl.integration.ArrayObject;

@@ -2,7 +2,7 @@ package game.physics;
 
 import shadow.math.SFVertex3f;
 
-public class Square {
+public class Square implements  CollisionBox{
 
     private SFVertex3f pos;
     private float xSize, ySize, zSize;
@@ -28,6 +28,11 @@ public class Square {
 
     public float getzSize() {
         return zSize;
+    }
+
+    @Override
+    public void add(CollisionMediator cm){
+        cm.addObject(this);
     }
 
     @Override

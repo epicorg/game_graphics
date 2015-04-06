@@ -38,4 +38,28 @@ public class GroundGenerator {
         return tempList;
     }
 
+    public Node getGroundNode(int xCenter, int zCenter, int xSize, int zSize, int yCenter) {
+        Node node=new Node();
+        node.setup();
+        ArrayList<Node> tempList=node.getSonNodes();
+
+        int leftToTheCenter = xSize / 2;
+        int nearToTheCenter = zSize / 2;
+        int tempX = xCenter - 2 * leftToTheCenter;
+        int tempZ = zCenter - 2 * nearToTheCenter;
+
+        for (int i = 0; i < xSize; i++) {
+            for (int j = 0; j < zSize; j++) {
+                Node tmpNode = new Node();
+                tmpNode.setModel(model);
+                int xC = tempX + 2 * i;
+                int zC = tempZ + 2 * j;
+                tmpNode.getRelativeTransform().setPosition(xC, yCenter, zC);
+                tempList.add(tmpNode);
+            }
+        }
+
+        return node;
+    }
+
 }
