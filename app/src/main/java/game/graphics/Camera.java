@@ -8,39 +8,71 @@ import static android.opengl.Matrix.orthoM;
 import static android.opengl.Matrix.setLookAtM;
 
 /**
- * Created by depa on 06/04/15.
+ * Oggetto telecamera, si occupa di gestire le matrici per la proiezione 3D e 2D, seguendo la posizione di un Player.
+ * @author Stefano De Pace
+ *
  */
 public class Camera {
 
     private final float[] orthoMatrix=new float[16],
             resultMatrix=new float[16];
+    private float[] projectionMatrix=new float[16];
     private Player me;
+    private float znear,zfar;
 
-    public Camera(Player player){
+    /**
+     * Crea un nuovo oggetto telecamera che guarda dalla posizione di un Player, in base alla sua direzione.
+     * @param player il Player da seguire,
+     */
+    public Camera(Player player, float znear, float zfar){
         this.me=player;
+        this.znear=znear;
+        this.zfar=zfar;
     }
 
-    public void setMatrices(int width, int height, float ratio) {
-        setResultMatrix(ratio);
-        setOrthoMatrix(width, height, ratio);
+    /**
+     * Aggiorna le matrici di proiezione 3D e 2D, da chiamare se le dimensioni dello schermo cambiano.
+     * @param ratio rapporto larghezza/altezza dello schermo.
+     */
+    public void updateMatrices(float ratio){
+        setProjection(ratio);
+        setOrthoMatrix(ratio);
     }
 
-    private void setOrthoMatrix(int width, int height, float ratio) {
-        if (width > height) {
-            orthoM(orthoMatrix, 0, -ratio, ratio, -1, 1, -1, 1);
-        } else {
-            orthoM(orthoMatrix, 0, -1, 1, -(1 / ratio), (1 / ratio), -1, 1);
-        }
+    /**
+     * Restituisce la matrice di proiezione 2D.
+     * @return la matrice di proiezione 2D.
+     */
+    public float[] getOrthoMatrix(){
+        return orthoMatrix;
     }
 
-    private void setResultMatrix(float ratio) {
-        final float[] viewMatrix = new float[16];
-        final float[] projectionMatrix = new float[16];
-        setViewMatrix(viewMatrix);
+    /**
+     * Restituisce la matrice di proiezione 3D, ricalcolata sulla pozione corrente del Player.
+     * @return matrice di proiezione 3D corrente.
+     */
+    public float[] getResultMatrix(){
+        setResultMatrix();
+        return resultMatrix;
+    }
+
+    private void setOrthoMatrix(float ratio) {
         if (ratio>1)
-            frustumM(projectionMatrix, 0, -1, 1, -1/ratio, 1/ratio, 1, 64);
+            orthoM(orthoMatrix, 0, -ratio, ratio, -1, 1, -1, 1);
         else
-            frustumM(projectionMatrix, 0, -ratio, ratio, -1, 1, 1, 64);
+            orthoM(orthoMatrix, 0, -1, 1, -(1 / ratio), (1 / ratio), -1, 1);
+    }
+
+    private void setProjection(float ratio) {
+        if (ratio>1)
+            frustumM(projectionMatrix, 0, -1, 1, -(1/ratio), (1/ratio), znear, zfar);
+        else
+            frustumM(projectionMatrix, 0, -ratio, ratio, -1, 1, znear, zfar);
+    }
+
+    private void setResultMatrix() {
+        final float[] viewMatrix = new float[16];
+        setViewMatrix(viewMatrix);
         multiplyMM(resultMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
     }
 
@@ -52,17 +84,7 @@ public class Camera {
         centerX = me.getStatus().getPosition().getX() + me.getStatus().getDirection().getX();
         centerY = me.getStatus().getPosition().getY() + me.getStatus().getDirection().getY();
         centerZ = me.getStatus().getPosition().getZ() + me.getStatus().getDirection().getZ();
-
         setLookAtM(viewMatrix, 0, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, 0, 1, 0);
     }
-
-    public float[] getOrthoMatrix(){
-        return orthoMatrix;
-    }
-
-    public float[] getResultMatrix(){
-        return resultMatrix;
-    }
-
 
 }

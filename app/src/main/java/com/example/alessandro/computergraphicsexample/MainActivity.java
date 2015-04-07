@@ -12,7 +12,6 @@ import game.player.Player;
 import game.player.PlayerStatus;
 import shadow.math.SFVertex3f;
 
-
 public class MainActivity extends Activity {
 
     @Override
@@ -25,7 +24,7 @@ public class MainActivity extends Activity {
         Player me = new Player(new PlayerStatus(position, direction, new Circle(position, 1)), "Me");
         ArrayList<Player> otherPlayers = new ArrayList<Player>();
 
-        Map map = new Map(this);
+        Map map = new Map();
         map.addObjects("Wall.obj", R.drawable.wall_texture_02,
                 new Square(new SFVertex3f(5, -1, -1), 2, 2, 2),
                 new Square(new SFVertex3f(5, -1, -3), 2, 2, 2),

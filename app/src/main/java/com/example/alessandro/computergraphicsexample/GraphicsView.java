@@ -2,7 +2,6 @@ package com.example.alessandro.computergraphicsexample;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
-import android.util.Log;
 import android.view.MotionEvent;
 import java.util.ArrayList;
 import javax.microedition.khronos.egl.EGLConfig;
@@ -13,6 +12,7 @@ import game.generators.FundamentalGenerator;
 import game.generators.GroundGenerator;
 import game.graphics.Camera;
 import game.graphics.Map;
+import game.graphics.MapGraphics;
 import game.graphics.Sky;
 import game.graphics.TextureKeeper;
 import game.listeners.DirectionDirectionMoveListener;
@@ -31,7 +31,6 @@ import shadow.math.SFMatrix3f;
 import shadow.math.SFTransform3f;
 import static android.opengl.GLES20.glViewport;
 
-
 /**
  * Created by Alessandro on 13/03/15.
  */
@@ -47,7 +46,7 @@ public class GraphicsView extends GLSurfaceView {
     private TouchListenerInterface touchListener;
     private PositionMoveListenerInterface positionMoveListener;
     private DirectionMoveListenerInterface directionMoveListener;
-    private Map map;
+    private MapGraphics mapG;
 
     public GraphicsView(Context context, Player me, ArrayList<Player> otherPlayers, Map map) {
         super(context);
@@ -58,13 +57,13 @@ public class GraphicsView extends GLSurfaceView {
         this.context = context;
         this.me = me;
         this.otherPlayers = otherPlayers;
-        this.camera=new Camera(me);
-
-        this.map=map;
+        this.camera=new Camera(me,1,64);
 
         CollisionMediator cm=new CollisionMediator();
 
-        this.map.loadMapLogic(cm);
+        map.loadMapLogic(cm);
+
+        mapG=new MapGraphics(map);
 
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         setRenderer(new GraphicsRenderer());
@@ -93,7 +92,8 @@ public class GraphicsView extends GLSurfaceView {
             TextureKeeper.reload(context);
 
             sky = new Sky(context, program, me.getStatus().getPosition());
-            map.loadMapGraphics();
+
+            mapG.loadMap(context);
 
             createMonkeys();
 
@@ -120,7 +120,7 @@ public class GraphicsView extends GLSurfaceView {
         @Override
         public void onSurfaceChanged(GL10 gl, int width, int height) {
             glViewport(0, 0, width, height);
-            Log.d("Control",""+(float) getWidth() / getHeight());
+            camera.updateMatrices((float)width/height);
 
             directionMoveListener.update(width,height);
 
@@ -136,8 +136,6 @@ public class GraphicsView extends GLSurfaceView {
 
         @Override
         public void onDrawFrame(GL10 gl) {
-            camera.setMatrices(getWidth(), getHeight(), (float) getWidth() / getHeight());
-
             program.setupProjection(camera.getResultMatrix());
 
             SFOGLSystemState.cleanupColorAndDepth(0, 0, 1, 1);
@@ -155,7 +153,7 @@ public class GraphicsView extends GLSurfaceView {
             groundNode.updateTree(new SFTransform3f());
             groundNode.draw();
 
-            map.draw();
+            mapG.draw();
             sky.draw();
 
             program.setupProjection(camera.getOrthoMatrix());
