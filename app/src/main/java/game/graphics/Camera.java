@@ -37,7 +37,10 @@ public class Camera {
         final float[] viewMatrix = new float[16];
         final float[] projectionMatrix = new float[16];
         setViewMatrix(viewMatrix);
-        frustumM(projectionMatrix, 0, -ratio, ratio, -1, 1, 0.8f, 50);
+        if (ratio>1)
+            frustumM(projectionMatrix, 0, -1, 1, -1/ratio, 1/ratio, 1, 64);
+        else
+            frustumM(projectionMatrix, 0, -ratio, ratio, -1, 1, 1, 64);
         multiplyMM(resultMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
     }
 

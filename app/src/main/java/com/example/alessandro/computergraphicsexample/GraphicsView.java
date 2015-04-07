@@ -2,6 +2,7 @@ package com.example.alessandro.computergraphicsexample;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+import android.util.Log;
 import android.view.MotionEvent;
 import java.util.ArrayList;
 import javax.microedition.khronos.egl.EGLConfig;
@@ -63,7 +64,7 @@ public class GraphicsView extends GLSurfaceView {
 
         CollisionMediator cm=new CollisionMediator();
 
-        this.map.loadMap(cm,false);
+        this.map.loadMapLogic(cm);
 
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         setRenderer(new GraphicsRenderer());
@@ -92,7 +93,7 @@ public class GraphicsView extends GLSurfaceView {
             TextureKeeper.reload(context);
 
             sky = new Sky(context, program, me.getStatus().getPosition());
-            map.loadMap(null,true);
+            map.loadMapGraphics();
 
             createMonkeys();
 
@@ -119,11 +120,13 @@ public class GraphicsView extends GLSurfaceView {
         @Override
         public void onSurfaceChanged(GL10 gl, int width, int height) {
             glViewport(0, 0, width, height);
+            Log.d("Control",""+(float) getWidth() / getHeight());
 
             directionMoveListener.update(width,height);
 
             Model arrowModel = FundamentalGenerator.getModel(context, program, R.drawable.arrow_texture_02, "Arrow.obj");
             ButtonsGenerator buttonsGenerator = new ButtonsGenerator(arrowModel);
+
             ButtonsControl buttonsControl = new ButtonsControl(context, program, camera.getOrthoMatrix(), buttonsGenerator.getLeftNode(),
                     buttonsGenerator.getRightNode(), buttonsGenerator.getUpNode(), buttonsGenerator.getDownNode());
             touchListener = new TouchListener(surfaceView, buttonsControl, positionMoveListener, directionMoveListener);

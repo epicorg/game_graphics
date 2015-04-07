@@ -12,6 +12,7 @@ import game.controls.ButtonsControl;
 public class TouchListener implements TouchListenerInterface {
 
     public static final String LOG_TAG = "TouchListener";
+    public static final long TIME_SLEEP=50;
 
     private GLSurfaceView surfaceView;
     private ButtonsControl buttonsControl;
@@ -44,24 +45,7 @@ public class TouchListener implements TouchListenerInterface {
                         if (buttonsControl.isInsideAButton(touchX, surfaceView.getHeight() - touchY) && !isPressing) {
                             isPressing = true;
                             positions=buttonsControl.getPressedButton(touchX, surfaceView.getHeight() - touchY);
-                            new Thread(
-                                    new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Log.d("thread","started for moving "+positions);
-                                            while(isPressing){
-                                                Log.d("loop","moved "+positions);
-                                                callPositionListener(positions);
-                                                try{
-                                                    Thread.sleep(200);
-                                                }catch (InterruptedException e){
-                                                    e.printStackTrace();
-                                                }
-                                            }
-                                            Log.d("thread","ended for moving "+positions);
-                                        }
-                                    }
-                            ).start();
+                            new Thread(new MoveRunnable()).start();
                         } else {
                             previousX = touchX;
                             previousY = touchY;
@@ -69,15 +53,8 @@ public class TouchListener implements TouchListenerInterface {
                     }
                 });
             case MotionEvent.ACTION_UP:
-                if (isPressing) {
+                if (isPressing)
                     isPressing = false;
-                    surfaceView.queueEvent(new Runnable() {
-                        @Override
-                        public void run() {
-                            callPositionListener(buttonsControl.getPressedButton(touchX, surfaceView.getHeight() - touchY));
-                        }
-                    });
-                }
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (!isPressing) {
@@ -93,20 +70,40 @@ public class TouchListener implements TouchListenerInterface {
         }
     }
 
-    private void callPositionListener(ButtonsControl.ButtonPositions buttonPositions) {
+    private void callPositionListener(ButtonsControl.ButtonPositions buttonPositions, long delta) {
         switch (buttonPositions) {
             case LEFT:
-                positionMoveListener.move((float) +Math.PI / 2, 0);
+                positionMoveListener.move((float) +Math.PI / 2, 0,delta);
                 break;
             case RIGHT:
-                positionMoveListener.move((float) -Math.PI / 2, 0);
+                positionMoveListener.move((float) -Math.PI / 2, 0,delta);
                 break;
             case UP:
-                positionMoveListener.move(0, 0);
+                positionMoveListener.move(0, 0,delta);
                 break;
             case DOWN:
-                positionMoveListener.move((float) -Math.PI, 0);
+                positionMoveListener.move((float) -Math.PI, 0,delta);
                 break;
+        }
+    }
+
+    private class MoveRunnable implements Runnable{
+        private long time = System.nanoTime();
+        @Override
+        public void run() {
+            Log.d("thread", "started for moving " + positions);
+            while (isPressing) {
+                long temp = System.nanoTime();
+                callPositionListener(positions, temp - time);
+                time = temp;
+                try {
+                    Thread.sleep(TIME_SLEEP);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Log.d("loop", "moved " + positions);
+            }
+            Log.d("thread", "ended for moving " + positions);
         }
     }
 

@@ -19,7 +19,7 @@ public class PositionMoveListenerXZ implements PositionMoveListenerInterface {
     }
 
     @Override
-    public void move(float angleXZ, float angleYZ) {
+    public void move(float angleXZ, float angleYZ, long delta) {
         SFMatrix3f rotationMatrix = SFMatrix3f.getRotationY(angleXZ);
         SFVertex3f tmp1 = new SFVertex3f(direction.getX(), 0, direction.getZ());
         SFVertex3f tmp2 = rotationMatrix.Mult(tmp1);

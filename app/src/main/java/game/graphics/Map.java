@@ -2,6 +2,7 @@ package game.graphics;
 
 import android.content.Context;
 import java.util.HashMap;
+import java.util.List;
 import game.physics.CollisionBox;
 import game.physics.CollisionMediator;
 import sfogl.integration.Model;
@@ -24,18 +25,21 @@ public class Map {
         map.put(boxes,new GraphicObject(textureId,obj));
     }
 
-    public void loadMap(CollisionMediator cm, boolean graphics){
+    public void loadMapLogic(CollisionMediator cm){
         for (CollisionBox[] boxes: map.keySet()){
-            Model model=null;
-            if (graphics) {
-                model= map.get(boxes).createModel(context);
-                rootNode.getSonNodes().clear();
-            }
             for (CollisionBox c: boxes){
-                if (cm!=null)
                     c.add(cm);
-                if (graphics)
-                    rootNode.getSonNodes().add(createNodeWithModel(model, c.getPos()));
+            }
+        }
+    }
+
+    public void loadMapGraphics(){
+        List<Node> list=rootNode.getSonNodes();
+        list.clear();
+        for (CollisionBox[] boxes: map.keySet()){
+            Model model=map.get(boxes).createModel(context);
+            for (CollisionBox c: boxes){
+                list.add(createNodeWithModel(model, c.getPos()));
             }
         }
     }

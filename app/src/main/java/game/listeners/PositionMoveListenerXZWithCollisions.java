@@ -14,6 +14,7 @@ public class PositionMoveListenerXZWithCollisions implements PositionMoveListene
     public static final String LOG_TAG = "PositionMoveListenerXZ";
 
     private static final int NUMBER_OF_ANGLE_DIVISIONS = 50;
+    public static float MOVE_SPEED=0.25f;
 
     private PlayerStatus playerStatus;
     private CollisionMediator cm;
@@ -24,13 +25,13 @@ public class PositionMoveListenerXZWithCollisions implements PositionMoveListene
     }
 
     @Override
-    public void move(float angleXZ, float angleYZ) {
+    public void move(float angleXZ, float angleYZ, long delta) {
         SFVertex3f originalPosition = new SFVertex3f(playerStatus.getPosition());
 
         SFMatrix3f rotationMatrix = SFMatrix3f.getRotationY(angleXZ);
         SFVertex3f tempVertex = rotationMatrix.Mult(new SFVertex3f(playerStatus.getDirection().getX(), 0, playerStatus.getDirection().getZ()));
         tempVertex.normalize3f();
-        tempVertex.mult(0.5f);
+        tempVertex.mult(MOVE_SPEED*delta/100000000);
         playerStatus.getPosition().add3f(tempVertex);
 
         int i = 0;

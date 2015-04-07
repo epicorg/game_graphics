@@ -5,6 +5,6 @@ package game.listeners;
  */
 public interface PositionMoveListenerInterface {
 
-    void move(float angleXZ, float angleYZ);
+    void move(float angleXZ, float angleYZ, long delta);
 
 }
