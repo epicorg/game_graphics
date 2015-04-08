@@ -3,9 +3,12 @@ package com.example.alessandro.computergraphicsexample;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
+
 import java.util.ArrayList;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
+
 import game.controls.ButtonsControl;
 import game.generators.ButtonsGenerator;
 import game.generators.FundamentalGenerator;
@@ -29,6 +32,7 @@ import sfogl.integration.ShadingProgram;
 import sfogl2.SFOGLSystemState;
 import shadow.math.SFMatrix3f;
 import shadow.math.SFTransform3f;
+
 import static android.opengl.GLES20.glViewport;
 
 /**
@@ -47,6 +51,7 @@ public class GraphicsView extends GLSurfaceView {
     private PositionMoveListenerInterface positionMoveListener;
     private DirectionMoveListenerInterface directionMoveListener;
     private MapGraphics mapG;
+    private boolean isReadyForTouch = false;
 
     public GraphicsView(Context context, Player me, ArrayList<Player> otherPlayers, Map map) {
         super(context);
@@ -57,13 +62,13 @@ public class GraphicsView extends GLSurfaceView {
         this.context = context;
         this.me = me;
         this.otherPlayers = otherPlayers;
-        this.camera=new Camera(me,1,64);
+        this.camera = new Camera(me, 1, 64);
 
-        CollisionMediator cm=new CollisionMediator();
+        CollisionMediator cm = new CollisionMediator();
 
         map.loadMapLogic(cm);
 
-        mapG=new MapGraphics(map);
+        mapG = new MapGraphics(map);
 
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         setRenderer(new GraphicsRenderer());
@@ -74,15 +79,18 @@ public class GraphicsView extends GLSurfaceView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        touchListener.onTouchEvent(event);
+        if (isReadyForTouch)
+            touchListener.onTouchEvent(event);
+
         return true;
     }
 
     public class GraphicsRenderer implements Renderer {
 
         private Sky sky;
-        private Node node,groundNode;
+        private Node node, groundNode;
         private ArrayList<Node> buttonsNodes;
+
         private float t = 0;
 
         @Override
@@ -92,14 +100,11 @@ public class GraphicsView extends GLSurfaceView {
             TextureKeeper.reload(context);
 
             sky = new Sky(context, program, me.getStatus().getPosition());
-
             mapG.loadMap(context);
 
             createMonkeys();
 
-            groundNode=new GroundGenerator(FundamentalGenerator.getModel(context, program, R.drawable.ground_texture_01, "Ground.obj"))
-                    .getGroundNode(0, 0, 15, 15, -1);
-
+            groundNode = new GroundGenerator(FundamentalGenerator.getModel(context, program, R.drawable.ground_texture_01, "Ground.obj")).getGroundNode(0, 0, 15, 15, -1);
         }
 
         private void createMonkeys() {
@@ -120,18 +125,18 @@ public class GraphicsView extends GLSurfaceView {
         @Override
         public void onSurfaceChanged(GL10 gl, int width, int height) {
             glViewport(0, 0, width, height);
-            camera.updateMatrices((float)width/height);
+            camera.updateMatrices((float) width / height);
 
-            directionMoveListener.update(width,height);
+            directionMoveListener.update(width, height);
 
             Model arrowModel = FundamentalGenerator.getModel(context, program, R.drawable.arrow_texture_02, "Arrow.obj");
             ButtonsGenerator buttonsGenerator = new ButtonsGenerator(arrowModel);
 
-            ButtonsControl buttonsControl = new ButtonsControl(context, program, camera.getOrthoMatrix(), buttonsGenerator.getLeftNode(),
-                    buttonsGenerator.getRightNode(), buttonsGenerator.getUpNode(), buttonsGenerator.getDownNode());
+            ButtonsControl buttonsControl = new ButtonsControl(context, program, camera.getOrthoMatrix(), buttonsGenerator.getLeftNode(), buttonsGenerator.getRightNode(), buttonsGenerator.getUpNode(), buttonsGenerator.getDownNode());
             touchListener = new TouchListener(surfaceView, buttonsControl, positionMoveListener, directionMoveListener);
             buttonsNodes = buttonsGenerator.getButtons();
 
+            isReadyForTouch = true;
         }
 
         @Override
