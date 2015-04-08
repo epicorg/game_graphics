@@ -119,9 +119,4 @@ public class ButtonsControl {
             return ButtonPositions.NULL;
         }
     }
-
-    public enum ButtonPositions {
-        LEFT, RIGHT, UP, DOWN, NULL
-    }
-
 }

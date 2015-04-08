@@ -4,6 +4,7 @@ import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import game.controls.ButtonPositions;
 import game.controls.ButtonsControl;
 
 /**
@@ -22,7 +23,7 @@ public class TouchListener implements TouchListenerInterface {
     private boolean isPressing = false;
     private float previousX, previousY;
     private float touchX, touchY;
-    private ButtonsControl.ButtonPositions positions;
+    private ButtonPositions positions;
 
     public TouchListener(GLSurfaceView surfaceView, ButtonsControl buttonsControl, PositionMoveListenerInterface positionMoveListener, DirectionMoveListenerInterface directionMoveListener) {
         this.surfaceView = surfaceView;
@@ -70,7 +71,7 @@ public class TouchListener implements TouchListenerInterface {
         }
     }
 
-    private void callPositionListener(ButtonsControl.ButtonPositions buttonPositions, long delta) {
+    private void callPositionListener(ButtonPositions buttonPositions, long delta) {
         switch (buttonPositions) {
             case LEFT:
                 positionMoveListener.move((float) +Math.PI / 2, 0,delta);
@@ -106,5 +107,4 @@ public class TouchListener implements TouchListenerInterface {
             Log.d("thread", "ended for moving " + positions);
         }
     }
-
 }
