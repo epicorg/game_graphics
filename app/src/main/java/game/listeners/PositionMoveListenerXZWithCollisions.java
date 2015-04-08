@@ -14,7 +14,7 @@ public class PositionMoveListenerXZWithCollisions implements PositionMoveListene
     public static final String LOG_TAG = "PositionMoveListenerXZ";
 
     private static final int NUMBER_OF_ANGLE_DIVISIONS = 50;
-    public static float MOVE_SPEED=0.25f;
+    private static float MOVE_SPEED = 3.00f; // Distance/s
 
     private PlayerStatus playerStatus;
     private CollisionMediator cm;
@@ -31,7 +31,7 @@ public class PositionMoveListenerXZWithCollisions implements PositionMoveListene
         SFMatrix3f rotationMatrix = SFMatrix3f.getRotationY(angleXZ);
         SFVertex3f tempVertex = rotationMatrix.Mult(new SFVertex3f(playerStatus.getDirection().getX(), 0, playerStatus.getDirection().getZ()));
         tempVertex.normalize3f();
-        tempVertex.mult(MOVE_SPEED*delta/100000000);
+        tempVertex.mult(MOVE_SPEED * delta / 1000);
         playerStatus.getPosition().add3f(tempVertex);
 
         int i = 0;
