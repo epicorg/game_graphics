@@ -30,6 +30,7 @@ public class Sky {
                     +SKY_DISTANCE, +SKY_DISTANCE, +SKY_DISTANCE
             },
             new float[]{
+                    -1, 0, 0
             },
             new float[]{
                     0, 0, 0,
@@ -53,6 +54,7 @@ public class Sky {
                     -SKY_DISTANCE, +SKY_DISTANCE, +SKY_DISTANCE
             },
             new float[]{
+                    0, -1, 0,
             },
             new float[]{
                     1, 0, 0,
@@ -76,6 +78,7 @@ public class Sky {
                     -SKY_DISTANCE, +SKY_DISTANCE, +SKY_DISTANCE
             },
             new float[]{
+                    0, 0, -1
             },
             new float[]{
                     0, 0, 0,
@@ -99,6 +102,7 @@ public class Sky {
                     -SKY_DISTANCE, +SKY_DISTANCE, +SKY_DISTANCE
             },
             new float[]{
+                    +1, 0, 0
             },
             new float[]{
                     1, 0, 0,
@@ -122,6 +126,7 @@ public class Sky {
                     -SKY_DISTANCE, -SKY_DISTANCE, -SKY_DISTANCE
             },
             new float[]{
+                    0, +1, 0
             },
             new float[]{
                     1,0,0,
@@ -145,6 +150,7 @@ public class Sky {
                     -SKY_DISTANCE, +SKY_DISTANCE, -SKY_DISTANCE
             },
             new float[]{
+                    0, 0, +1
             },
             new float[]{
                     1, 0, 0,
