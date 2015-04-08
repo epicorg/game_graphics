@@ -28,7 +28,6 @@ public class Model {
         geometry.draw(material.getProgram().getShader());
     }
 
-
     public ShadingProgram getProgram() {
         return material.getProgram();
     }
