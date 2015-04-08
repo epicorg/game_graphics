@@ -23,6 +23,10 @@ public class Camera {
     /**
      * Crea un nuovo oggetto telecamera che guarda dalla posizione di un Player, in base alla sua direzione.
      * @param player il Player da seguire,
+     * @param znear minima distanza di un oggetto dalla telecamera per essere visualizzato
+     *              nella proiezione 3D.
+     * @param zfar massima distanza di un oggetto dalla telecamera per essere visualizzato
+     *              nella proiezione 3D.
      */
     public Camera(Player player, float znear, float zfar){
         this.me=player;

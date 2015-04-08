@@ -53,6 +53,7 @@ public class TouchListener implements TouchListenerInterface {
                         }
                     }
                 });
+                break;
             case MotionEvent.ACTION_UP:
                 if (isPressing)
                     isPressing = false;

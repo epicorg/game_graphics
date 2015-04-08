@@ -22,18 +22,18 @@ public class MainActivity extends Activity {
         SFVertex3f direction = new SFVertex3f(0, -0.25f, -1);
 
         Player me = new Player(new PlayerStatus(position, direction, new Circle(position, 1)), "Me");
-        ArrayList<Player> otherPlayers = new ArrayList<Player>();
+        ArrayList<Player> otherPlayers = new ArrayList<>();
 
         Map map = new Map();
         map.addObjects("Wall.obj", R.drawable.wall_texture_02,
-                new Square(new SFVertex3f(5, -1, -1), 2, 2, 2),
-                new Square(new SFVertex3f(5, -1, -3), 2, 2, 2),
-                new Square(new SFVertex3f(3, -1, -5), 2, 2, 2),
-                new Square(new SFVertex3f(1, -1, -5), 2, 2, 2),
-                new Square(new SFVertex3f(-1, -1, -5), 2, 2, 2),
-                new Square(new SFVertex3f(-1, -1, -3), 2, 2, 2),
-                new Square(new SFVertex3f(-1, -1, 0), 2, 2, 2),
-                new Square(new SFVertex3f(-3, -1, 0), 2, 2, 2)
+                new Square(new SFVertex3f(5, 0, -1), 2, 2, 2),
+                new Square(new SFVertex3f(5, 0, -3), 2, 2, 2),
+                new Square(new SFVertex3f(3, 0, -5), 2, 2, 2),
+                new Square(new SFVertex3f(1, 0, -5), 2, 2, 2),
+                new Square(new SFVertex3f(-1, 0, -5), 2, 2, 2),
+                new Square(new SFVertex3f(-1, 0, -3), 2, 2, 2),
+                new Square(new SFVertex3f(-1, 0, 0), 2, 2, 2),
+                new Square(new SFVertex3f(-3, 0, 0), 2, 2, 2)
         );
 
         setContentView(new GraphicsView(this, me, otherPlayers, map));
