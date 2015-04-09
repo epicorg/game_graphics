@@ -9,6 +9,8 @@ import shadow.system.SFInitiable;
 
 public class BitmapTexture implements SFInitiable {
 
+    public static final String LOG_TAG = "BitmapTexture";
+
     private SFOGLTexture2D texture;
     private SFBitmap bitmap;
     private int textureModel;

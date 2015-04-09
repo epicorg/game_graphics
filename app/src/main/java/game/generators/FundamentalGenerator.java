@@ -23,11 +23,31 @@ public class FundamentalGenerator {
         return material;
     }
 
-    public static Model getModel(Context context, ShadingProgram program, int texture_id, String obj) {
+    public static Material getColorMaterial(Context context, ShadingProgram program, int color) {
+        BitmapTexture texture = TextureKeeper.getColorTexture(context, color);
+        Material material = new Material(program);
+        material.getTextures().add(texture);
+
+        return material;
+    }
+
+    public static Model getModel(Context context, ShadingProgram program, int textureId, String obj) {
         ArrayObject[] object = ObjLoader.arrayObjectFromFile(context, obj);
         Mesh mesh = new Mesh(object[0]);
         mesh.init();
-        Material material = getMaterial(context, program, texture_id);
+        Material material = getMaterial(context, program, textureId);
+        Model model = new Model();
+        model.setRootGeometry(mesh);
+        model.setMaterialComponent(material);
+
+        return model;
+    }
+
+    public static Model getColorModel(Context context, ShadingProgram program, int color, String obj) {
+        ArrayObject[] object = ObjLoader.arrayObjectFromFile(context, obj);
+        Mesh mesh = new Mesh(object[0]);
+        mesh.init();
+        Material material = getColorMaterial(context, program, color);
         Model model = new Model();
         model.setRootGeometry(mesh);
         model.setMaterialComponent(material);

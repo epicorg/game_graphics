@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import sfogl.integration.Model;
 import sfogl.integration.Node;
 import shadow.math.SFMatrix3f;
+import shadow.math.SFTransform3f;
 
 /**
  * Created by Andrea on 27/03/2015.
@@ -59,6 +60,8 @@ public class ButtonsGenerator {
         mainNode.getSonNodes().add(rightNode);
         mainNode.getSonNodes().add(upNode);
         mainNode.getSonNodes().add(downNode);
+
+        mainNode.updateTree(new SFTransform3f());
 
         buttonsNodes.add(mainNode);
     }

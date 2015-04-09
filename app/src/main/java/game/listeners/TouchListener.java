@@ -49,7 +49,7 @@ public class TouchListener implements TouchListenerInterface {
                 surfaceView.queueEvent(new Runnable() {
                     @Override
                     public void run() {
-                        if (buttonsControl.isInsideAButton(touchX, surfaceView.getHeight() - touchY) && !isPressing) {
+                        if (buttonsControl.isInsideAButton(touchX, touchY) && !isPressing) {
                             isPressing = true;
                             try {
                                 positionId = MotionEventCompat.getPointerId(event, index);
@@ -57,7 +57,7 @@ public class TouchListener implements TouchListenerInterface {
                                 e.printStackTrace();
                             }
 
-                            positions = buttonsControl.getPressedButton(touchX, surfaceView.getHeight() - touchY);
+                            positions = buttonsControl.getPressedButton(touchX, touchY);
                             new Thread(new MoveRunnable()).start();
                         } else if (!isMoving) {
                             isMoving = true;

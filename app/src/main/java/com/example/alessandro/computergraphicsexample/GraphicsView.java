@@ -41,10 +41,10 @@ import static android.opengl.GLES20.glViewport;
 public class GraphicsView extends GLSurfaceView {
 
     public static final String LOG_TAG = "GraphicsView";
+
     private Camera camera;
     private GLSurfaceView surfaceView;
     private Context context;
-    private ShadingProgram program;
     private Player me;
     private ArrayList<Player> otherPlayers;
     private TouchListenerInterface touchListener;
@@ -58,16 +58,13 @@ public class GraphicsView extends GLSurfaceView {
         setEGLContextClientVersion(2);
 
         this.surfaceView = this;
-
         this.context = context;
         this.me = me;
         this.otherPlayers = otherPlayers;
         this.camera = new Camera(me, 1, 64);
 
         CollisionMediator cm = new CollisionMediator();
-
         map.loadMapLogic(cm);
-
         mapG = new MapGraphics(map);
 
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
@@ -87,6 +84,7 @@ public class GraphicsView extends GLSurfaceView {
 
     public class GraphicsRenderer implements Renderer {
 
+        private ShadingProgram program;
         private Sky sky;
         private Node node, groundNode;
         private ArrayList<Node> buttonsNodes;
@@ -99,12 +97,11 @@ public class GraphicsView extends GLSurfaceView {
             program = ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER);
             TextureKeeper.reload(context);
 
-            sky = new Sky(context, program, me.getStatus().getPosition());
+            groundNode = new GroundGenerator(FundamentalGenerator.getModel(context, program, R.drawable.ground_texture_01, "Ground.obj")).getGroundNode(0, 0, 15, 15, -1);
             mapG.loadMap(context);
+            sky = new Sky(context, program, me.getStatus().getPosition());
 
             createMonkeys();
-
-            groundNode = new GroundGenerator(FundamentalGenerator.getModel(context, program, R.drawable.ground_texture_01, "Ground.obj")).getGroundNode(0, 0, 15, 15, -1);
         }
 
         private void createMonkeys() {
@@ -123,26 +120,30 @@ public class GraphicsView extends GLSurfaceView {
         }
 
         @Override
-        public void onSurfaceChanged(GL10 gl, int width, int height) {
+        public void onSurfaceChanged(GL10 gl, final int width, final int height) {
             glViewport(0, 0, width, height);
             camera.updateMatrices((float) width / height);
-
             directionMoveListener.update(width, height);
 
             Model arrowModel = FundamentalGenerator.getModel(context, program, R.drawable.arrow_texture_02, "Arrow.obj");
-            ButtonsGenerator buttonsGenerator = new ButtonsGenerator(arrowModel);
+            final ButtonsGenerator buttonsGenerator = new ButtonsGenerator(arrowModel);
+            final ButtonsControl buttonsControl = new ButtonsControl(context, program, camera.getOrthoMatrix(), buttonsGenerator.getLeftNode(), buttonsGenerator.getRightNode(), buttonsGenerator.getUpNode(), buttonsGenerator.getDownNode());
 
-            ButtonsControl buttonsControl = new ButtonsControl(context, program, camera.getOrthoMatrix(), buttonsGenerator.getLeftNode(), buttonsGenerator.getRightNode(), buttonsGenerator.getUpNode(), buttonsGenerator.getDownNode());
             touchListener = new TouchListener(surfaceView, buttonsControl, positionMoveListener, directionMoveListener);
             buttonsNodes = buttonsGenerator.getButtons();
 
-            isReadyForTouch = true;
+            queueEvent(new Runnable() {
+                @Override
+                public void run() {
+                    buttonsControl.update(width, height);
+                    isReadyForTouch = true;
+                }
+            });
         }
 
         @Override
         public void onDrawFrame(GL10 gl) {
             program.setupProjection(camera.getResultMatrix());
-
             SFOGLSystemState.cleanupColorAndDepth(0, 0, 1, 1);
 
             //Change the Node transform
@@ -155,16 +156,13 @@ public class GraphicsView extends GLSurfaceView {
             node.updateTree(new SFTransform3f());
             node.draw();
 
-            groundNode.updateTree(new SFTransform3f());
             groundNode.draw();
-
             mapG.draw();
             sky.draw();
 
             program.setupProjection(camera.getOrthoMatrix());
 
             for (Node buttonNode : buttonsNodes) {
-                buttonNode.updateTree(new SFTransform3f());
                 buttonNode.draw();
             }
         }
