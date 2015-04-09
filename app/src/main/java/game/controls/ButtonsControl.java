@@ -94,10 +94,7 @@ public class ButtonsControl {
     }
 
     public boolean isInsideAButton(float touchX, float touchY) {
-        boolean result = getColorAt(touchX, touchY) != Color.argb(255, 0, 0, 0);
-        Log.d(LOG_TAG, "It's " + (result ? "inside " : "not inside ") + "a control.");
-
-        return result;
+        return getColorAt(touchX, touchY) != Color.argb(255, 0, 0, 0);
     }
 
     public ButtonPositions getPressedButton(float touchX, float touchY) {

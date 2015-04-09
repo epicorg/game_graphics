@@ -13,6 +13,7 @@ import game.controls.ButtonsControl;
 public class TouchListener implements TouchListenerInterface {
 
     public static final String LOG_TAG = "TouchListener";
+
     public static final long TIME_SLEEP = 10;
 
     private GLSurfaceView surfaceView;
@@ -21,11 +22,12 @@ public class TouchListener implements TouchListenerInterface {
     private DirectionMoveListenerInterface directionMoveListener;
 
     private int positionId = -1;
-    private boolean isPressing = false;
+    private volatile boolean isPressing = false;
     private int directionId = -1;
-    private boolean isMoving = false;
+    private volatile boolean isMoving = false;
 
     private float previousX, previousY;
+    private Thread moveThread;
     private ButtonPositions positions;
 
     public TouchListener(GLSurfaceView surfaceView, ButtonsControl buttonsControl, PositionMoveListenerInterface positionMoveListener, DirectionMoveListenerInterface directionMoveListener) {
@@ -46,70 +48,65 @@ public class TouchListener implements TouchListenerInterface {
                 final float touchX = MotionEventCompat.getX(event, index);
                 final float touchY = MotionEventCompat.getY(event, index);
 
-                surfaceView.queueEvent(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (buttonsControl.isInsideAButton(touchX, touchY) && !isPressing) {
-                            isPressing = true;
-                            try {
-                                positionId = MotionEventCompat.getPointerId(event, index);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
-                            positions = buttonsControl.getPressedButton(touchX, touchY);
-                            new Thread(new MoveRunnable()).start();
-                        } else if (!isMoving) {
-                            isMoving = true;
-                            try {
-                                directionId = MotionEventCompat.getPointerId(event, index);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
-                            previousX = touchX;
-                            previousY = touchY;
-                        }
-                    }
-                });
+                if (buttonsControl.isInsideAButton(touchX, touchY) && !isPressing) {
+                    startPressing(event, index, touchX, touchY);
+                } else if (!isMoving) {
+                    startMoving(event, index, touchX, touchY);
+                }
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
                 if (event.getPointerCount() == 1) {
-                    isPressing = false;
-                    positionId = -1;
-                    
-                    isMoving = false;
-                    directionId = -1;
+                    stopPressing();
+                    stopMoving();
                 } else if (isPressing && (MotionEventCompat.getPointerId(event, index) == positionId)) {
-                    isPressing = false;
-                    positionId = -1;
+                    stopPressing();
                 } else if (isMoving && (MotionEventCompat.getPointerId(event, index) == directionId)) {
-                    isMoving = false;
-                    directionId = -1;
+                    stopMoving();
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (isMoving) {
-                    actionMoveDirectionProcessor(event);
-                }
+                actionMovePositionProcessor(event);
+                actionMoveDirectionProcessor(event);
                 break;
         }
     }
 
-    private void actionMoveDirectionProcessor(MotionEvent event) {
+    private void actionMovePositionProcessor(MotionEvent event) {
         for (int i = 0; i < event.getPointerCount(); i++) {
-            if (event.getPointerId(i) == directionId) {
+            if (event.getPointerId(i) == positionId && isPressing) {
                 final float touchX = MotionEventCompat.getX(event, i);
                 final float touchY = MotionEventCompat.getY(event, i);
 
-                float dx = touchX - previousX;
-                float dy = touchY - previousY;
-                previousX = touchX;
-                previousY = touchY;
+                if (!buttonsControl.isInsideAButton(touchX, touchY)) {
+                    stopPressing();
+                }
+            } else if (event.getPointerId(i) != directionId && !isPressing) {
+                final float touchX = MotionEventCompat.getX(event, i);
+                final float touchY = MotionEventCompat.getY(event, i);
 
-                directionMoveListener.move(dx, dy);
-                return;
+                if (buttonsControl.isInsideAButton(touchX, touchY)) {
+                    startPressing(event, i, touchX, touchY);
+                }
+            }
+        }
+    }
+
+    private void actionMoveDirectionProcessor(MotionEvent event) {
+        if (isMoving) {
+            for (int i = 0; i < event.getPointerCount(); i++) {
+                if (event.getPointerId(i) == directionId) {
+                    final float touchX = MotionEventCompat.getX(event, i);
+                    final float touchY = MotionEventCompat.getY(event, i);
+
+                    float dx = touchX - previousX;
+                    float dy = touchY - previousY;
+                    previousX = touchX;
+                    previousY = touchY;
+
+                    directionMoveListener.move(dx, dy);
+                    return;
+                }
             }
         }
     }
@@ -131,20 +128,48 @@ public class TouchListener implements TouchListenerInterface {
         }
     }
 
-    private class MoveRunnable implements Runnable {
+    private void startPressing(MotionEvent event, int index, float touchX, float touchY) {
+        isPressing = true;
+        positionId = MotionEventCompat.getPointerId(event, index);
 
-        @Override
-        public void run() {
-            while (isPressing) {
-                callPositionListener(positions, TIME_SLEEP);
-                try {
-                    Thread.sleep(TIME_SLEEP);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+        positions = buttonsControl.getPressedButton(touchX, touchY);
+        moveThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (isPressing) {
+                    callPositionListener(positions, TIME_SLEEP);
+                    try {
+                        Thread.sleep(TIME_SLEEP);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-        }
+        });
+        moveThread.start();
+    }
 
+    private void startMoving(MotionEvent event, int index, float touchX, float touchY) {
+        isMoving = true;
+        directionId = MotionEventCompat.getPointerId(event, index);
+
+        previousX = touchX;
+        previousY = touchY;
+    }
+
+    private void stopPressing() {
+        isPressing = false;
+        positionId = -1;
+        try {
+            moveThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void stopMoving() {
+        isMoving = false;
+        directionId = -1;
     }
 
 }
