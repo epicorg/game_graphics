@@ -56,10 +56,7 @@ public class TouchListener implements TouchListenerInterface {
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
-                if (event.getPointerCount() == 1) {
-                    stopPressing();
-                    stopMoving();
-                } else if (isPressing && (MotionEventCompat.getPointerId(event, index) == positionId)) {
+                if (isPressing && (MotionEventCompat.getPointerId(event, index) == positionId)) {
                     stopPressing();
                 } else if (isMoving && (MotionEventCompat.getPointerId(event, index) == directionId)) {
                     stopMoving();

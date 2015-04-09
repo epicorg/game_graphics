@@ -33,8 +33,7 @@ public class ButtonsGenerator {
         float scaling = 0.15f;
 
         Node mainNode = new Node();
-        //mainNode.getRelativeTransform().setPosition(-0.50f, -0.50f, 1);
-        mainNode.getRelativeTransform().setPosition(0, -1.0f, 1);
+        mainNode.getRelativeTransform().setPosition(-0.50f, -0.50f, 1);
         mainNode.getRelativeTransform().setMatrix(SFMatrix3f.getScale(scaling, scaling, scaling));
 
         leftNode.setModel(model);

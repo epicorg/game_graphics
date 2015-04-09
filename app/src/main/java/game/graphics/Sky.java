@@ -19,7 +19,7 @@ import shadow.math.SFVertex3f;
  */
 public class Sky {
 
-    private static final int SKY_DISTANCE = 20;
+    private static final int SKY_DISTANCE = 30;
     private ArrayObject arrayObjectPosX = new ArrayObject(
             new float[]{
                     +SKY_DISTANCE, -SKY_DISTANCE, -SKY_DISTANCE,
@@ -185,7 +185,7 @@ public class Sky {
         //mainNode.getSonNodes().add(generateNode(arrayObjectNegY, R.drawable.skybox_negy));
         mainNode.getSonNodes().add(generateNode(arrayObjectNegZ, R.drawable.skybox_posz));
 
-        mainNode.getRelativeTransform().setPosition(0, 4, 0);
+        mainNode.getRelativeTransform().setPosition(0, 0, 0);
         mainNode.getRelativeTransform().setMatrix(SFMatrix3f.getIdentity());
     }
 
@@ -202,7 +202,7 @@ public class Sky {
     }
 
     public void draw() {
-        mainNode.getRelativeTransform().setPosition(position.getX(), 4 + position.getY(), position.getZ());
+        mainNode.getRelativeTransform().setPosition(position.getX(), position.getY(), position.getZ());
         mainNode.updateTree(new SFTransform3f());
         mainNode.draw();
     }

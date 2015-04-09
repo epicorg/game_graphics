@@ -2,6 +2,7 @@ package com.example.alessandro.computergraphicsexample;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import java.util.ArrayList;
 
@@ -17,6 +18,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         SFVertex3f position = new SFVertex3f(10, 0.5f, 4);
         SFVertex3f direction = new SFVertex3f(0, -0.25f, -1);
