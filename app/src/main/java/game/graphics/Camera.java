@@ -18,7 +18,7 @@ public class Camera {
             resultMatrix=new float[16];
     private float[] projectionMatrix=new float[16];
     private Player me;
-    private float znear,zfar;
+    private float znear,zfar,k;
 
     /**
      * Crea un nuovo oggetto telecamera che guarda dalla posizione di un Player, in base alla sua direzione.
@@ -27,11 +27,13 @@ public class Camera {
      *              nella proiezione 3D.
      * @param zfar massima distanza di un oggetto dalla telecamera per essere visualizzato
      *              nella proiezione 3D.
+     * @param angle angolo di visione della proezione 3D tra alto-basso e destra-sinistra in gradi.
      */
-    public Camera(Player player, float znear, float zfar){
+    public Camera(Player player, float znear, float zfar, float angle){
         this.me=player;
         this.znear=znear;
         this.zfar=zfar;
+        this.k=znear*(float)Math.tan(angle*Math.PI/360);
     }
 
     /**
@@ -69,9 +71,9 @@ public class Camera {
 
     private void setProjection(float ratio) {
         if (ratio>1)
-            frustumM(projectionMatrix, 0, -1, 1, -(1/ratio), (1/ratio), znear, zfar);
+            frustumM(projectionMatrix, 0, -k, k, -(k/ratio), (k/ratio), znear, zfar);
         else
-            frustumM(projectionMatrix, 0, -ratio, ratio, -1, 1, znear, zfar);
+            frustumM(projectionMatrix, 0, -k*ratio, k*ratio, -k, k, znear, zfar);
     }
 
     private void setResultMatrix() {

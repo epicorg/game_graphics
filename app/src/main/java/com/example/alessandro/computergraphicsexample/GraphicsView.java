@@ -61,7 +61,7 @@ public class GraphicsView extends GLSurfaceView {
         this.context = context;
         this.me = me;
         this.otherPlayers = otherPlayers;
-        this.camera = new Camera(me, 1, 64);
+        this.camera = new Camera(me, 0.25f, 128, 80);
 
         CollisionMediator cm = new CollisionMediator();
         map.loadMapLogic(cm);

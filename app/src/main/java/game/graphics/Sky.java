@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.example.alessandro.computergraphicsexample.R;
 
+import java.util.List;
+
 import game.generators.FundamentalGenerator;
 import sfogl.integration.ArrayObject;
 import sfogl.integration.Mesh;
@@ -20,12 +22,12 @@ import shadow.math.SFVertex3f;
 public class Sky {
 
     private static final int SKY_DISTANCE = 30;
+    private static final short[] indices=new short[]{3, 2, 0, 0, 1, 3};
+
     private ArrayObject arrayObjectPosX = new ArrayObject(
             new float[]{
                     +SKY_DISTANCE, -SKY_DISTANCE, -SKY_DISTANCE,
                     +SKY_DISTANCE, -SKY_DISTANCE, +SKY_DISTANCE,
-                    +SKY_DISTANCE, +SKY_DISTANCE, +SKY_DISTANCE,
-                    +SKY_DISTANCE, -SKY_DISTANCE, -SKY_DISTANCE,
                     +SKY_DISTANCE, +SKY_DISTANCE, -SKY_DISTANCE,
                     +SKY_DISTANCE, +SKY_DISTANCE, +SKY_DISTANCE
             },
@@ -35,86 +37,65 @@ public class Sky {
             new float[]{
                     0, 0, 0,
                     1, 0, 0,
-                    1, 1, 0,
-                    0, 0, 0,
                     0, 1, 0,
                     1, 1, 0
             },
-            new short[]{
-                    0, 1, 2, 3, 4, 5
-            }
+            indices
     );
     private ArrayObject arrayObjectPosY = new ArrayObject(
             new float[]{
+                    +SKY_DISTANCE, +SKY_DISTANCE, +SKY_DISTANCE,
+                    -SKY_DISTANCE, +SKY_DISTANCE, +SKY_DISTANCE,
                     +SKY_DISTANCE, +SKY_DISTANCE, -SKY_DISTANCE,
-                    +SKY_DISTANCE, +SKY_DISTANCE, +SKY_DISTANCE,
-                    -SKY_DISTANCE, +SKY_DISTANCE, -SKY_DISTANCE,
-                    -SKY_DISTANCE, +SKY_DISTANCE, -SKY_DISTANCE,
-                    +SKY_DISTANCE, +SKY_DISTANCE, +SKY_DISTANCE,
-                    -SKY_DISTANCE, +SKY_DISTANCE, +SKY_DISTANCE
+                    -SKY_DISTANCE, +SKY_DISTANCE, -SKY_DISTANCE
+
             },
             new float[]{
                     0, -1, 0,
             },
             new float[]{
+                    1, 1, 0,
+                    0, 1, 0,
                     1, 0, 0,
-                    1, 1, 0,
-                    0, 0, 0,
-                    0, 0, 0,
-                    1, 1, 0,
-                    0, 1, 0
+                    0, 0, 0
             },
-            new short[]{
-                    0, 1, 2, 3, 4, 5
-            }
+            indices
     );
     private ArrayObject arrayObjectPosZ = new ArrayObject(
             new float[]{
+                    -SKY_DISTANCE, -SKY_DISTANCE, +SKY_DISTANCE,
+                    -SKY_DISTANCE, +SKY_DISTANCE, +SKY_DISTANCE,
                     +SKY_DISTANCE, -SKY_DISTANCE, +SKY_DISTANCE,
-                    +SKY_DISTANCE, +SKY_DISTANCE, +SKY_DISTANCE,
-                    -SKY_DISTANCE, -SKY_DISTANCE, +SKY_DISTANCE,
-                    -SKY_DISTANCE, -SKY_DISTANCE, +SKY_DISTANCE,
-                    +SKY_DISTANCE, +SKY_DISTANCE, +SKY_DISTANCE,
-                    -SKY_DISTANCE, +SKY_DISTANCE, +SKY_DISTANCE
+                    +SKY_DISTANCE, +SKY_DISTANCE, +SKY_DISTANCE
             },
             new float[]{
                     0, 0, -1
             },
             new float[]{
+                    1, 0, 0,
+                    1, 1, 0,
                     0, 0, 0,
-                    0, 1, 0,
-                    1, 0, 0,
-                    1, 0, 0,
-                    0, 1, 0,
-                    1, 1, 0
+                    0, 1, 0
             },
-            new short[]{
-                    0, 1, 2, 3, 4, 5
-            }
+            indices
     );
     private ArrayObject arrayObjectNegX = new ArrayObject(
             new float[]{
-                    -SKY_DISTANCE, -SKY_DISTANCE, -SKY_DISTANCE,
-                    -SKY_DISTANCE, -SKY_DISTANCE, +SKY_DISTANCE,
                     -SKY_DISTANCE, +SKY_DISTANCE, +SKY_DISTANCE,
-                    -SKY_DISTANCE, -SKY_DISTANCE, -SKY_DISTANCE,
+                    -SKY_DISTANCE, -SKY_DISTANCE, +SKY_DISTANCE,
                     -SKY_DISTANCE, +SKY_DISTANCE, -SKY_DISTANCE,
-                    -SKY_DISTANCE, +SKY_DISTANCE, +SKY_DISTANCE
+                    -SKY_DISTANCE, -SKY_DISTANCE, -SKY_DISTANCE
             },
             new float[]{
                     +1, 0, 0
             },
             new float[]{
-                    1, 0, 0,
-                    0, 0, 0,
                     0, 1, 0,
-                    1, 0, 0,
+                    0, 0, 0,
                     1, 1, 0,
-                    0, 1, 0
+                    1, 0, 0
             },
-            new short[]{
-                    0, 1, 2, 3, 4, 5
-            }
+            indices
     );
     /*private ArrayObject arrayObjectNegY = new ArrayObject(
             new float[]{
@@ -145,8 +126,6 @@ public class Sky {
                     +SKY_DISTANCE, -SKY_DISTANCE, -SKY_DISTANCE,
                     +SKY_DISTANCE, +SKY_DISTANCE, -SKY_DISTANCE,
                     -SKY_DISTANCE, -SKY_DISTANCE, -SKY_DISTANCE,
-                    -SKY_DISTANCE, -SKY_DISTANCE, -SKY_DISTANCE,
-                    +SKY_DISTANCE, +SKY_DISTANCE, -SKY_DISTANCE,
                     -SKY_DISTANCE, +SKY_DISTANCE, -SKY_DISTANCE
             },
             new float[]{
@@ -156,13 +135,9 @@ public class Sky {
                     1, 0, 0,
                     1, 1, 0,
                     0, 0, 0,
-                    0, 0, 0,
-                    1, 1, 0,
                     0, 1, 0
             },
-            new short[]{
-                    0, 1, 2, 3, 4, 5
-            }
+            indices
     );
     private Context context;
     private ShadingProgram program;
@@ -178,12 +153,13 @@ public class Sky {
     }
 
     private void setup() {
-        mainNode.getSonNodes().add(generateNode(arrayObjectPosX, R.drawable.skybox_posx));
-        mainNode.getSonNodes().add(generateNode(arrayObjectPosY, R.drawable.skybox_posy));
-        mainNode.getSonNodes().add(generateNode(arrayObjectPosZ, R.drawable.skybox_negz));
-        mainNode.getSonNodes().add(generateNode(arrayObjectNegX, R.drawable.skybox_negx));
-        //mainNode.getSonNodes().add(generateNode(arrayObjectNegY, R.drawable.skybox_negy));
-        mainNode.getSonNodes().add(generateNode(arrayObjectNegZ, R.drawable.skybox_posz));
+        List<Node> list=mainNode.getSonNodes();
+        list.add(generateNode(arrayObjectPosX, R.drawable.skybox_posx));
+        list.add(generateNode(arrayObjectPosY, R.drawable.skybox_posy));
+        list.add(generateNode(arrayObjectPosZ, R.drawable.skybox_negz));
+        list.add(generateNode(arrayObjectNegX, R.drawable.skybox_negx));
+        //list.add(generateNode(arrayObjectNegY, R.drawable.skybox_negy));
+        list.add(generateNode(arrayObjectNegZ, R.drawable.skybox_posz));
 
         mainNode.getRelativeTransform().setPosition(0, 0, 0);
         mainNode.getRelativeTransform().setMatrix(SFMatrix3f.getIdentity());
