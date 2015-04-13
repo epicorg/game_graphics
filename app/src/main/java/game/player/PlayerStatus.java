@@ -1,7 +1,6 @@
 package game.player;
 
 import game.physics.Circle;
-import game.physics.Square;
 import shadow.math.SFVertex3f;
 
 /**
@@ -13,8 +12,8 @@ public class PlayerStatus {
     private SFVertex3f direction;
     private Circle circle;
 
-    public PlayerStatus(SFVertex3f position, SFVertex3f direction, Circle circle) {
-        this.position = position;
+    public PlayerStatus(SFVertex3f direction, Circle circle) {
+        this.position = new SFVertex3f(circle.getPos());
         this.direction = direction;
         this.circle = circle;
     }

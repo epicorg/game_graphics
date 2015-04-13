@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
         SFVertex3f position = new SFVertex3f(10, 0.5f, 4);
         SFVertex3f direction = new SFVertex3f(0, -0.25f, -1);
 
-        Player me = new Player(new PlayerStatus(position, direction, new Circle(position, 1)), "Me");
+        Player me = new Player(new PlayerStatus(direction, new Circle(position, 1)), "Me");
         ArrayList<Player> otherPlayers = new ArrayList<>();
 
         Map map = new Map();

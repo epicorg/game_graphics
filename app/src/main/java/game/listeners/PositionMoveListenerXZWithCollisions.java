@@ -27,7 +27,7 @@ public class PositionMoveListenerXZWithCollisions implements PositionMoveListene
 
     @Override
     public void move(float angleXZ, float angleYZ, long delta) {
-        SFVertex3f position=playerStatus.getPosition(), originalPosition = new SFVertex3f(position);
+        SFVertex3f position=playerStatus.getCollisionBox().getPos(), originalPosition = new SFVertex3f(position);
 
         SFMatrix3f rotationMatrix = SFMatrix3f.getRotationY(angleXZ);
         SFVertex3f tempVertex = rotationMatrix.Mult(new SFVertex3f(playerStatus.getDirection().getX(), 0, playerStatus.getDirection().getZ()));
@@ -47,6 +47,8 @@ public class PositionMoveListenerXZWithCollisions implements PositionMoveListene
         // Reset if blocked
         if (cm.collide(playerStatus.getCollisionBox())!=null)
             position.set(originalPosition);
+        else
+            playerStatus.getPosition().set(position);
     }
 
     public void correctMotion(SFVertex3f v, SFVertex3f v0, SFVertex3f tempVertex, CollisionBox box){
