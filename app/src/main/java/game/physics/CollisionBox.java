@@ -1,5 +1,6 @@
 package game.physics;
 
+import java.util.ArrayList;
 import shadow.math.SFVertex3f;
 
 /**
@@ -7,7 +8,9 @@ import shadow.math.SFVertex3f;
  */
 public interface CollisionBox {
 
-    public void add(CollisionMediator cm);
     public SFVertex3f getPos();
+    public float getRadius();
+    public ArrayList<SFVertex3f> getAxes(SFVertex3f otherCenter);
+    public float[] getProjections(SFVertex3f ax);
 
 }

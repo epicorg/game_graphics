@@ -1,9 +1,10 @@
 package game.listeners;
 
+import game.physics.CollisionBox;
 import game.physics.CollisionMediator;
+import game.physics.CollisionUtils;
 import game.player.PlayerStatus;
 import shadow.math.SFMatrix3f;
-import shadow.math.SFTransform3f;
 import shadow.math.SFVertex3f;
 
 /**
@@ -26,38 +27,42 @@ public class PositionMoveListenerXZWithCollisions implements PositionMoveListene
 
     @Override
     public void move(float angleXZ, float angleYZ, long delta) {
-        SFVertex3f originalPosition = new SFVertex3f(playerStatus.getPosition());
+        SFVertex3f position=playerStatus.getPosition(), originalPosition = new SFVertex3f(position);
 
         SFMatrix3f rotationMatrix = SFMatrix3f.getRotationY(angleXZ);
         SFVertex3f tempVertex = rotationMatrix.Mult(new SFVertex3f(playerStatus.getDirection().getX(), 0, playerStatus.getDirection().getZ()));
         tempVertex.normalize3f();
         tempVertex.mult(MOVE_SPEED * delta / 1000);
-        playerStatus.getPosition().add3f(tempVertex);
 
-        int i = 0;
-        while (cm.collide(playerStatus.getCollisionBox())) {
-            playerStatus.getPosition().set(originalPosition);
-            playerStatus.getPosition().add3f(correctMotion(tempVertex, i, NUMBER_OF_ANGLE_DIVISIONS));
+        position.add3f(tempVertex);
 
-            i++;
-            if (i == NUMBER_OF_ANGLE_DIVISIONS * 2) {
-                playerStatus.getPosition().set(originalPosition);
-                break;
-            }
-        }
+        CollisionBox box=cm.collide(playerStatus.getCollisionBox());
+        // Correct for obstacles
+        if (box!=null)
+            correctMotion(position, originalPosition, tempVertex, box);
+        box=cm.collide(playerStatus.getCollisionBox());
+        // Correct for junctions
+        if (box!=null)
+            correctMotion(position, originalPosition, tempVertex, box);
+        // Reset if blocked
+        if (cm.collide(playerStatus.getCollisionBox())!=null)
+            position.set(originalPosition);
     }
 
-    private SFVertex3f correctMotion(SFVertex3f motion, int i, int n) {
-        int sign = (i % 2) == 0 ? +1 : -1;
-
-        SFVertex3f kv = new SFVertex3f(motion);
-        SFTransform3f rot = new SFTransform3f();
-        rot.setMatrix(SFMatrix3f.getRotationY((float) (sign * Math.PI * 0.5 * (i / 2) / n)));
-        rot.transform(kv);
-
-        SFVertex3f motion2 = new SFVertex3f(motion);
-        kv.mult3f(motion2.dot3f(kv) / (kv.getSquareModulus()));
-        return kv;
+    public void correctMotion(SFVertex3f v, SFVertex3f v0, SFVertex3f tempVertex, CollisionBox box){
+        SFVertex3f vertex;
+        for (int i = 0; i < NUMBER_OF_ANGLE_DIVISIONS; i++) {
+            for (int j = -1; j < 2; j+=2) {
+                SFMatrix3f rotationMatrix = SFMatrix3f.getRotationY(i*j*(float)Math.PI/(2*NUMBER_OF_ANGLE_DIVISIONS));
+                vertex=new SFVertex3f(tempVertex);
+                vertex = rotationMatrix.Mult(vertex);
+                v.set(v0);
+                v.add(vertex);
+                if (!CollisionUtils.checkCollision(playerStatus.getCollisionBox(), box)){
+                    return;
+                }
+            }
+        }
     }
 
 }

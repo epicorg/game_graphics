@@ -104,21 +104,6 @@ public class GraphicsView extends GLSurfaceView {
             createMonkeys();
         }
 
-        private void createMonkeys() {
-            Model monkeyModel = FundamentalGenerator.getModel(context, program, R.drawable.animal_texture_01, "Monkey.obj");
-
-            node = new Node();
-            node.setModel(monkeyModel);
-            node.getRelativeTransform().setPosition(3, 0.5f, 0);
-
-            Node anotherNode = new Node();
-
-            anotherNode.setModel(monkeyModel);
-            anotherNode.getRelativeTransform().setPosition(1, 1, 0);
-            anotherNode.getRelativeTransform().setMatrix(SFMatrix3f.getScale(0.3f, 0.2f, 0.1f));
-            node.getSonNodes().add(anotherNode);
-        }
-
         @Override
         public void onSurfaceChanged(GL10 gl, final int width, final int height) {
             glViewport(0, 0, width, height);
@@ -146,15 +131,7 @@ public class GraphicsView extends GLSurfaceView {
             program.setupProjection(camera.getResultMatrix());
             SFOGLSystemState.cleanupColorAndDepth(0, 0, 1, 1);
 
-            //Change the Node transform
-            t += 0.01f;
-            float rotation = 0.2f + t;
-            float scaling = 0.3f;
-            SFMatrix3f matrix3f = SFMatrix3f.getScale(scaling, scaling, scaling);
-            matrix3f = matrix3f.MultMatrix(SFMatrix3f.getRotationX(rotation));
-            node.getRelativeTransform().setMatrix(matrix3f);
-            node.updateTree(new SFTransform3f());
-            node.draw();
+            drawMonkeys();
 
             groundNode.draw();
             mapG.draw();
@@ -165,6 +142,33 @@ public class GraphicsView extends GLSurfaceView {
             for (Node buttonNode : buttonsNodes) {
                 buttonNode.draw();
             }
+        }
+
+
+        private void createMonkeys() {
+            Model monkeyModel = FundamentalGenerator.getModel(context, program, R.drawable.animal_texture_01, "Monkey.obj");
+
+            node = new Node();
+            node.setModel(monkeyModel);
+            node.getRelativeTransform().setPosition(3, 0.5f, 0);
+
+            Node anotherNode = new Node();
+
+            anotherNode.setModel(monkeyModel);
+            anotherNode.getRelativeTransform().setPosition(1, 1, 0);
+            anotherNode.getRelativeTransform().setMatrix(SFMatrix3f.getScale(0.3f, 0.2f, 0.1f));
+            node.getSonNodes().add(anotherNode);
+        }
+
+        private void drawMonkeys() {
+            t += 0.01f;
+            float rotation = 0.2f + t;
+            float scaling = 0.3f;
+            SFMatrix3f matrix3f = SFMatrix3f.getScale(scaling, scaling, scaling);
+            matrix3f = matrix3f.MultMatrix(SFMatrix3f.getRotationX(rotation));
+            node.getRelativeTransform().setMatrix(matrix3f);
+            node.updateTree(new SFTransform3f());
+            node.draw();
         }
 
     }

@@ -1,11 +1,13 @@
 package game.generators;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import sfogl.integration.Model;
 import sfogl.integration.Node;
 import shadow.math.SFMatrix3f;
 import shadow.math.SFTransform3f;
+import shadow.math.SFVertex3f;
 
 /**
  * Created by Andrea on 27/03/2015.
@@ -36,33 +38,23 @@ public class ButtonsGenerator {
         mainNode.getRelativeTransform().setPosition(-0.50f, -0.50f, 1);
         mainNode.getRelativeTransform().setMatrix(SFMatrix3f.getScale(scaling, scaling, scaling));
 
-        leftNode.setModel(model);
-        rightNode.setModel(model);
-        upNode.setModel(model);
-        downNode.setModel(model);
-
-        SFMatrix3f tmp = SFMatrix3f.getRotationZ((float) -Math.PI / 2);
-        leftNode.getRelativeTransform().setPosition(-2, 0, 0);
-        leftNode.getRelativeTransform().setMatrix(tmp);
-
-        tmp = SFMatrix3f.getRotationZ((float) Math.PI / 2);
-        rightNode.getRelativeTransform().setPosition(2, 0, 0);
-        rightNode.getRelativeTransform().setMatrix(tmp);
-
-        upNode.getRelativeTransform().setPosition(0, 2, 0);
-
-        tmp = SFMatrix3f.getRotationZ((float) Math.PI);
-        downNode.getRelativeTransform().setPosition(0, -2, 0);
-        downNode.getRelativeTransform().setMatrix(tmp);
-
-        mainNode.getSonNodes().add(leftNode);
-        mainNode.getSonNodes().add(rightNode);
-        mainNode.getSonNodes().add(upNode);
-        mainNode.getSonNodes().add(downNode);
+        List<Node> list=mainNode.getSonNodes();
+        list.add(setupNode(leftNode, new SFVertex3f(-2, 0, 0), model, (float) -Math.PI / 2));
+        list.add(setupNode(rightNode, new SFVertex3f(2, 0, 0), model, (float) Math.PI / 2));
+        list.add(setupNode(upNode, new SFVertex3f(0, 2, 0), model, 0));
+        list.add(setupNode(downNode, new SFVertex3f(0, -2, 0), model, (float) Math.PI));
 
         mainNode.updateTree(new SFTransform3f());
 
         buttonsNodes.add(mainNode);
+    }
+
+    public Node setupNode(Node node, SFVertex3f position, Model model, float angleZ){
+        SFMatrix3f tmp = SFMatrix3f.getRotationZ(angleZ);
+        node.setModel(model);
+        node.getRelativeTransform().setPosition(position);
+        node.getRelativeTransform().setMatrix(tmp);
+        return node;
     }
 
     public ArrayList<Node> getButtons() {

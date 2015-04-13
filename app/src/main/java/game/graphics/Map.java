@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Set;
 import game.physics.CollisionBox;
 import game.physics.CollisionMediator;
-import sfogl.integration.Node;
 
 public class Map {
 
@@ -17,7 +16,7 @@ public class Map {
     public void loadMapLogic(CollisionMediator cm){
         for (CollisionBox[] boxes: map.keySet()){
             for (CollisionBox c: boxes){
-                    c.add(cm);
+                    cm.addObject(c);
             }
         }
     }
