@@ -3,8 +3,11 @@ package com.example.alessandro.computergraphicsexample;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -42,6 +45,7 @@ public class GraphicsView extends GLSurfaceView {
 
     public static final String LOG_TAG = "GraphicsView";
 
+    private CountDownLatch startSignal;
     private Camera camera;
     private GLSurfaceView surfaceView;
     private Context context;
@@ -53,10 +57,11 @@ public class GraphicsView extends GLSurfaceView {
     private MapGraphics mapG;
     private boolean isReadyForTouch = false;
 
-    public GraphicsView(Context context, Player me, ArrayList<Player> otherPlayers, Map map) {
+    public GraphicsView(Context context, Player me, ArrayList<Player> otherPlayers, Map map, CountDownLatch startSignal) {
         super(context);
         setEGLContextClientVersion(2);
 
+        this.startSignal = startSignal;
         this.surfaceView = this;
         this.context = context;
         this.me = me;
@@ -124,6 +129,8 @@ public class GraphicsView extends GLSurfaceView {
                     isReadyForTouch = true;
                 }
             });
+
+            startSignal.countDown();
         }
 
         @Override
