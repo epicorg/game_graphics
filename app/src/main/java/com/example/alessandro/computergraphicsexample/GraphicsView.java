@@ -3,22 +3,16 @@ package com.example.alessandro.computergraphicsexample;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
-import android.view.View;
-import android.widget.LinearLayout;
-
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
-
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
-
 import game.controls.ButtonsControl;
 import game.generators.ButtonsGenerator;
 import game.generators.FundamentalGenerator;
 import game.generators.GroundGenerator;
 import game.graphics.Camera;
 import game.graphics.Map;
-import game.graphics.MapGraphics;
 import game.graphics.Sky;
 import game.graphics.TextureKeeper;
 import game.listeners.DirectionDirectionMoveListener;
@@ -54,7 +48,8 @@ public class GraphicsView extends GLSurfaceView {
     private TouchListenerInterface touchListener;
     private PositionMoveListenerInterface positionMoveListener;
     private DirectionMoveListenerInterface directionMoveListener;
-    private MapGraphics mapG;
+    private CollisionMediator cm;
+    private Map map;
     private boolean isReadyForTouch = false;
 
     public GraphicsView(Context context, Player me, ArrayList<Player> otherPlayers, Map map, CountDownLatch startSignal) {
@@ -66,11 +61,10 @@ public class GraphicsView extends GLSurfaceView {
         this.context = context;
         this.me = me;
         this.otherPlayers = otherPlayers;
-        this.camera = new Camera(me, 0.25f, 128, 80);
+        this.camera = new Camera(me, 0.125f, 128, 80);
 
-        CollisionMediator cm = new CollisionMediator();
-        map.loadMapLogic(cm);
-        mapG = new MapGraphics(map);
+        cm = new CollisionMediator();
+        this.map=map;
 
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         setRenderer(new GraphicsRenderer());
@@ -102,8 +96,8 @@ public class GraphicsView extends GLSurfaceView {
             program = ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER);
             TextureKeeper.reload(context);
 
-            groundNode = new GroundGenerator(FundamentalGenerator.getModel(context, program, R.drawable.ground_texture_02, "Ground.obj")).getGroundNode(0, 0, 15, 15, -1);
-            mapG.loadMap(context);
+            groundNode = new GroundGenerator(FundamentalGenerator.getModel(context, program, R.drawable.ground_texture_02, "Ground.obj")).getGroundNode(0, 0, 20, 20, -1);
+            map.loadMap(cm,context);
             sky = new Sky(context, program, me.getStatus().getPosition());
 
             createMonkeys();
@@ -141,7 +135,7 @@ public class GraphicsView extends GLSurfaceView {
             drawMonkeys();
 
             groundNode.draw();
-            mapG.draw();
+            map.draw();
             sky.draw();
 
             program.setupProjection(camera.getOrthoMatrix());
@@ -157,7 +151,7 @@ public class GraphicsView extends GLSurfaceView {
 
             node = new Node();
             node.setModel(monkeyModel);
-            node.getRelativeTransform().setPosition(3, 0.5f, 0);
+            node.getRelativeTransform().setPosition(0.5f, 0.5f, -6.5f);
 
             Node anotherNode = new Node();
 
@@ -172,7 +166,7 @@ public class GraphicsView extends GLSurfaceView {
             float rotation = 0.2f + t;
             float scaling = 0.3f;
             SFMatrix3f matrix3f = SFMatrix3f.getScale(scaling, scaling, scaling);
-            matrix3f = matrix3f.MultMatrix(SFMatrix3f.getRotationX(rotation));
+            matrix3f = matrix3f.MultMatrix(SFMatrix3f.getRotationY(rotation));
             node.getRelativeTransform().setMatrix(matrix3f);
             node.updateTree(new SFTransform3f());
             node.draw();
@@ -181,3 +175,4 @@ public class GraphicsView extends GLSurfaceView {
     }
 
 }
+

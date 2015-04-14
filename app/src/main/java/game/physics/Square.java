@@ -9,11 +9,11 @@ public class Square implements CollisionBox{
     private SFVertex3f[] vertices=new SFVertex3f[4];
     private float xSize, ySize, zSize, radius;
 
-    public Square(SFVertex3f pos, float xSize, float ySize, float zSize) {
+    public Square(SFVertex3f pos, double xSize, double ySize, double zSize) {
         this.pos = pos;
-        this.xSize = xSize;
-        this.ySize = ySize;
-        this.zSize = zSize;
+        this.xSize = (float)xSize;
+        this.ySize = (float)ySize;
+        this.zSize = (float)zSize;
         this.radius=(float)Math.sqrt(xSize*xSize+zSize*zSize)/2;
         createVertices();
     }

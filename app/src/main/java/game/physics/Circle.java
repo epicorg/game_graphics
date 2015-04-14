@@ -8,9 +8,9 @@ public class Circle implements CollisionBox{
     private SFVertex3f pos;
     private float radius;
 
-    public Circle(SFVertex3f pos, float radius) {
+    public Circle(SFVertex3f pos, double radius) {
         this.pos = pos;
-        this.radius = radius;
+        this.radius = (float)radius;
     }
 
     @Override
