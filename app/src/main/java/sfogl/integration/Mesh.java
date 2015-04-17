@@ -43,7 +43,6 @@ public class Mesh implements SFInitiable {
             shader.bindAttributef(ShadingProgram.TXCOORD_INDEX, txCoords.getBufferObject(), 3);/*normal*/
         GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, indices.getBufferObject());
         //Log.e("Mesh","Get Error C "+GLES20.glGetError());
-        GLES20.glEnable(GLES20.GL_CULL_FACE);
         GLES20.glDrawElements(GLES20.GL_TRIANGLES, arrayObject.getIndicesBuffer().length, GLES20.GL_UNSIGNED_SHORT, 0);
 
         //short[] indices={0,1,2};

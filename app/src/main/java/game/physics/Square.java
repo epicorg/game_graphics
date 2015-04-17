@@ -3,12 +3,24 @@ package game.physics;
 import java.util.ArrayList;
 import shadow.math.SFVertex3f;
 
+/**
+ * Rappresenta una scatola di collisione rettangolare.
+ * @author Stefano De Pace
+ *
+ */
 public class Square implements CollisionBox{
 
     private SFVertex3f pos;
     private SFVertex3f[] vertices=new SFVertex3f[4];
     private float xSize, ySize, zSize, radius;
 
+    /**
+     * Costruisce una nuova CollisionBox di forma rettangolare.
+     * @param pos posizione del centro della CollisionBox.
+     * @param xSize dimensione x della CollisionBox.
+     * @param ySize dimensione y della CollisionBox.
+     * @param zSize dimensione z della CollisionBox.
+     */
     public Square(SFVertex3f pos, double xSize, double ySize, double zSize) {
         this.pos = pos;
         this.xSize = (float)xSize;
@@ -25,6 +37,7 @@ public class Square implements CollisionBox{
         vertices[3]=new SFVertex3f(-xSize/2, 0, -zSize/2);
     }
 
+    @Override
     public float getRadius(){
         return radius;
     }
@@ -76,18 +89,31 @@ public class Square implements CollisionBox{
         return ps;
     }
 
+    @Override
     public SFVertex3f getPos() {
         return pos;
     }
 
+    /**
+     * Restituisce la dimensione lungo x della CollisionBox.
+     * @return la dimensione lungo x della CollisionBox.
+     */
     public float getxSize() {
         return xSize;
     }
 
+    /**
+     * Restituisce la dimensione lungo y della CollisionBox.
+     * @return la dimensione lungo y della CollisionBox.
+     */
     public float getySize() {
         return ySize;
     }
 
+    /**
+     * Restituisce la dimensione lungo z della CollisionBox.
+     * @return la dimensione lungo z della CollisionBox.
+     */
     public float getzSize() {
         return zSize;
     }

@@ -2,7 +2,6 @@ package game.listeners;
 
 import game.physics.CollisionBox;
 import game.physics.CollisionMediator;
-import game.physics.CollisionUtils;
 import game.player.PlayerStatus;
 import shadow.math.SFMatrix3f;
 import shadow.math.SFVertex3f;
@@ -60,7 +59,7 @@ public class PositionMoveListenerXZWithCollisions implements PositionMoveListene
                 vertex = rotationMatrix.Mult(vertex);
                 v.set(v0);
                 v.add(vertex);
-                if (!CollisionUtils.checkCollision(playerStatus.getCollisionBox(), box)){
+                if (!CollisionMediator.checkCollision(playerStatus.getCollisionBox(), box)){
                     return;
                 }
             }

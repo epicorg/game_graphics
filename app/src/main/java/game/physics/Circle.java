@@ -3,11 +3,21 @@ package game.physics;
 import java.util.ArrayList;
 import shadow.math.SFVertex3f;
 
+/**
+ * Rappresenta una scatola di collisione circolare.
+ * @author Stefano De Pace
+ *
+ */
 public class Circle implements CollisionBox{
 
     private SFVertex3f pos;
     private float radius;
 
+    /**
+     * Costruisce una nuova CollisionBox circolare.
+     * @param pos Centro della CollisionBox.
+     * @param radius Raggio della CollisionBox.
+     */
     public Circle(SFVertex3f pos, double radius) {
         this.pos = pos;
         this.radius = (float)radius;
@@ -32,10 +42,12 @@ public class Circle implements CollisionBox{
         return ps;
     }
 
+    @Override
     public SFVertex3f getPos() {
         return pos;
     }
 
+    @Override
     public float getRadius() {
         return radius;
     }

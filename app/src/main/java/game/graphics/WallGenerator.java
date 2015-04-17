@@ -9,7 +9,8 @@ import sfogl.integration.Model;
 import sfogl.integration.ShadingProgram;
 
 /**
- * Created by depa on 14/04/15.
+ * Classe utility per generare Model per parallelepipedi texturizzati proporzionalmente alle dimensioni.
+ * @author Stefano De Pace
  */
 public class WallGenerator {
 
@@ -17,6 +18,16 @@ public class WallGenerator {
     private int texture;
     private Context context;
     private ShadingProgram program;
+
+    /**
+     * Crea un nuovo  WallGenerator con i parametri per creare un parallelepipedo.
+     * @param context Context per il recupero delle risorse.
+     * @param program ShadingProgram per ottenere lo shader per la texture.
+     * @param texture indice della texture da usare nelle risorse.
+     * @param w Dimensione lungo x del parallelepipedo.
+     * @param h Dimensione lungo y del parallelepipedo.
+     * @param l Dimensione lungo z del parallelepipedo.
+     */
 
     public WallGenerator(Context context, ShadingProgram program, int texture, float w, float h, float l) {
         this.program = program;
@@ -27,9 +38,13 @@ public class WallGenerator {
         this.texture=texture;
     }
 
+    /**
+     * Restituisce il Model appositamente dimensionato per un parallelepipedo.
+     * @return Model del parallelepipedo, già compreso di Mesh e texture.
+     */
     public Model getModel(){
         Mesh meshPos = new Mesh(generatemodel());
-        Log.d("New WallModel",w+","+h+","+l);
+        Log.d("New WallModel; dim: ",w+","+h+","+l);
         meshPos.init();
         Model modelPos = new Model();
         modelPos.setRootGeometry(meshPos);

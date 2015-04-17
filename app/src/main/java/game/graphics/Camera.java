@@ -27,7 +27,7 @@ public class Camera {
      *              nella proiezione 3D.
      * @param zfar massima distanza di un oggetto dalla telecamera per essere visualizzato
      *              nella proiezione 3D.
-     * @param angle angolo di visione della proezione 3D tra alto-basso e destra-sinistra in gradi.
+     * @param angle angolo di visione della proiezione 3D tra alto-basso e destra-sinistra in gradi.
      */
     public Camera(Player player, float znear, float zfar, float angle){
         this.me=player;

@@ -26,10 +26,13 @@ import game.player.Player;
 import sfogl.integration.Model;
 import sfogl.integration.Node;
 import sfogl.integration.ShadingProgram;
+import sfogl2.SFOGLState;
+import sfogl2.SFOGLStateEngine;
 import sfogl2.SFOGLSystemState;
 import shadow.math.SFMatrix3f;
 import shadow.math.SFTransform3f;
 
+import static android.opengl.GLES20.GL_CULL_FACE;
 import static android.opengl.GLES20.glViewport;
 
 /**
@@ -51,6 +54,7 @@ public class GraphicsView extends GLSurfaceView {
     private CollisionMediator cm;
     private Map map;
     private boolean isReadyForTouch = false;
+    private SFOGLState sfs;
 
     public GraphicsView(Context context, Player me, ArrayList<Player> otherPlayers, Map map, CountDownLatch startSignal) {
         super(context);
@@ -68,6 +72,7 @@ public class GraphicsView extends GLSurfaceView {
 
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         setRenderer(new GraphicsRenderer());
+        sfs=SFOGLStateEngine.glEnable(GL_CULL_FACE);
 
         positionMoveListener = new PositionMoveListenerXZWithCollisions(me.getStatus(), cm);
         directionMoveListener = new DirectionDirectionMoveListener(me.getStatus().getDirection(), getWidth(), getHeight());
@@ -131,7 +136,7 @@ public class GraphicsView extends GLSurfaceView {
         public void onDrawFrame(GL10 gl) {
             program.setupProjection(camera.getResultMatrix());
             SFOGLSystemState.cleanupColorAndDepth(0, 0, 1, 1);
-
+            sfs.applyState();
             drawMonkeys();
 
             groundNode.draw();
