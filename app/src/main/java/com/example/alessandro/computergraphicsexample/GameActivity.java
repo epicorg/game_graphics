@@ -18,7 +18,7 @@ import game.player.Player;
 import game.player.PlayerStatus;
 import shadow.math.SFVertex3f;
 
-public class MainActivity extends Activity {
+public class GameActivity extends Activity {
 
     private CountDownLatch startSignal = new CountDownLatch(1);
     private LinearLayout graphicsContainerLayout;
