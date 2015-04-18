@@ -1,4 +1,4 @@
-package com.example.alessandro.computergraphicsexample;
+package game.graphics;
 
 import android.content.Context;
 

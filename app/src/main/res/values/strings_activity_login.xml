@@ -20,4 +20,5 @@
 
     <string name="dialog_error">Errore</string>
     <string name="dialog_try_again">Riprova</string>
+    <string name="login_exit_message">Press BACK again to Exit</string>
 </resources>

@@ -1,7 +1,7 @@
 package game.graphics;
 
 import android.content.Context;
-import com.example.alessandro.computergraphicsexample.ShadersKeeper;
+
 import game.generators.FundamentalGenerator;
 import game.physics.Circle;
 import game.physics.CollisionBox;
@@ -43,7 +43,6 @@ public class Obstacle implements MazeObject{
     public CollisionBox getBox(){
         return c;
     }
-
 
 }
 

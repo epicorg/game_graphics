@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Inet4Address;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.net.Socket;
 import java.net.SocketException;
@@ -35,11 +36,10 @@ public class ServerCommunicationThread extends Thread {
 
     public static final String LOG_TAG = "ServerCommunicationT";
 
-    public static final String SERVER_ADDRESS = "192.168.1.2";
+    public static final String SERVER_ADDRESS = "192.168.0.88";
     public static final int SERVER_PORT = 7007;
 
-    private static ServerCommunicationThread instance = new ServerCommunicationThread();
-
+    private static ServerCommunicationThread instance;
     private Handler handler;
 
     private Socket socket;
@@ -59,10 +59,7 @@ public class ServerCommunicationThread extends Thread {
 
     @Override
     public void run() {
-        threadState = init();
-        for (ServerCommunicationThreadListener l : threadListeners) {
-            l.onThreadStateChanged(threadState);
-        }
+        init();
         if (!threadState) {
             return;
         }
@@ -74,7 +71,7 @@ public class ServerCommunicationThread extends Thread {
                 line = reader.readLine();
                 if (line != null) {
                     received = new JSONObject(line);
-                    Log.d("RESPONSE", line);
+                    Log.d(LOG_TAG, "received: " + line);
 
                     Service service = serviceChooser.setService(received);
                     service.setHandler(handler);
@@ -84,21 +81,44 @@ public class ServerCommunicationThread extends Thread {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
+                setStateAndUpdate(false);
+                return;
             }
         }
     }
 
-    public boolean init() {
+    public void init() {
         try {
-            socket = new Socket(InetAddress.getByName(SERVER_ADDRESS), SERVER_PORT);
+            socket = new Socket();
+            socket.connect(new InetSocketAddress(InetAddress.getByName(SERVER_ADDRESS), SERVER_PORT), 5000);
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             writer = new PrintWriter(socket.getOutputStream(), true);
+            setStateAndUpdate(true);
         } catch (IOException e) {
             e.printStackTrace();
             Log.e(LOG_TAG, "Init failed");
-            return false;
+            setStateAndUpdate(false);
         }
-        return true;
+        Log.e(LOG_TAG, "Init ok");
+    }
+
+    public void exit() {
+        try {
+            if (writer != null) writer.close();
+            if (reader != null) reader.close();
+            if (socket != null) socket.close();
+            setStateAndUpdate(false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        instance = null;
+        Log.e(LOG_TAG, "Exit ok");
     }
 
     public void setHandler(Handler handler) {
@@ -108,6 +128,13 @@ public class ServerCommunicationThread extends Thread {
     public void send(JSONObject object) {
         Log.d(LOG_TAG, "send: " + object.toString());
         writer.println(object.toString());
+    }
+
+    private void setStateAndUpdate(boolean state) {
+        threadState = state;
+        for (ServerCommunicationThreadListener l : threadListeners) {
+            l.onThreadStateChanged(threadState);
+        }
     }
 
     public static String getLocalIpAddress() {
@@ -121,13 +148,16 @@ public class ServerCommunicationThread extends Thread {
                     }
                 }
             }
-        } catch (SocketException ex) {
-            Log.e("EXCEPTION", ex.toString());
+        } catch (SocketException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
     public static ServerCommunicationThread getInstance() {
+        if (instance == null) {
+            instance = new ServerCommunicationThread();
+        }
         return instance;
     }
 

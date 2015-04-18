@@ -2,8 +2,6 @@ package game.graphics;
 
 import android.content.Context;
 
-import com.example.alessandro.computergraphicsexample.ShadersKeeper;
-
 import game.physics.CollisionBox;
 import game.physics.Square;
 import sfogl.integration.Node;

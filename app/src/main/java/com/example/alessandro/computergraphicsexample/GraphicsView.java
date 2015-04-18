@@ -16,6 +16,7 @@ import game.generators.FundamentalGenerator;
 import game.generators.GroundGenerator;
 import game.graphics.Camera;
 import game.graphics.Map;
+import game.graphics.ShadersKeeper;
 import game.graphics.Sky;
 import game.graphics.TextureKeeper;
 import game.listeners.DirectionDirectionMoveListener;

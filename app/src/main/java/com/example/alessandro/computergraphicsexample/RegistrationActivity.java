@@ -3,7 +3,6 @@ package com.example.alessandro.computergraphicsexample;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -114,9 +113,7 @@ public class RegistrationActivity extends Activity {
         public void handleMessage(Message msg) {
             Register.RegistrationResult result = (Register.RegistrationResult) msg.obj;
             if (result.isOk()) {
-                Intent intent = new Intent(thisActivity, MainActivity.class);
-                intent.putExtra("ParentRegistration", true);
-                thisActivity.startActivity(intent);
+                finish();
             } else {
                 ArrayList<String> errors = result.getErrors();
                 showAlertDialog(generateErrorString(errors));
@@ -128,8 +125,7 @@ public class RegistrationActivity extends Activity {
 
     private void showAlertDialog(String error) {
         AlertDialog.Builder builder = new AlertDialog.Builder(thisActivity);
-        builder.setMessage(error)
-                .setTitle(getString(R.string.dialog_error));
+        builder.setMessage(error).setTitle(getString(R.string.dialog_error));
         builder.setPositiveButton(getString(R.string.dialog_try_again), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

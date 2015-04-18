@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -37,24 +38,16 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
     private SharedPreferences loginPreference;
     private ProgressShower progressShower;
     private LoginData loginData;
+    private boolean doubleBackToExitPressedOnce;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        serverCommunicationThread = ServerCommunicationThread.getInstance();
-        serverCommunicationThread.addServerCommunicationThreadListener(this);
-
         getViews();
 
         loginPreference = getSharedPreferences("LOGIN_PREF", Context.MODE_PRIVATE);
         progressShower = new ProgressShower(views.get(R.id.login_progress), views.get(R.id.login_form), getResources().getInteger(android.R.integer.config_shortAnimTime));
-
-        Intent intent = getIntent();
-        if (!intent.getBooleanExtra("ParentRegistration", false)) {
-            init();
-        }
 
         //DEBUG
         views.get(R.id.game_graphics).setOnClickListener(new View.OnClickListener() {
@@ -64,6 +57,10 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
                 startActivity(intent);
             }
         });
+
+        serverCommunicationThread = ServerCommunicationThread.getInstance();
+        serverCommunicationThread.addServerCommunicationThreadListener(this);
+        serverCommunicationThread.start();
     }
 
     @Override
@@ -73,17 +70,29 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
         serverCommunicationThread.setHandler(new LoginHandler());
     }
 
-    private void init() {
-        serverCommunicationThread.setPriority(Thread.MAX_PRIORITY);
-        serverCommunicationThread.start();
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            serverCommunicationThread.exit();
+            super.onBackPressed();
+            return;
+        }
+
+        doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, getString(R.string.login_exit_message), Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
     }
 
     private void checkRememberMe() {
         if (loginPreference.getBoolean("Remember", false)) {
             ((TextView) views.get(R.id.username)).setText(loginPreference.getString(FieldsNames.USERNAME, "user"));
             ((TextView) views.get(R.id.password)).setText(loginPreference.getString(FieldsNames.PASSWORD, "pass"));
-            Log.d("USER_REMEMBER", loginPreference.getString("Username", "user"));
-            Log.d("PASS_REMEMBER", loginPreference.getString("Password", "pass"));
 
             attemptLogin(findViewById(R.id.login));
         }
@@ -113,7 +122,6 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
     public void rememberMe(View view) {
         CheckBox rememberBox = (CheckBox) findViewById(R.id.remeberMeBox);
         SharedPreferences.Editor editor = loginPreference.edit();
-        Log.d("REMEMBER_ME", String.valueOf(rememberBox.isChecked()));
         if (rememberBox.isChecked())
             editor.putBoolean("Remember", true);
         else
@@ -143,9 +151,8 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
             request.put(FieldsNames.SERVICE, FieldsNames.LOGIN);
             request.put(FieldsNames.USERNAME, loginData.getUsername());
             request.put(FieldsNames.PASSWORD, loginData.getPassword());
-            Log.d("REQUEST", request.toString());
         } catch (Exception e) {
-            //TODO
+            e.printStackTrace();
         }
         return request;
     }
@@ -203,8 +210,7 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
 
     private void showAlertDialog(String error) {
         AlertDialog.Builder builder = new AlertDialog.Builder(thisActivity);
-        builder.setMessage(error)
-                .setTitle(getString(R.string.dialog_error));
+        builder.setMessage(error).setTitle(getString(R.string.dialog_error));
         builder.setPositiveButton(getString(R.string.dialog_try_again), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
