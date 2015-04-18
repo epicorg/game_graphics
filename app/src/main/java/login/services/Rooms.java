@@ -2,7 +2,6 @@ package login.services;
 
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +18,9 @@ public class Rooms implements Service {
 
     public static final String LOG_TAG = "Rooms";
 
+    public static final int LIST = 0;
+    public static final int JOIN = 1;
+
     private JSONObject json;
     private Handler handler;
 
@@ -34,27 +36,45 @@ public class Rooms implements Service {
 
     private void readFields() {
         try {
-            JSONObject object = json.getJSONObject(FieldsNames.ROOMS_LIST);
-            RoomsResult[] roomsResults = new RoomsResult[object.length()];
-            Iterator<String> iterator = object.keys();
-
-            int count = 0;
-            while (iterator.hasNext()) {
-                String name = iterator.next();
-
-                JSONObject curObj = object.getJSONObject(name);
-
-                int maxPlayers = curObj.getInt(FieldsNames.ROOM_MAX_PLAYERS);
-                int currentPlayers = curObj.getInt(FieldsNames.ROOM_CURRENT_PLAYERS);
-                roomsResults[count++] = new RoomsResult(name, maxPlayers, currentPlayers);
+            Message message = null;
+            switch (json.getString(FieldsNames.SERVICE_TYPE)) {
+                case FieldsNames.ROOMS_LIST:
+                    message = getRoomsListMessage();
+                    break;
+                case FieldsNames.ROOM_JOIN:
+                    message = getJoinMessage();
+                    break;
             }
-
-            Message message = handler.obtainMessage(0, roomsResults);
             message.sendToTarget();
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    private Message getRoomsListMessage() throws JSONException {
+        JSONObject object = json.getJSONObject(FieldsNames.ROOMS_LIST);
+        RoomsResult[] roomsResults = new RoomsResult[object.length()];
+        Iterator<String> iterator = object.keys();
+
+        int count = 0;
+        while (iterator.hasNext()) {
+            String name = iterator.next();
+
+            JSONObject curObj = object.getJSONObject(name);
+
+            int maxPlayers = curObj.getInt(FieldsNames.ROOM_MAX_PLAYERS);
+            int currentPlayers = curObj.getInt(FieldsNames.ROOM_CURRENT_PLAYERS);
+            roomsResults[count++] = new RoomsResult(name, maxPlayers, currentPlayers);
+        }
+
+        return handler.obtainMessage(LIST, roomsResults);
+    }
+
+    private Message getJoinMessage() throws JSONException {
+        boolean result = json.getBoolean(FieldsNames.RESULT);
+
+        return handler.obtainMessage(JOIN, result);
     }
 
     public void setHandler(Handler handler) {
@@ -83,6 +103,7 @@ public class Rooms implements Service {
         public int getCurrentPlayers() {
             return currentPlayers;
         }
+
     }
 
 }

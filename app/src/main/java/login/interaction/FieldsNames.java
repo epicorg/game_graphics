@@ -30,6 +30,10 @@ public class FieldsNames {
      * ************************************************************************
      */
 
+    // Common
+    public static final String RESULT = "result";
+    public static final String HASHCODE = "hashcode";
+
     // Register
     public static final String EMAIL = "email";
 
@@ -44,7 +48,6 @@ public class FieldsNames {
 
     // Register, Login, Call
     public static final String IP_ADDRESS = "ipAddress";
-    public static final String HASHCODE = "hashcode";
     public static final String NO_ERRORS = "noErrors";
 
     /**
@@ -69,10 +72,11 @@ public class FieldsNames {
     // Register, Login, Call
     public static final String INVALID = "invalidField";
 
-    // Roms
+    // Rooms
     public static final String ROOMS_CREATE = "create";
     public static final String ROOMS_LIST = "list";
     public static final String ROOM_NAME = "name";
+    public static final String ROOM_JOIN = "join";
     public static final String ROOM_MAX_PLAYERS = "maxPlayers";
     public static final String ROOM_CURRENT_PLAYERS = "currentPlayers";
 

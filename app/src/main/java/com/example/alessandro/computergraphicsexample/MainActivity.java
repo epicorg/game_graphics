@@ -1,6 +1,5 @@
 package com.example.alessandro.computergraphicsexample;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -46,7 +45,6 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
 
         serverCommunicationThread = ServerCommunicationThread.getInstance();
         serverCommunicationThread.addServerCommunicationThreadListener(this);
-        serverCommunicationThread.setHandler(new LoginHandler());
 
         getViews();
 
@@ -68,14 +66,16 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        serverCommunicationThread.setHandler(new LoginHandler());
+    }
+
     private void init() {
-        //inizializzazione communicationManager
         serverCommunicationThread.setPriority(Thread.MAX_PRIORITY);
         serverCommunicationThread.start();
-
-        //se è attiva la funzione rememberme fai il login direttamente
-        System.err.println("AFTEEEEEEEEEEEEEEEEEEER");
-        checkRememberMe();
     }
 
     private void checkRememberMe() {
@@ -85,15 +85,7 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
             Log.d("USER_REMEMBER", loginPreference.getString("Username", "user"));
             Log.d("PASS_REMEMBER", loginPreference.getString("Password", "pass"));
 
-            Handler handler = new Handler();
-            Log.d("SPLEED", "start");
-            progressShower.showProgress(true);
-            handler.postDelayed(new Runnable() {
-                public void run() {
-                    Log.d("SPLEED", "end");
-                    attemptLogin(findViewById(R.id.login));
-                }
-            }, 2000);
+            attemptLogin(findViewById(R.id.login));
         }
     }
 
@@ -172,6 +164,7 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
             public void run() {
                 if (threadState) {
                     ((TextView) views.get(R.id.status)).setText("Connected");
+                    checkRememberMe();
                 } else {
                     ((TextView) views.get(R.id.status)).setText("Not Connected");
                 }
