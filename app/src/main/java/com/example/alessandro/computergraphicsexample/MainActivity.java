@@ -6,8 +6,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
+
 import game.graphics.Map;
 import game.graphics.Wall;
 import game.physics.Circle;
@@ -21,6 +23,7 @@ public class MainActivity extends Activity {
     private CountDownLatch startSignal = new CountDownLatch(1);
     private LinearLayout graphicsContainerLayout;
     private FrameLayout splashLayout;
+    private GraphicsView graphicsView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +38,16 @@ public class MainActivity extends Activity {
         ArrayList<Player> otherPlayers = new ArrayList<>();
 
         Map map = new Map();
-        double h=2.5;
-        map.addObjects(new Wall(new Square(new SFVertex3f(-9.25, -1, -2.75), 1.5, h, 14.5),R.drawable.wall_texture_02),
-                new Wall(new Square(new SFVertex3f(-6.75, -1, -4.25), 3.5, h, 1.5),R.drawable.wall_texture_02),
-                new Wall(new Square(new SFVertex3f(-1, -1, -9.25), 15, h, 1.5),R.drawable.wall_texture_02),
-                new Wall(new Square(new SFVertex3f(7.25, -1, -2.75), 1.5, h, 14.5),R.drawable.wall_texture_02),
-                new Wall(new Square(new SFVertex3f(4, -1, -4.25), 5, h, 1.5),R.drawable.wall_texture_02),
-                new Wall(new Square(new SFVertex3f(-1.75, -1, -4.25), 1.6, h, 1.6),R.drawable.wall_texture_02),
-                new Wall(new Square(new SFVertex3f(3.75, -1, 3.75), 5.5, h, 1.5),R.drawable.wall_texture_02),
-                new Wall(new Square(new SFVertex3f(-4.75, -1, 3.75), 7.5, h, 1.5),R.drawable.wall_texture_02),
-                new Wall(new Square(new SFVertex3f(-1, -1, -0.25), 10, h, 1.5),R.drawable.wall_texture_02)
+        double h = 2.5;
+        map.addObjects(new Wall(new Square(new SFVertex3f(-9.25, -1, -2.75), 1.5, h, 14.5), R.drawable.wall_texture_02),
+                new Wall(new Square(new SFVertex3f(-6.75, -1, -4.25), 3.5, h, 1.5), R.drawable.wall_texture_02),
+                new Wall(new Square(new SFVertex3f(-1, -1, -9.25), 15, h, 1.5), R.drawable.wall_texture_02),
+                new Wall(new Square(new SFVertex3f(7.25, -1, -2.75), 1.5, h, 14.5), R.drawable.wall_texture_02),
+                new Wall(new Square(new SFVertex3f(4, -1, -4.25), 5, h, 1.5), R.drawable.wall_texture_02),
+                new Wall(new Square(new SFVertex3f(-1.75, -1, -4.25), 1.6, h, 1.6), R.drawable.wall_texture_02),
+                new Wall(new Square(new SFVertex3f(3.75, -1, 3.75), 5.5, h, 1.5), R.drawable.wall_texture_02),
+                new Wall(new Square(new SFVertex3f(-4.75, -1, 3.75), 7.5, h, 1.5), R.drawable.wall_texture_02),
+                new Wall(new Square(new SFVertex3f(-1, -1, -0.25), 10, h, 1.5), R.drawable.wall_texture_02)
         );
 
         splashLayout = (FrameLayout) findViewById(R.id.splash_screen);
@@ -52,7 +55,22 @@ public class MainActivity extends Activity {
 
         startSplashScreenThread();
 
-        graphicsContainerLayout.addView(new GraphicsView(this, me, otherPlayers, map, startSignal));
+        graphicsView = new GraphicsView(this, me, otherPlayers, map, startSignal);
+        graphicsContainerLayout.addView(graphicsView);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        graphicsView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        graphicsView.onPause();
     }
 
     private void startSplashScreenThread() {

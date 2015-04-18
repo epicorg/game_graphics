@@ -3,10 +3,13 @@ package com.example.alessandro.computergraphicsexample;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
+
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
+
 import game.controls.ButtonsControl;
 import game.generators.ButtonsGenerator;
 import game.generators.FundamentalGenerator;
@@ -21,6 +24,8 @@ import game.listeners.PositionMoveListenerInterface;
 import game.listeners.PositionMoveListenerXZWithCollisions;
 import game.listeners.TouchListener;
 import game.listeners.TouchListenerInterface;
+import game.musics.BackgroundSound;
+import game.musics.GameSoundtracks;
 import game.physics.CollisionMediator;
 import game.player.Player;
 import sfogl.integration.Model;
@@ -55,27 +60,41 @@ public class GraphicsView extends GLSurfaceView {
     private Map map;
     private boolean isReadyForTouch = false;
     private SFOGLState sfs;
+    private BackgroundSound backgroundSound;
 
     public GraphicsView(Context context, Player me, ArrayList<Player> otherPlayers, Map map, CountDownLatch startSignal) {
         super(context);
         setEGLContextClientVersion(2);
+        setEGLConfigChooser(8, 8, 8, 8, 16, 0);
 
-        this.startSignal = startSignal;
         this.surfaceView = this;
         this.context = context;
         this.me = me;
         this.otherPlayers = otherPlayers;
-        this.camera = new Camera(me, 0.125f, 128, 80);
+        this.map = map;
+        this.startSignal = startSignal;
 
+        camera = new Camera(me, 0.125f, 128, 80);
         cm = new CollisionMediator();
-        this.map=map;
-
-        setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-        setRenderer(new GraphicsRenderer());
-        sfs=SFOGLStateEngine.glEnable(GL_CULL_FACE);
+        sfs = SFOGLStateEngine.glEnable(GL_CULL_FACE);
 
         positionMoveListener = new PositionMoveListenerXZWithCollisions(me.getStatus(), cm);
         directionMoveListener = new DirectionDirectionMoveListener(me.getStatus().getDirection(), getWidth(), getHeight());
+
+        backgroundSound = new BackgroundSound(context, GameSoundtracks.getSoundtracks(context));
+        setRenderer(new GraphicsRenderer());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        backgroundSound.start();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        backgroundSound.stop();
     }
 
     @Override
@@ -102,7 +121,7 @@ public class GraphicsView extends GLSurfaceView {
             TextureKeeper.reload(context);
 
             groundNode = new GroundGenerator(FundamentalGenerator.getModel(context, program, R.drawable.ground_texture_02, "Ground.obj")).getGroundNode(0, 0, 20, 20, -1);
-            map.loadMap(cm,context);
+            map.loadMap(cm, context);
             sky = new Sky(context, program, me.getStatus().getPosition());
 
             createMonkeys();
