@@ -33,7 +33,9 @@ import login.services.Service;
  */
 public class ServerCommunicationThread extends Thread {
 
-    public static final String SERVER_ADDRESS = "192.168.1.6";
+    public static final String LOG_TAG = "ServerCommunicationT";
+
+    public static final String SERVER_ADDRESS = "192.168.1.2";
     public static final int SERVER_PORT = 7007;
 
     private static ServerCommunicationThread instance = new ServerCommunicationThread();
@@ -93,7 +95,7 @@ public class ServerCommunicationThread extends Thread {
             writer = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {
             e.printStackTrace();
-            Log.e("ServerCommunicationT", "Init failed");
+            Log.e(LOG_TAG, "Init failed");
             return false;
         }
         return true;
@@ -104,6 +106,7 @@ public class ServerCommunicationThread extends Thread {
     }
 
     public void send(JSONObject object) {
+        Log.d(LOG_TAG, "send: " + object.toString());
         writer.println(object.toString());
     }
 

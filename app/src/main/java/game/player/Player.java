@@ -21,4 +21,8 @@ public class Player {
         return status;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }

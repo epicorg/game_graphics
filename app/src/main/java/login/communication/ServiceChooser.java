@@ -4,8 +4,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import login.interaction.FieldsNames;
+import login.services.CurrentRoom;
 import login.services.Login;
 import login.services.Register;
+import login.services.Rooms;
 import login.services.Service;
 import login.services.Unknown;
 
@@ -22,6 +24,10 @@ public class ServiceChooser {
                 return new Register(json);
             case FieldsNames.LOGIN:
                 return new Login(json);
+            case FieldsNames.ROOMS:
+                return new Rooms(json);
+            case FieldsNames.CURRENT_ROOM:
+                return new CurrentRoom(json);
             default:
                 //TODO
                 return new Unknown();

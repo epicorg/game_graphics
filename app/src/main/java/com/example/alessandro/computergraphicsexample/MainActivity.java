@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -29,7 +30,7 @@ import login.services.Login;
  * Activity di LogIn in cui l'utente inserisce l'username e la password per
  * essere riconosciuto dal server
  */
-public class MainActivity extends Activity implements ServerCommunicationThreadListener {
+public class MainActivity extends ActionBarActivity implements ServerCommunicationThreadListener {
 
     private MainActivity thisActivity = this;
     private ServerCommunicationThread serverCommunicationThread;
@@ -195,7 +196,7 @@ public class MainActivity extends Activity implements ServerCommunicationThreadL
                     editor.commit();
                     Log.d("REMEMBER", "fields saved");
                 }
-                Intent intent = new Intent(thisActivity, CallActivity.class);
+                Intent intent = new Intent(thisActivity, RoomsActivity.class);
                 intent.putExtra(FieldsNames.USERNAME, loginData.getUsername());
                 intent.putExtra(FieldsNames.HASHCODE, result.getHashcode());
                 thisActivity.startActivity(intent);

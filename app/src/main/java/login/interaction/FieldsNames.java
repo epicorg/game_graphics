@@ -2,25 +2,33 @@ package login.interaction;
 
 /**
  * @author Noris
- * @date 2015/03/30
  * @version 8
+ * @date 2015/03/30
  */
 
 public class FieldsNames {
 
-    /***************************************************************************
+    /**
+     * ************************************************************************
      * SERVICE NAMES
-     **************************************************************************/
+     * ************************************************************************
+     */
 
     public static final String SERVICE = "service";
+    public static final String SERVICE_TYPE = "serviceType";
+
     public static final String REGISTER = "register";
     public static final String LOGIN = "login";
     public static final String CALL = "call";
+    public static final String ROOMS = "rooms";
+    public static final String CURRENT_ROOM = "currentRoom";
     public static final String UNKNOWN = "unknown";
 
-    /***************************************************************************
+    /**
+     * ************************************************************************
      * FIELDS NAMES
-     **************************************************************************/
+     * ************************************************************************
+     */
 
     // Register
     public static final String EMAIL = "email";
@@ -39,9 +47,11 @@ public class FieldsNames {
     public static final String HASHCODE = "hashcode";
     public static final String NO_ERRORS = "noErrors";
 
-    /***************************************************************************
+    /**
+     * ************************************************************************
      * ERROR NAMES
-     **************************************************************************/
+     * ************************************************************************
+     */
 
     public static final String ERRORS = "errors";
 
@@ -58,5 +68,12 @@ public class FieldsNames {
 
     // Register, Login, Call
     public static final String INVALID = "invalidField";
+
+    // Roms
+    public static final String ROOMS_CREATE = "create";
+    public static final String ROOMS_LIST = "list";
+    public static final String ROOM_NAME = "name";
+    public static final String ROOM_MAX_PLAYERS = "maxPlayers";
+    public static final String ROOM_CURRENT_PLAYERS = "currentPlayers";
 
 }
