@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import login.communication.ServerCommunicationThread;
+import login.communication.ServerCommunicationThreadListener;
 import login.data.LoginData;
 import login.interaction.FieldsNames;
 import login.interaction.ProgressShower;
@@ -28,7 +29,7 @@ import login.services.Login;
  * Activity di LogIn in cui l'utente inserisce l'username e la password per
  * essere riconosciuto dal server
  */
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements ServerCommunicationThreadListener {
 
     private MainActivity thisActivity = this;
     private ServerCommunicationThread serverCommunicationThread;
@@ -43,14 +44,18 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_login);
 
         serverCommunicationThread = ServerCommunicationThread.getInstance();
+        serverCommunicationThread.addServerCommunicationThreadListener(this);
         serverCommunicationThread.setHandler(new LoginHandler());
+
         getViews();
+
         loginPreference = getSharedPreferences("LOGIN_PREF", Context.MODE_PRIVATE);
         progressShower = new ProgressShower(views.get(R.id.login_progress), views.get(R.id.login_form), getResources().getInteger(android.R.integer.config_shortAnimTime));
 
         Intent intent = getIntent();
-        if (!intent.getBooleanExtra("ParentRegistration", false))
+        if (!intent.getBooleanExtra("ParentRegistration", false)) {
             init();
+        }
 
         //DEBUG
         views.get(R.id.game_graphics).setOnClickListener(new View.OnClickListener() {
@@ -92,6 +97,7 @@ public class MainActivity extends Activity {
     }
 
     private void getViews() {
+        views.put(R.id.status, findViewById(R.id.status));
         views.put(R.id.username, findViewById(R.id.username));
         views.put(R.id.password, findViewById(R.id.password));
         views.put(R.id.login_form, findViewById(R.id.login_form));
@@ -156,6 +162,20 @@ public class MainActivity extends Activity {
         String username = ((TextView) views.get(R.id.username)).getText().toString();
         String password = ((TextView) views.get(R.id.password)).getText().toString();
         return new LoginData(username, password);
+    }
+
+    @Override
+    public void onThreadStateChanged(final boolean threadState) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (threadState) {
+                    ((TextView) views.get(R.id.status)).setText("Connected");
+                } else {
+                    ((TextView) views.get(R.id.status)).setText("Not Connected");
+                }
+            }
+        });
     }
 
     /**

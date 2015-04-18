@@ -15,6 +15,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 
 import login.services.Service;
@@ -35,21 +36,34 @@ public class ServerCommunicationThread extends Thread {
     public static final String SERVER_ADDRESS = "192.168.1.6";
     public static final int SERVER_PORT = 7007;
 
+    private static ServerCommunicationThread instance = new ServerCommunicationThread();
+
     private Handler handler;
 
-    private static ServerCommunicationThread instance = new ServerCommunicationThread();
     private Socket socket;
     private BufferedReader reader;
     private PrintWriter writer;
     private ServiceChooser serviceChooser = new ServiceChooser();
 
+    private boolean threadState;
+    private ArrayList<ServerCommunicationThreadListener> threadListeners;
+
     private ServerCommunicationThread() {
         super();
+
+        threadState = false;
+        threadListeners = new ArrayList<>();
     }
 
     @Override
     public void run() {
-        init();
+        threadState = init();
+        for (ServerCommunicationThreadListener l : threadListeners) {
+            l.onThreadStateChanged(threadState);
+        }
+        if (!threadState) {
+            return;
+        }
 
         String line;
         JSONObject received;
@@ -72,20 +86,17 @@ public class ServerCommunicationThread extends Thread {
         }
     }
 
-    public void init() {
+    public boolean init() {
         try {
-            Log.e("WRITER", "ok1");
             socket = new Socket(InetAddress.getByName(SERVER_ADDRESS), SERVER_PORT);
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             writer = new PrintWriter(socket.getOutputStream(), true);
-            Log.e("WRITER", "ok2");
-
         } catch (IOException e) {
-            //new CustomAlertDialog(context.getString(R.string.dialog_error),
-            //      context.getString(R.string.dialog_net_error), context.getString(R.string.dialog_try_again), context);
             e.printStackTrace();
-            Log.d("WRITER", "not_ok");
+            Log.e("ServerCommunicationT", "Init failed");
+            return false;
         }
+        return true;
     }
 
     public void setHandler(Handler handler) {
@@ -116,4 +127,13 @@ public class ServerCommunicationThread extends Thread {
     public static ServerCommunicationThread getInstance() {
         return instance;
     }
+
+    public void addServerCommunicationThreadListener(ServerCommunicationThreadListener l) {
+        threadListeners.add(l);
+    }
+
+    public void removeServerCommunicationThreadListener(ServerCommunicationThreadListener l) {
+        threadListeners.remove(l);
+    }
+
 }
