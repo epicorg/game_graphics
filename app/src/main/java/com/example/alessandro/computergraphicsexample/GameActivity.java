@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 
 import game.graphics.Map;
+import game.graphics.Obstacle;
 import game.graphics.Wall;
 import game.physics.Circle;
 import game.physics.Square;
@@ -34,7 +35,7 @@ public class GameActivity extends Activity {
         SFVertex3f position = new SFVertex3f(5, 0.5f, -7);
         SFVertex3f direction = new SFVertex3f(-1, -0.25f, 0);
 
-        Player me = new Player(new PlayerStatus(direction, new Circle(position, 0.9)), "Me");
+        Player me = new Player(new PlayerStatus(direction, new Circle(position, 0.75)), "Me");
         ArrayList<Player> otherPlayers = new ArrayList<>();
 
         Map map = new Map();
@@ -44,7 +45,8 @@ public class GameActivity extends Activity {
                 new Wall(new Square(new SFVertex3f(-1, -1, -9.25), 15, h, 1.5), R.drawable.wall_texture_02),
                 new Wall(new Square(new SFVertex3f(7.25, -1, -2.75), 1.5, h, 14.5), R.drawable.wall_texture_02),
                 new Wall(new Square(new SFVertex3f(4, -1, -4.25), 5, h, 1.5), R.drawable.wall_texture_02),
-                new Wall(new Square(new SFVertex3f(-1.75, -1, -4.25), 1.6, h, 1.6), R.drawable.wall_texture_02),
+                new Obstacle(new Circle(new SFVertex3f(-0.7, -1, -4.25),0.3),h,R.drawable.wall_texture_02),
+                new Obstacle(new Circle(new SFVertex3f(-2.9, -1, -4.25),0.3),h,R.drawable.wall_texture_02),
                 new Wall(new Square(new SFVertex3f(3.75, -1, 3.75), 5.5, h, 1.5), R.drawable.wall_texture_02),
                 new Wall(new Square(new SFVertex3f(-4.75, -1, 3.75), 7.5, h, 1.5), R.drawable.wall_texture_02),
                 new Wall(new Square(new SFVertex3f(-1, -1, -0.25), 10, h, 1.5), R.drawable.wall_texture_02)
