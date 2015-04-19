@@ -36,7 +36,7 @@ public class ServerCommunicationThread extends Thread {
 
     public static final String LOG_TAG = "ServerCommunicationT";
 
-    public static final String SERVER_ADDRESS = "192.168.0.88";
+    public static final String SERVER_ADDRESS = "192.168.1.2";
     public static final int SERVER_PORT = 7007;
 
     private static ServerCommunicationThread instance;
@@ -123,6 +123,7 @@ public class ServerCommunicationThread extends Thread {
 
     public void setHandler(Handler handler) {
         this.handler = handler;
+        setStateAndUpdate(threadState);
     }
 
     public void send(JSONObject object) {

@@ -18,6 +18,32 @@
         <LinearLayout android:id="@+id/email_login_form" android:layout_width="match_parent"
             android:layout_height="wrap_content" android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:text="Status:"
+                    android:textStyle="italic"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+
+                <TextView
+                    android:id="@+id/status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:text="Connecting.."
+                    android:textStyle="italic"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+
+            </LinearLayout>
+
             <EditText android:id="@+id/username" android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:hint="@string/prompt_username"
                 android:inputType="text" android:maxLines="1"

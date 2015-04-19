@@ -9,6 +9,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import login.communication.ServerCommunicationThread;
+import login.communication.ServerCommunicationThreadListener;
 import login.data.RegistrationData;
 import login.interaction.FieldsNames;
 import login.interaction.ProgressShower;
@@ -26,7 +28,7 @@ import login.services.Register;
 /**
  * A login screen that offers login via email/password.
  */
-public class RegistrationActivity extends Activity {
+public class RegistrationActivity extends Activity implements ServerCommunicationThreadListener {
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -41,14 +43,23 @@ public class RegistrationActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-
-        serverCommunicationThread = ServerCommunicationThread.getInstance();
-        serverCommunicationThread.setHandler(new RegistrationHandler());
         getViews();
+        serverCommunicationThread = ServerCommunicationThread.getInstance();
+        serverCommunicationThread.addServerCommunicationThreadListener(this);
+
+
+
         progressShower = new ProgressShower(views.get(R.id.login_progress), views.get(R.id.registration_form),
                 getResources().getInteger(android.R.integer.config_shortAnimTime));
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        serverCommunicationThread.setHandler(new RegistrationHandler());
     }
 
     private void getViews() {
@@ -58,6 +69,8 @@ public class RegistrationActivity extends Activity {
         views.put(R.id.registration_form, findViewById(R.id.registration_form));
         views.put(R.id.login_progress, findViewById(R.id.login_progress));
         views.put(R.id.confirm_password, findViewById(R.id.confirm_password));
+
+        views.put(R.id.status, findViewById(R.id.status));
     }
 
     /**
@@ -105,6 +118,20 @@ public class RegistrationActivity extends Activity {
         String confirmPassword = ((EditText) views.get(R.id.confirm_password)).getText().toString();
 
         return new RegistrationData(username, email, password, confirmPassword);
+    }
+
+    @Override
+    public void onThreadStateChanged(final boolean threadState) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (threadState) {
+                    ((TextView) views.get(R.id.status)).setText("Connected");
+                } else {
+                    ((TextView) views.get(R.id.status)).setText("Not Connected");
+                }
+            }
+        });
     }
 
     public class RegistrationHandler extends Handler {

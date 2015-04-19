@@ -2,7 +2,7 @@ package login.interaction;
 
 /**
  * @author Noris
- * @version 8
+ * @version 9
  * @date 2015/03/30
  */
 
@@ -73,11 +73,10 @@ public class FieldsNames {
     public static final String INVALID = "invalidField";
 
     // Rooms
-    public static final String ROOMS_CREATE = "create";
+    public static final String CREATE_ROOM = "create";
     public static final String ROOMS_LIST = "list";
     public static final String ROOM_NAME = "name";
-    public static final String ROOM_JOIN = "join";
     public static final String ROOM_MAX_PLAYERS = "maxPlayers";
     public static final String ROOM_CURRENT_PLAYERS = "currentPlayers";
-
+    public static final String ROOM_JOIN = "join";
 }

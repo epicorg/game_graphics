@@ -1,6 +1,7 @@
 package com.example.alessandro.computergraphicsexample;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -41,8 +42,11 @@ public class RoomActivity extends Activity {
 
     private JSONObject createPlayerListRequest() {
         JSONObject request = new JSONObject();
+        Intent intent =getIntent();
         try {
             request.put(FieldsNames.SERVICE, FieldsNames.ROOMS);
+            request.put(FieldsNames.HASHCODE, intent.getIntExtra(FieldsNames.HASHCODE,0));
+            request.put(FieldsNames.USERNAME, intent.getStringExtra(FieldsNames.USERNAME));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -62,7 +66,5 @@ public class RoomActivity extends Activity {
             adapter = new ArrayAdapter<Player>(getApplicationContext(), android.R.layout.simple_list_item_1, players);
             playersList.setAdapter(adapter);
         }
-
     }
-
 }

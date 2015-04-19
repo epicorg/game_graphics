@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -89,8 +88,10 @@ public class RoomsActivity extends ActionBarActivity {
         JSONObject request = new JSONObject();
         try {
             request.put(FieldsNames.SERVICE, FieldsNames.ROOMS);
-            request.put(FieldsNames.SERVICE_TYPE, FieldsNames.ROOMS_CREATE);
+            request.put(FieldsNames.SERVICE_TYPE, FieldsNames.CREATE_ROOM);
             request.put(FieldsNames.ROOM_NAME, "NomePerTest");
+            request.put(FieldsNames.HASHCODE, hashcode);
+            request.put(FieldsNames.USERNAME, username);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -103,6 +104,7 @@ public class RoomsActivity extends ActionBarActivity {
             request.put(FieldsNames.SERVICE, FieldsNames.ROOMS);
             request.put(FieldsNames.SERVICE_TYPE, FieldsNames.ROOM_JOIN);
             request.put(FieldsNames.HASHCODE, hashcode);
+            request.put(FieldsNames.USERNAME, username);
             request.put(FieldsNames.ROOM_NAME, room.getName());
         } catch (JSONException e) {
             e.printStackTrace();
@@ -115,6 +117,8 @@ public class RoomsActivity extends ActionBarActivity {
         try {
             request.put(FieldsNames.SERVICE, FieldsNames.ROOMS);
             request.put(FieldsNames.SERVICE_TYPE, FieldsNames.ROOMS_LIST);
+            request.put(FieldsNames.HASHCODE, hashcode);
+            request.put(FieldsNames.USERNAME, username);
         } catch (JSONException e) {
             e.printStackTrace();
         }
