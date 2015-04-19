@@ -47,7 +47,7 @@ public class CallManager {
             callRequest.put("port", stream.getLocalPort());
             Log.d("CallRequest", callRequest.toString());
 
-            serverCommunicationThread.send(callRequest);
+            //serverCommunicationThread.send(callRequest);
             //TODO
             /**if(jsonObject1.getBoolean("value")){
              stream.associate(InetAddress.getByName(jsonObject1.getString("ip"))

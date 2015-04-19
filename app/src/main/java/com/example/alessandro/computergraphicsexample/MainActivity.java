@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import login.communication.NotConnectedException;
 import login.communication.ServerCommunicationThread;
 import login.communication.ServerCommunicationThreadListener;
 import login.data.LoginData;
@@ -141,7 +142,14 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
 
         if (!cancel) {
             progressShower.showProgress(true);
-            serverCommunicationThread.send(createRequest());
+            try {
+                serverCommunicationThread.send(createRequest());
+            } catch (NotConnectedException e) {
+                progressShower.showProgress(false);
+                Toast.makeText(thisActivity,getString(R.string.error_not_connected),Toast.LENGTH_SHORT).show();
+                //showAlertDialog(getString(R.string.error_not_connected));
+                e.printStackTrace();
+            }
         }
     }
 
@@ -171,9 +179,11 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
             public void run() {
                 if (threadState) {
                     ((TextView) views.get(R.id.status)).setText("Connected");
+                    findViewById(R.id.log_in).setEnabled(true);
                     checkRememberMe();
                 } else {
                     ((TextView) views.get(R.id.status)).setText("Not Connected");
+                    findViewById(R.id.log_in).setEnabled(false);
                 }
             }
         });

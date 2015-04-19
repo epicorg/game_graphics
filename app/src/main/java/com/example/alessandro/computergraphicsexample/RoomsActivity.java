@@ -20,6 +20,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import game.network.Room;
+import login.communication.NotConnectedException;
 import login.communication.ServerCommunicationThread;
 import login.interaction.FieldsNames;
 import login.services.Rooms;
@@ -57,12 +58,22 @@ public class RoomsActivity extends ActionBarActivity {
         roomsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                serverCommunicationThread.send(createJoinRoomRequest(rooms.get(position)));
+                try {
+                    serverCommunicationThread.send(createJoinRoomRequest(rooms.get(position)));
+                } catch (NotConnectedException e) {
+                    Toast.makeText(context ,getString(R.string.error_not_connected),Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
             }
         });
 
         serverCommunicationThread.setHandler(new RoomsHandler());
-        serverCommunicationThread.send(createListRequest());
+        try {
+            serverCommunicationThread.send(createListRequest());
+        } catch (NotConnectedException e) {
+            Toast.makeText(this,getString(R.string.error_not_connected),Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -77,7 +88,12 @@ public class RoomsActivity extends ActionBarActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_new_rom:
-                serverCommunicationThread.send(createNewRoomRequest());
+                try {
+                    serverCommunicationThread.send(createNewRoomRequest());
+                } catch (NotConnectedException e) {
+                    Toast.makeText(context,getString(R.string.error_not_connected),Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

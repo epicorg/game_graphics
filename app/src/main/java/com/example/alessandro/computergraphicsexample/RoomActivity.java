@@ -8,6 +8,7 @@ import android.os.Message;
 import android.os.PersistableBundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,6 +16,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import game.player.Player;
+import login.communication.NotConnectedException;
 import login.communication.ServerCommunicationThread;
 import login.interaction.FieldsNames;
 import login.services.CurrentRoom;
@@ -37,7 +39,12 @@ public class RoomActivity extends Activity {
 
         playersList = (ListView) findViewById(R.id.room_list);
         serverCommunicationThread.setHandler(new RoomHandler());
-        serverCommunicationThread.send(createPlayerListRequest());
+        try {
+            serverCommunicationThread.send(createPlayerListRequest());
+        } catch (NotConnectedException e) {
+            Toast.makeText(this, getString(R.string.error_not_connected), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
     }
 
     private JSONObject createPlayerListRequest() {

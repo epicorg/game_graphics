@@ -22,4 +22,6 @@
     <string name="dialog_net_error">Errore di rete, l\'applicazione terminerà</string>
     <string name="action_game_graphics">Vai al game_graphics (DEBUG)</string>
 
+    <string name="error_not_connected">Server non raggiungibile</string>
+
 </resources>

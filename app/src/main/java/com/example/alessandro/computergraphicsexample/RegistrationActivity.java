@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +18,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import login.communication.NotConnectedException;
 import login.communication.ServerCommunicationThread;
 import login.communication.ServerCommunicationThreadListener;
 import login.data.RegistrationData;
@@ -91,7 +93,12 @@ public class RegistrationActivity extends Activity implements ServerCommunicatio
 
         if (!cancel) {
             progressShower.showProgress(true);
-            serverCommunicationThread.send(createRequest(registrationData));
+            try {
+                serverCommunicationThread.send(createRequest(registrationData));
+            } catch (NotConnectedException e) {
+                Toast.makeText(thisActivity,getString(R.string.error_not_connected),Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
         }
     }
 
@@ -127,8 +134,10 @@ public class RegistrationActivity extends Activity implements ServerCommunicatio
             public void run() {
                 if (threadState) {
                     ((TextView) views.get(R.id.status)).setText("Connected");
+                    findViewById(R.id.registration).setEnabled(true);
                 } else {
                     ((TextView) views.get(R.id.status)).setText("Not Connected");
+                    findViewById(R.id.log_in).setEnabled(false);
                 }
             }
         });

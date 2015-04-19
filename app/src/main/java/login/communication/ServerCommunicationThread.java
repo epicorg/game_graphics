@@ -16,6 +16,7 @@ import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.net.Socket;
 import java.net.SocketException;
+import java.nio.channels.NotYetConnectedException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
@@ -126,7 +127,11 @@ public class ServerCommunicationThread extends Thread {
         setStateAndUpdate(threadState);
     }
 
-    public void send(JSONObject object) {
+    public void send(JSONObject object) throws NotConnectedException {
+
+        if(writer == null || threadState == false)
+            throw new NotConnectedException();
+
         Log.d(LOG_TAG, "send: " + object.toString());
         writer.println(object.toString());
     }
