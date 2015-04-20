@@ -2,7 +2,7 @@ package login.interaction;
 
 /**
  * @author Noris
- * @version 11
+ * @version 12
  * @date 2015/03/30
  */
 
@@ -41,14 +41,6 @@ public class FieldsNames {
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
 
-    // Call
-    public static final String CALLER = "caller";
-    public static final String CALLEE = "callee";
-    public static final String PORT = "port";
-
-    // Register, Login, Call
-    public static final String IP_ADDRESS = "ipAddress";
-
     /**
      * ************************************************************************
      * ERROR NAMES
@@ -58,19 +50,16 @@ public class FieldsNames {
     public static final String NO_ERRORS = "noErrors";
     public static final String ERRORS = "errors";
 
-    // Register
-    public static final String SHORT = "short";
-    public static final String LONG = "long";
-    public static final String INVALID_CHAR = "invalidChar";
-    public static final String INVALID_DOMAIN = "invalidDomain";
-    public static final String SERVER_ERROR = "server error";
-    public static final String ALREADY_USED = "already used";
-
-    // Call
-    public static final String OFFLINE = "offline";
-
-    // Register, Login, Call
+    //Common
     public static final String INVALID = "invalidField";
+
+    // Register
+    public static final String REGISTER_SHORT = "short";
+    public static final String REGISTER_LONG = "long";
+    public static final String REGISTER_INVALID_CHAR = "invalidChar";
+    public static final String REGISTER_INVALID_DOMAIN = "invalidDomain";
+    public static final String REGISTER_SERVER_ERROR = "server error";
+    public static final String REGISTER_ALREADY_USED = "already used";
 
     // Rooms
     public static final String ROOMS_LIST = "list";
