@@ -39,6 +39,7 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
     private SharedPreferences loginPreference;
     private ProgressShower progressShower;
     private LoginData loginData;
+
     private boolean doubleBackToExitPressedOnce;
 
     @Override
@@ -58,6 +59,8 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
                 startActivity(intent);
             }
         });
+
+        checkRememberMe();
 
         serverCommunicationThread = ServerCommunicationThread.getInstance();
         serverCommunicationThread.addServerCommunicationThreadListener(this);
@@ -94,27 +97,8 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
         if (loginPreference.getBoolean("Remember", false)) {
             ((TextView) views.get(R.id.username)).setText(loginPreference.getString(FieldsNames.USERNAME, "user"));
             ((TextView) views.get(R.id.password)).setText(loginPreference.getString(FieldsNames.PASSWORD, "pass"));
-
-            attemptLogin(findViewById(R.id.login));
+            ((CheckBox) views.get(R.id.remeberMeBox)).setChecked(true);
         }
-    }
-
-    private void getViews() {
-        views.put(R.id.status, findViewById(R.id.status));
-        views.put(R.id.username, findViewById(R.id.username));
-        views.put(R.id.password, findViewById(R.id.password));
-        views.put(R.id.login_form, findViewById(R.id.login_form));
-        views.put(R.id.login_progress, findViewById(R.id.login_progress));
-
-        views.put(R.id.game_graphics, findViewById(R.id.game_graphics)); //DEBUG
-    }
-
-    /**
-     * Passa all'Activity di registrazione, invocato dalll'apposto bottone
-     */
-    public void notRegistered(View view) {
-        Intent intent = new Intent(this, RegistrationActivity.class);
-        startActivity(intent);
     }
 
     /**
@@ -131,10 +115,17 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
     }
 
     /**
+     * Passa all'Activity di registrazione, invocato dalll'apposto bottone
+     */
+    public void notRegistered(View view) {
+        Intent intent = new Intent(this, RegistrationActivity.class);
+        startActivity(intent);
+    }
+
+    /**
      * Avvia il Login inviando la richiesta al server
      */
     public void attemptLogin(View view) {
-
         ((TextView) views.get(R.id.username)).setError(null);
         ((TextView) views.get(R.id.password)).setError(null);
         loginData = getData();
@@ -146,7 +137,7 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
                 serverCommunicationThread.send(createRequest());
             } catch (NotConnectedException e) {
                 progressShower.showProgress(false);
-                Toast.makeText(thisActivity,getString(R.string.error_not_connected),Toast.LENGTH_SHORT).show();
+                Toast.makeText(thisActivity, getString(R.string.error_not_connected), Toast.LENGTH_SHORT).show();
                 //showAlertDialog(getString(R.string.error_not_connected));
                 e.printStackTrace();
             }
@@ -180,7 +171,6 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
                 if (threadState) {
                     ((TextView) views.get(R.id.status)).setText("Connected");
                     findViewById(R.id.log_in).setEnabled(true);
-                    checkRememberMe();
                 } else {
                     ((TextView) views.get(R.id.status)).setText("Not Connected");
                     findViewById(R.id.log_in).setEnabled(false);
@@ -216,6 +206,7 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
             progressShower.showProgress(false);
             Log.d("RESULT", String.valueOf(result.isOk()));
         }
+
     }
 
     private void showAlertDialog(String error) {
@@ -229,4 +220,16 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
         });
         builder.create().show();
     }
+
+    private void getViews() {
+        views.put(R.id.status, findViewById(R.id.status));
+        views.put(R.id.username, findViewById(R.id.username));
+        views.put(R.id.password, findViewById(R.id.password));
+        views.put(R.id.remeberMeBox, findViewById(R.id.remeberMeBox));
+        views.put(R.id.login_form, findViewById(R.id.login_form));
+        views.put(R.id.login_progress, findViewById(R.id.login_progress));
+
+        views.put(R.id.game_graphics, findViewById(R.id.game_graphics)); //DEBUG
+    }
+
 }
