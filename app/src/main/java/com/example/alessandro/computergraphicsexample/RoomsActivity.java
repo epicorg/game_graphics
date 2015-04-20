@@ -1,5 +1,6 @@
 package com.example.alessandro.computergraphicsexample;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -91,24 +94,51 @@ public class RoomsActivity extends ActionBarActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_new_rom:
-                try {
-                    serverCommunicationThread.send(createNewRoomRequest());
-                } catch (NotConnectedException e) {
-                    Toast.makeText(context, getString(R.string.error_not_connected), Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-                }
+                showNewRoomDialog();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private JSONObject createNewRoomRequest() {
+    private void showNewRoomDialog() {
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_newroom);
+        dialog.setTitle("Create New Room");
+
+        final EditText name = (EditText) dialog.findViewById(R.id.newroom_name);
+        final Button cancel = (Button) dialog.findViewById(R.id.newroom_cancel);
+        final Button create = (Button) dialog.findViewById(R.id.newroom_create);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+
+        create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    serverCommunicationThread.send(createNewRoomRequest(name.getText().toString()));
+                } catch (NotConnectedException e) {
+                    Toast.makeText(context, getString(R.string.error_not_connected), Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+                dialog.cancel();
+            }
+        });
+
+        dialog.show();
+    }
+
+    private JSONObject createNewRoomRequest(String name) {
         JSONObject request = new JSONObject();
         try {
             request.put(FieldsNames.SERVICE, FieldsNames.ROOMS);
             request.put(FieldsNames.SERVICE_TYPE, FieldsNames.ROOM_CREATE);
-            request.put(FieldsNames.ROOM_NAME, "NomePerTest");
+            request.put(FieldsNames.ROOM_NAME, name);
             request.put(FieldsNames.HASHCODE, hashcode);
             request.put(FieldsNames.USERNAME, username);
         } catch (JSONException e) {
