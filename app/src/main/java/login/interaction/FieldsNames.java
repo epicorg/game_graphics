@@ -64,6 +64,7 @@ public class FieldsNames {
     // Rooms
     public static final String ROOMS_LIST = "list";
     public static final String ROOM_NAME = "name";
+    public static final String ROOM_PLAYER_LIST = "playerList";
     public static final String ROOM_MAX_PLAYERS = "maxPlayers";
     public static final String ROOM_CURRENT_PLAYERS = "currentPlayers";
     public static final String ROOM_CREATE = "create";

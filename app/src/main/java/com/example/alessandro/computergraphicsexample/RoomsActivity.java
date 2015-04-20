@@ -204,11 +204,15 @@ public class RoomsActivity extends ActionBarActivity {
         }
 
         private void processJoinMessage(Message msg) {
-            if ((boolean) msg.obj) {
+            Rooms.RoomJoinResult roomJoinResult = (Rooms.RoomJoinResult) msg.obj;
+            if (roomJoinResult.getResult()) {
                 Intent intent = new Intent(context, RoomActivity.class);
+                intent.putExtra(FieldsNames.USERNAME, username);
+                intent.putExtra(FieldsNames.ROOM_NAME, roomJoinResult.getName());
+                intent.putExtra(FieldsNames.HASHCODE, hashcode);
                 startActivity(intent);
             } else {
-                Toast.makeText(context, "Error", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, getString(R.string.rooms_join_error), Toast.LENGTH_LONG).show();
             }
         }
 

@@ -95,9 +95,10 @@ public class Rooms implements Service {
     }
 
     private Message getJoinMessage() throws JSONException {
+        String name = json.getString(FieldsNames.ROOM_NAME);
         boolean result = json.getBoolean(FieldsNames.RESULT);
 
-        return handler.obtainMessage(JOIN, result);
+        return handler.obtainMessage(JOIN, new RoomJoinResult(name, result));
     }
 
     public void setHandler(Handler handler) {
@@ -125,6 +126,26 @@ public class Rooms implements Service {
 
         public int getCurrentPlayers() {
             return currentPlayers;
+        }
+
+    }
+
+    public class RoomJoinResult {
+
+        private String name;
+        private boolean result;
+
+        public RoomJoinResult(String name, boolean result) {
+            this.name = name;
+            this.result = result;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public boolean getResult() {
+            return result;
         }
 
     }
