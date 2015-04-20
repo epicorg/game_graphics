@@ -23,6 +23,7 @@ import game.network.Room;
 import login.communication.NotConnectedException;
 import login.communication.ServerCommunicationThread;
 import login.interaction.FieldsNames;
+import login.interaction.RoomsErrorStrings;
 import login.services.Rooms;
 
 /**
@@ -61,7 +62,7 @@ public class RoomsActivity extends ActionBarActivity {
                 try {
                     serverCommunicationThread.send(createJoinRoomRequest(rooms.get(position)));
                 } catch (NotConnectedException e) {
-                    Toast.makeText(context ,getString(R.string.error_not_connected),Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, getString(R.string.error_not_connected), Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
             }
@@ -71,9 +72,11 @@ public class RoomsActivity extends ActionBarActivity {
         try {
             serverCommunicationThread.send(createListRequest());
         } catch (NotConnectedException e) {
-            Toast.makeText(this,getString(R.string.error_not_connected),Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.error_not_connected), Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
+
+        getSupportActionBar().setTitle(R.string.rooms_list);
     }
 
     @Override
@@ -91,7 +94,7 @@ public class RoomsActivity extends ActionBarActivity {
                 try {
                     serverCommunicationThread.send(createNewRoomRequest());
                 } catch (NotConnectedException e) {
-                    Toast.makeText(context,getString(R.string.error_not_connected),Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, getString(R.string.error_not_connected), Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
                 return true;
@@ -152,15 +155,9 @@ public class RoomsActivity extends ActionBarActivity {
                 case Rooms.JOIN:
                     processJoinMessage(msg);
                     break;
-            }
-        }
-
-        private void processJoinMessage(Message msg) {
-            if ((boolean) msg.obj) {
-                Intent intent = new Intent(context, RoomActivity.class);
-                startActivity(intent);
-            } else {
-                Toast.makeText(context, "Error", Toast.LENGTH_LONG).show();
+                case Rooms.ERRORS:
+                    processErrorMessage(msg);
+                    break;
             }
         }
 
@@ -176,6 +173,26 @@ public class RoomsActivity extends ActionBarActivity {
             roomsList.setAdapter(adapter);
         }
 
+        private void processJoinMessage(Message msg) {
+            if ((boolean) msg.obj) {
+                Intent intent = new Intent(context, RoomActivity.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(context, "Error", Toast.LENGTH_LONG).show();
+            }
+        }
+
+        private void processErrorMessage(Message msg) {
+            RoomsErrorStrings roomsErrorStrings = new RoomsErrorStrings();
+
+            String errors = "";
+            String[] results = (String[]) msg.obj;
+            for (String s : results) {
+                errors += getString(roomsErrorStrings.getStringIdByError(s)) + "\n";
+            }
+
+            Toast.makeText(context, errors, Toast.LENGTH_LONG).show();
+        }
     }
 
 }

@@ -34,4 +34,5 @@ public class RegistrationErrorStrings {
     public int getStringIdByError(String error) {
         return errors.get(error);
     }
+
 }

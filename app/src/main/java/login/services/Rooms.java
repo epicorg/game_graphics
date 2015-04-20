@@ -2,7 +2,9 @@ package login.services;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,6 +22,7 @@ public class Rooms implements Service {
 
     public static final int LIST = 0;
     public static final int JOIN = 1;
+    public static final int ERRORS = 2;
 
     private JSONObject json;
     private Handler handler;
@@ -39,7 +42,10 @@ public class Rooms implements Service {
             Message message = null;
             switch (json.getString(FieldsNames.SERVICE_TYPE)) {
                 case FieldsNames.ROOMS_LIST:
-                    message = getRoomsListMessage();
+                    message = getRoomListMessage();
+                    break;
+                case FieldsNames.ROOM_CREATE:
+                    message = getRoomCreateMessage();
                     break;
                 case FieldsNames.ROOM_JOIN:
                     message = getJoinMessage();
@@ -52,7 +58,7 @@ public class Rooms implements Service {
         }
     }
 
-    private Message getRoomsListMessage() throws JSONException {
+    private Message getRoomListMessage() throws JSONException {
         JSONObject object = json.getJSONObject(FieldsNames.ROOMS_LIST);
         RoomsResult[] roomsResults = new RoomsResult[object.length()];
         Iterator<String> iterator = object.keys();
@@ -69,6 +75,23 @@ public class Rooms implements Service {
         }
 
         return handler.obtainMessage(LIST, roomsResults);
+    }
+
+    private Message getRoomCreateMessage() throws JSONException {
+        String[] errorsResults;
+        if (json.getBoolean(FieldsNames.NO_ERRORS)) {
+            errorsResults = new String[]{};
+            Log.d(LOG_TAG, "Room created");
+        } else {
+            JSONObject errorsObject = json.getJSONObject(FieldsNames.ERRORS);
+            JSONArray errorsArray = errorsObject.getJSONArray(FieldsNames.ERRORS);
+            errorsResults = new String[errorsArray.length()];
+            for (int i = 0; i < errorsArray.length(); i++) {
+                errorsResults[i] = errorsArray.getString(i);
+            }
+        }
+
+        return handler.obtainMessage(ERRORS, errorsResults);
     }
 
     private Message getJoinMessage() throws JSONException {

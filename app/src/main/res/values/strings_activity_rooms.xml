@@ -2,4 +2,8 @@
 
     <string name="action_new_room">New Room</string>
 
+    <string name="rooms_create_error_alreadypresent">Room already present</string>
+    <string name="rooms_create_error_invalidname">Invalid room\'s name</string>
+    <string name="rooms_list">Rooms List</string>
+
 </resources>

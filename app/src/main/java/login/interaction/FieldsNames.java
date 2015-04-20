@@ -48,7 +48,6 @@ public class FieldsNames {
 
     // Register, Login, Call
     public static final String IP_ADDRESS = "ipAddress";
-    public static final String NO_ERRORS = "noErrors";
 
     /**
      * ************************************************************************
@@ -56,6 +55,7 @@ public class FieldsNames {
      * ************************************************************************
      */
 
+    public static final String NO_ERRORS = "noErrors";
     public static final String ERRORS = "errors";
 
     // Register
