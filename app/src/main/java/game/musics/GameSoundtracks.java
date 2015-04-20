@@ -2,9 +2,6 @@ package game.musics;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
-
-import com.example.alessandro.computergraphicsexample.R;
 
 /**
  * Created by Andrea on 17/04/2015.
@@ -12,15 +9,19 @@ import com.example.alessandro.computergraphicsexample.R;
 public class GameSoundtracks {
 
     public static final String LOG_TAG = "GameSoundtracks";
+    private int[] soundtrackIds;
 
-    public static Uri[] getSoundtracks(Context context) {
-        Uri[] uris = new Uri[]
-                {
-                        Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.soundtrack_01),
-                        Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.soundtrack_02)
-                };
+    public GameSoundtracks(int... soundtrackIds){
+        this.soundtrackIds=soundtrackIds;
+    }
 
-        return uris;
+    public Uri[] getSoundtracks(Context context) {
+        int n=soundtrackIds.length;
+        Uri[] soundtracks=new Uri[n];
+        for(int i=0; i<n;i++){
+            soundtracks[i]=Uri.parse("android.resource://" + context.getPackageName() + "/" + soundtrackIds[i]);
+        }
+        return soundtracks;
     }
 
 }

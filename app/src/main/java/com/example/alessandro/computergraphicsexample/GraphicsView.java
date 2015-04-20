@@ -82,7 +82,8 @@ public class GraphicsView extends GLSurfaceView {
         positionMoveListener = new PositionMoveListenerXZWithCollisions(me.getStatus(), cm);
         directionMoveListener = new DirectionDirectionMoveListener(me.getStatus().getDirection(), getWidth(), getHeight());
 
-        backgroundSound = new BackgroundSound(context, GameSoundtracks.getSoundtracks(context));
+        backgroundSound = new BackgroundSound(context,
+                new GameSoundtracks(R.raw.soundtrack_01,R.raw.soundtrack_02).getSoundtracks(context));
         setRenderer(new GraphicsRenderer());
     }
 

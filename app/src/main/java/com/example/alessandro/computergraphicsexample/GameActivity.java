@@ -40,16 +40,17 @@ public class GameActivity extends Activity {
 
         Map map = new Map();
         double h = 2.5;
-        map.addObjects(new Wall(new Square(new SFVertex3f(-9.25, -1, -2.75), 1.5, h, 14.5), R.drawable.wall_texture_02),
-                new Wall(new Square(new SFVertex3f(-6.75, -1, -4.25), 3.5, h, 1.5), R.drawable.wall_texture_02),
-                new Wall(new Square(new SFVertex3f(-1, -1, -9.25), 15, h, 1.5), R.drawable.wall_texture_02),
-                new Wall(new Square(new SFVertex3f(7.25, -1, -2.75), 1.5, h, 14.5), R.drawable.wall_texture_02),
-                new Wall(new Square(new SFVertex3f(4, -1, -4.25), 5, h, 1.5), R.drawable.wall_texture_02),
-                new Obstacle(new Circle(new SFVertex3f(-0.7, -1, -4.25),0.3),h,R.drawable.wall_texture_02),
-                new Obstacle(new Circle(new SFVertex3f(-2.9, -1, -4.25),0.3),h,R.drawable.wall_texture_02),
-                new Wall(new Square(new SFVertex3f(3.75, -1, 3.75), 5.5, h, 1.5), R.drawable.wall_texture_02),
-                new Wall(new Square(new SFVertex3f(-4.75, -1, 3.75), 7.5, h, 1.5), R.drawable.wall_texture_02),
-                new Wall(new Square(new SFVertex3f(-1, -1, -0.25), 10, h, 1.5), R.drawable.wall_texture_02)
+        int texture_id=R.drawable.wall_texture_03;
+        map.addObjects(new Wall(new Square(new SFVertex3f(-9.25, -1, -2.75), 1.5, h, 14.5), texture_id),
+                new Wall(new Square(new SFVertex3f(-6.75, -1, -4.25), 3.5, h, 1.5), texture_id),
+                new Wall(new Square(new SFVertex3f(-1, -1, -9.25), 15, h, 1.5), texture_id),
+                new Wall(new Square(new SFVertex3f(7.25, -1, -2.75), 1.5, h, 14.5), texture_id),
+                new Wall(new Square(new SFVertex3f(4, -1, -4.25), 5, h, 1.5), texture_id),
+                new Obstacle(new Circle(new SFVertex3f(-0.7, -1, -4.25),0.3),h,R.drawable.obstacle_texture_01),
+                new Obstacle(new Circle(new SFVertex3f(-2.9, -1, -4.25),0.3),h,R.drawable.obstacle_texture_01),
+                new Wall(new Square(new SFVertex3f(3.75, -1, 3.75), 5.5, h, 1.5), texture_id),
+                new Wall(new Square(new SFVertex3f(-4.75, -1, 3.75), 7.5, h, 1.5), texture_id),
+                new Wall(new Square(new SFVertex3f(-1, -1, -0.25), 10, h, 1.5), texture_id)
         );
 
         splashLayout = (FrameLayout) findViewById(R.id.splash_screen);
