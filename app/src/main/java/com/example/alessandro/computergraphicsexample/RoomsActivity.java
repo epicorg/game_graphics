@@ -104,7 +104,7 @@ public class RoomsActivity extends ActionBarActivity {
         JSONObject request = new JSONObject();
         try {
             request.put(FieldsNames.SERVICE, FieldsNames.ROOMS);
-            request.put(FieldsNames.SERVICE_TYPE, FieldsNames.CREATE_ROOM);
+            request.put(FieldsNames.SERVICE_TYPE, FieldsNames.ROOM_CREATE);
             request.put(FieldsNames.ROOM_NAME, "NomePerTest");
             request.put(FieldsNames.HASHCODE, hashcode);
             request.put(FieldsNames.USERNAME, username);
