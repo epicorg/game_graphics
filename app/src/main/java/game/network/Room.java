@@ -11,11 +11,19 @@ public class Room {
 
     private String name;
     private int maxPlayers, currentPlayers;
+    private ArrayList<Player> players = new ArrayList<>();
 
     public Room(String name, int maxPlayers, int currentPlayers) {
         this.name = name;
         this.maxPlayers = maxPlayers;
         this.currentPlayers = currentPlayers;
+    }
+
+    public Room(String name, int maxPlayers, ArrayList<Player> players) {
+        this.name = name;
+        this.maxPlayers = maxPlayers;
+        this.players = players;
+        this.currentPlayers = players.size();
     }
 
     public void join() {

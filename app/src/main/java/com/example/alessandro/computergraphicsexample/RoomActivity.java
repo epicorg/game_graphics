@@ -5,18 +5,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PersistableBundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
+import game.network.Room;
 import game.player.Player;
 import login.communication.NotConnectedException;
 import login.communication.ServerCommunicationThread;
@@ -32,9 +30,11 @@ public class RoomActivity extends ActionBarActivity {
 
     private ServerCommunicationThread serverCommunicationThread = ServerCommunicationThread.getInstance();
 
+    private TextView roomStatus;
     private ListView playersList;
     private ArrayAdapter<Player> adapter;
-    private ArrayList<Player> players = new ArrayList<>();
+
+    private Room currentRoom;
 
     private String username, roomName;
     private int hashcode;
@@ -53,6 +53,7 @@ public class RoomActivity extends ActionBarActivity {
         roomName = intent.getStringExtra(FieldsNames.ROOM_NAME);
         hashcode = intent.getIntExtra(FieldsNames.HASHCODE, 0);
 
+        roomStatus = (TextView) findViewById(R.id.room_status);
         playersList = (ListView) findViewById(R.id.room_list);
         serverCommunicationThread.setHandler(new RoomHandler());
         try {
@@ -83,12 +84,10 @@ public class RoomActivity extends ActionBarActivity {
 
         @Override
         public void handleMessage(Message msg) {
-            CurrentRoom.CurrentRoomResult[] results = (CurrentRoom.CurrentRoomResult[]) msg.obj;
-            for (CurrentRoom.CurrentRoomResult r : results) {
-                players.add(new Player(null, r.getName()));
-            }
+            CurrentRoom.CurrentRoomResult results = (CurrentRoom.CurrentRoomResult) msg.obj;
+            currentRoom = new Room(roomName, results.getMaxPlayer(), results.getPlayers());
 
-            adapter = new ArrayAdapter<Player>(getApplicationContext(), android.R.layout.simple_list_item_1, players);
+            adapter = new ArrayAdapter<Player>(getApplicationContext(), android.R.layout.simple_list_item_1, currentRoom.getPlayers());
             playersList.setAdapter(adapter);
         }
     }

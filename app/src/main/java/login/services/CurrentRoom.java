@@ -3,11 +3,14 @@ package login.services;
 import android.os.Handler;
 import android.os.Message;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
+import game.player.Player;
 import login.interaction.FieldsNames;
 
 /**
@@ -31,19 +34,16 @@ public class CurrentRoom implements Service {
 
     private void readFields() {
         try {
-            JSONObject object = json.getJSONObject(FieldsNames.ROOMS_LIST);
-            CurrentRoomResult[] roomResults = new CurrentRoomResult[object.length()];
-            Iterator<String> iterator = object.keys();
+            JSONArray jsonPlayers = json.getJSONArray(FieldsNames.ROOM_PLAYER_LIST);
+            int maxPlayers = json.getInt(FieldsNames.ROOM_PLAYER_LIST);
 
-            int count = 0;
-            while (iterator.hasNext()) {
-                String name = iterator.next();
-                json.getJSONObject(name);
-
-                roomResults[count++] = new CurrentRoomResult(name);
+            ArrayList<Player> players = new ArrayList<>();
+            for(int i = 0; i < jsonPlayers.length(); i++){
+                players.add(new Player(null, jsonPlayers.getString(i)));
             }
 
-            Message message = handler.obtainMessage(0, roomResults);
+            CurrentRoomResult currentRoomResult = new CurrentRoomResult(maxPlayers, players);
+            Message message = handler.obtainMessage(0, currentRoomResult);
             message.sendToTarget();
         } catch (JSONException e) {
             // TODO Auto-generated catch block
@@ -57,16 +57,22 @@ public class CurrentRoom implements Service {
 
     public class CurrentRoomResult {
 
-        private String name;
+        private int maxPlayer;
+        private ArrayList<Player> players;
 
-        public CurrentRoomResult(String name) {
-            this.name = name;
+        public CurrentRoomResult(int maxPlayer, ArrayList<Player> players) {
+
+            this.maxPlayer = maxPlayer;
+            this.players = players;
         }
 
-        public String getName() {
-            return name;
+        public int getMaxPlayer() {
+            return maxPlayer;
         }
 
+        public ArrayList<Player> getPlayers() {
+            return players;
+        }
     }
 
 }
