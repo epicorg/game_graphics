@@ -135,7 +135,7 @@ public class GraphicsView extends GLSurfaceView {
             program = ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER);
             TextureKeeper.getInstance().reload(context);
 
-            groundNode = new GroundGenerator(FundamentalGenerator.getModel(context, program, R.drawable.ground_texture_02, "Ground.obj")).getGroundNode(0, 0, groundDim, groundDim, -1);
+            groundNode = new GroundGenerator(FundamentalGenerator.getModel(context, program, R.drawable.ground_texture_04, "Ground.obj")).getGroundNode(0, 0, groundDim, groundDim, -1);
             map.loadMap(cm, context);
             sky = new Sky(context, program, me.getStatus().getPosition());
 
