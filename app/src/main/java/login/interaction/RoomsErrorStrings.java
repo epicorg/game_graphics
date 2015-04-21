@@ -19,8 +19,8 @@ public class RoomsErrorStrings {
     }
 
     private void createMap() {
-        errors.put(FieldsNames.ROOM_CREATE_ERROR_ALREADYPRESENT, R.string.rooms_create_error_alreadypresent);
-        errors.put(FieldsNames.ROOM_CREATE_ERROR_INVALIDNAME, R.string.rooms_create_error_invalidname);
+        errors.put(FieldsNames.ROOM_CREATE_ERROR_ALREADY_PRESENT, R.string.rooms_create_error_alreadypresent);
+        errors.put(FieldsNames.ROOM_CREATE_ERROR_INVALID_NAME, R.string.rooms_create_error_invalidname);
     }
 
     public int getStringIdByError(String error) {

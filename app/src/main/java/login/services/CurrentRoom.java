@@ -19,6 +19,9 @@ import login.interaction.FieldsNames;
 
 public class CurrentRoom implements Service {
 
+    public static final int LIST = 0;
+    public static final int START = 1;
+
     private JSONObject json;
     private Handler handler;
 
@@ -34,21 +37,48 @@ public class CurrentRoom implements Service {
 
     private void readFields() {
         try {
-            JSONArray jsonPlayers = json.getJSONArray(FieldsNames.ROOM_PLAYER_LIST);
-            int maxPlayers = json.getInt(FieldsNames.ROOM_PLAYER_LIST);
-
-            ArrayList<Player> players = new ArrayList<>();
-            for(int i = 0; i < jsonPlayers.length(); i++){
-                players.add(new Player(null, jsonPlayers.getString(i)));
+            Message message = null;
+            switch (json.getString(FieldsNames.SERVICE_TYPE)) {
+                case FieldsNames.ROOM_PLAYER_LIST:
+                    message = getPlayerListMessage();
+                    break;
+                case FieldsNames.ROOM_START:
+                    //TODO
+                    break;
             }
-
-            CurrentRoomResult currentRoomResult = new CurrentRoomResult(maxPlayers, players);
-            Message message = handler.obtainMessage(0, currentRoomResult);
             message.sendToTarget();
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
+    }
+
+    private Message getPlayerListMessage() {
+        Message message;
+        CurrentRoomResult currentRoomResult = null;
+        try {
+            JSONArray jsonPlayers = json.getJSONArray(FieldsNames.LIST);
+            int maxPlayers = json.getInt(FieldsNames.ROOM_MAX_PLAYERS);
+
+            ArrayList<Player> players = new ArrayList<>();
+            for (int i = 0; i < jsonPlayers.length(); i++) {
+                players.add(new Player(null, jsonPlayers.getString(i)));
+            }
+
+            currentRoomResult = new CurrentRoomResult(maxPlayers, players);
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return handler.obtainMessage(LIST, currentRoomResult);
+    }
+
+    private Message getStartMessage() throws JSONException {
+        boolean result = json.getBoolean(FieldsNames.RESULT);
+
+        return handler.obtainMessage(START, result);
     }
 
     public void setHandler(Handler handler) {
@@ -73,6 +103,7 @@ public class CurrentRoom implements Service {
         public ArrayList<Player> getPlayers() {
             return players;
         }
+
     }
 
 }

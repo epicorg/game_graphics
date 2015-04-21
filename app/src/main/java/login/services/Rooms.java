@@ -59,7 +59,7 @@ public class Rooms implements Service {
     }
 
     private Message getRoomListMessage() throws JSONException {
-        JSONObject object = json.getJSONObject(FieldsNames.ROOMS_LIST);
+        JSONObject object = json.getJSONObject(FieldsNames.LIST);
         RoomsResult[] roomsResults = new RoomsResult[object.length()];
         Iterator<String> iterator = object.keys();
 

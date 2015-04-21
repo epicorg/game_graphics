@@ -33,6 +33,7 @@ public class FieldsNames {
     // Common
     public static final String RESULT = "result";
     public static final String HASHCODE = "hashcode";
+    public static final String LIST = "list";
 
     // Register
     public static final String EMAIL = "email";
@@ -58,20 +59,30 @@ public class FieldsNames {
     public static final String REGISTER_LONG = "long";
     public static final String REGISTER_INVALID_CHAR = "invalidChar";
     public static final String REGISTER_INVALID_DOMAIN = "invalidDomain";
-    public static final String REGISTER_SERVER_ERROR = "server error";
-    public static final String REGISTER_ALREADY_USED = "already used";
+    public static final String REGISTER_SERVER_ERROR = "serverError";
+    public static final String REGISTER_ALREADY_USED = "alreadyUsed";
+
+    // Rooms/Room
+    //Others
+    public static final String ROOM_MAX_PLAYERS = "maxPlayers";
 
     // Rooms
+    // Service Type
     public static final String ROOMS_LIST = "list";
-    public static final String ROOM_NAME = "name";
-    public static final String ROOM_PLAYER_LIST = "playerList";
-    public static final String ROOM_MAX_PLAYERS = "maxPlayers";
-    public static final String ROOM_CURRENT_PLAYERS = "currentPlayers";
     public static final String ROOM_CREATE = "create";
-    public static final String ROOM_CREATE_ERROR_INVALIDNAME = "createErrorInvalidname";
-    public static final String ROOM_CREATE_ERROR_ALREADYPRESENT = "createErrorAlreadyPresent";
     public static final String ROOM_JOIN = "join";
+    // Others
+    public static final String ROOM_NAME = "name";
+    public static final String ROOM_CURRENT_PLAYERS = "currentPlayers";
+    public static final String ROOM_CREATE_ERROR_INVALID_NAME = "createErrorInvalidname";
+    public static final String ROOM_CREATE_ERROR_ALREADY_PRESENT = "createErrorAlreadyPresent";
     public static final String ROOM_JOIN_ERROR_FULL = "joinErrorFull";
     public static final String ROOM_JOIN_OTHERS = "joinErrorOthers";
+
+    // Room
+    // Service Type
+    public static final String ROOM_PLAYER_LIST = "playerList";
+    public static final String ROOM_START = "start";
+    // Others
 
 }
