@@ -31,6 +31,7 @@ public class FieldsNames {
      */
 
     // Common
+    public static final String IP_ADDRESS = "ipAddress";
     public static final String RESULT = "result";
     public static final String HASHCODE = "hashcode";
     public static final String LIST = "list";
@@ -41,6 +42,11 @@ public class FieldsNames {
     // Register, Login
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
+
+    // Call
+    public static final String CALLER = "caller";
+    public static final String CALLEE = "callee";
+    public static final String PORT = "port";
 
     /**
      * ************************************************************************
@@ -53,6 +59,8 @@ public class FieldsNames {
 
     //Common
     public static final String INVALID = "invalidField";
+    public static final String OFFLINE = "offline";
+    public static final String SERVER_ERROR = "serverError";
 
     // Register
     public static final String REGISTER_SHORT = "short";
