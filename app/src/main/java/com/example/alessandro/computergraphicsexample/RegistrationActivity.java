@@ -137,7 +137,7 @@ public class RegistrationActivity extends Activity implements ServerCommunicatio
                     findViewById(R.id.registration).setEnabled(true);
                 } else {
                     ((TextView) views.get(R.id.status)).setText("Not Connected");
-                    findViewById(R.id.log_in).setEnabled(false);
+                    findViewById(R.id.registration).setEnabled(false);
                 }
             }
         });
