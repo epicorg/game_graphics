@@ -18,8 +18,17 @@ public class TextureKeeper {
 
     public static final String LOG_TAG = "TextureKeeper";
 
-    private static HashMap<Integer, BitmapTexture> mapFromResources = new HashMap<Integer, BitmapTexture>();
-    private static HashMap<Integer, BitmapTexture> mapFromColors = new HashMap<Integer, BitmapTexture>();
+    public static TextureKeeper instance=new TextureKeeper();
+
+    private  HashMap<Integer, BitmapTexture> mapFromResources = new HashMap<Integer, BitmapTexture>();
+    private  HashMap<Integer, BitmapTexture> mapFromColors = new HashMap<Integer, BitmapTexture>();
+
+    private TextureKeeper(){
+    }
+
+    public static TextureKeeper getInstance(){
+        return instance;
+    }
 
     /**
      * Carica una nuova texture da un'immagine nelle risorse, o restituisce la BitmapTexture
@@ -28,7 +37,7 @@ public class TextureKeeper {
      * @param textureId indice dell'immagine nelle risorse.
      * @return BitmapTexture che rappresenta la texture caricata.
      */
-    public static BitmapTexture getTexture(Context context, int textureId) {
+    public BitmapTexture getTexture(Context context, int textureId) {
         if (mapFromResources.containsKey(textureId))
             return mapFromResources.get(textureId);
         else {
@@ -45,7 +54,7 @@ public class TextureKeeper {
      * @param color colore da cui ottenere la texture, rappresentato con un intero a 4 bit: (R,G,B,A).
      * @return BitmapTexture che rappresenta la texture caricata.
      */
-    public static BitmapTexture getColorTexture(Context context, int color) {
+    public BitmapTexture getColorTexture(Context context, int color) {
         if (mapFromColors.containsKey(color))
             return mapFromColors.get(color);
         else {
@@ -60,7 +69,7 @@ public class TextureKeeper {
      * Ricarica tutte le immagini già caricate in precedenza, in caso di necessità.
      * @param context Context per ottenere le risorse.
      */
-    public static void reload(Context context) {
+    public void reload(Context context) {
         for (int i : mapFromResources.keySet()) {
             BitmapTexture tex = getBitmapTextureFromResource(context, i);
             Log.d(LOG_TAG, "Reloaded Texture: " + i);
@@ -74,14 +83,14 @@ public class TextureKeeper {
         }
     }
 
-    private static BitmapTexture getBitmapTextureFromResource(Context context, int textureId) {
+    private BitmapTexture getBitmapTextureFromResource(Context context, int textureId) {
         int textureModel = SFOGLTextureModel.generateTextureObjectModel(SFImageFormat.RGB, GLES20.GL_REPEAT, GLES20.GL_REPEAT, GLES20.GL_LINEAR, GLES20.GL_LINEAR);
         BitmapTexture tex = BitmapTexture.loadBitmapTexture(BitmapFactory.decodeResource(context.getResources(), textureId), textureModel);
         tex.init();
         return tex;
     }
 
-    private static BitmapTexture getBitmapTextureFromColor(int color) {
+    private BitmapTexture getBitmapTextureFromColor(int color) {
         Bitmap.Config conf = Bitmap.Config.ARGB_8888;
         Bitmap bitmap = Bitmap.createBitmap(64, 64, conf);
         bitmap.eraseColor(color);

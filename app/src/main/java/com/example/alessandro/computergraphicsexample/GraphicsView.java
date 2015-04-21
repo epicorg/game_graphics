@@ -16,6 +16,7 @@ import game.generators.FundamentalGenerator;
 import game.generators.GroundGenerator;
 import game.graphics.Camera;
 import game.graphics.Map;
+import game.graphics.PlayerView;
 import game.graphics.ShadersKeeper;
 import game.graphics.Sky;
 import game.graphics.TextureKeeper;
@@ -63,6 +64,7 @@ public class GraphicsView extends GLSurfaceView {
     private SFOGLState sfs;
     private BackgroundSound backgroundSound;
     private int groundDim;
+    private ArrayList<PlayerView> playerViews;
 
     public GraphicsView(Context context, Player me, ArrayList<Player> otherPlayers, Map map, CountDownLatch startSignal, int groundDim) {
         super(context);
@@ -73,6 +75,10 @@ public class GraphicsView extends GLSurfaceView {
         this.context = context;
         this.me = me;
         this.otherPlayers = otherPlayers;
+        playerViews=new ArrayList();
+        for(Player player: otherPlayers){
+            playerViews.add(new PlayerView(player, context, R.drawable.wall_texture_01));
+        }
         this.map = map;
         this.startSignal = startSignal;
         this.groundDim = groundDim;
@@ -93,6 +99,11 @@ public class GraphicsView extends GLSurfaceView {
     public void onResume() {
         super.onResume();
         backgroundSound.start();
+    }
+
+    public void drawPlayers(){
+        for (PlayerView view: playerViews)
+            view.draw();
     }
 
     @Override
@@ -122,7 +133,7 @@ public class GraphicsView extends GLSurfaceView {
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {
             ShadersKeeper.loadPipelineShaders(context);
             program = ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER);
-            TextureKeeper.reload(context);
+            TextureKeeper.getInstance().reload(context);
 
             groundNode = new GroundGenerator(FundamentalGenerator.getModel(context, program, R.drawable.ground_texture_02, "Ground.obj")).getGroundNode(0, 0, groundDim, groundDim, -1);
             map.loadMap(cm, context);
@@ -163,6 +174,7 @@ public class GraphicsView extends GLSurfaceView {
             drawMonkeys();
 
             groundNode.draw();
+            drawPlayers();
             map.draw();
             sky.draw();
 
