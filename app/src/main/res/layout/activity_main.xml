@@ -21,11 +21,13 @@
             android:background="#ff3366FF">
 
             <ImageView
+                android:id="@+id/imageSplash"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/splash_01" />
 
             <TextView
+                android:id="@+id/loadText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center_horizontal"

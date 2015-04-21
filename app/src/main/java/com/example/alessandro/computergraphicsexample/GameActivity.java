@@ -4,8 +4,13 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
@@ -32,6 +37,9 @@ public class GameActivity extends Activity {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
+
+        animateImage();
+        animateText();
 
         SFVertex3f position = new SFVertex3f(5, 0.5f, -7);
         SFVertex3f direction = new SFVertex3f(-1, -0.25f, 0);
@@ -104,4 +112,68 @@ public class GameActivity extends Activity {
         }).start();
     }
 
+    private void animateImage(){
+        final ImageView myImage = (ImageView) findViewById(R.id.imageSplash);
+
+        final Animation myRotation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotator);
+
+        final android.view.animation.Interpolator li = new LinearInterpolator();
+
+        myImage.startAnimation(myRotation);
+
+        myRotation.setInterpolator(li);
+
+        myRotation.setAnimationListener(new Animation.AnimationListener() {
+
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Animation myRotation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotator);
+                myRotation.setAnimationListener(this);
+                myRotation.setInterpolator(li);
+                myImage.startAnimation(myRotation);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+    }
+
+    private void animateText(){
+        final TextView textView = (TextView) findViewById(R.id.loadText);
+        final Animation fadeIn, fadeOut;
+
+        fadeIn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadein);
+        fadeOut = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadeout);
+
+        textView.startAnimation(fadeIn);
+
+        fadeIn.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                textView.startAnimation(fadeOut);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                textView.startAnimation(fadeIn);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+    }
 }
