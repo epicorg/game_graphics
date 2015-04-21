@@ -11,7 +11,8 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import game.controls.ButtonsControl;
-import game.generators.ButtonsGenerator;
+import game.generators.MoveButtonsGenerator;
+import game.controls.ButtonMaster;
 import game.generators.FundamentalGenerator;
 import game.generators.GroundGenerator;
 import game.graphics.Camera;
@@ -38,6 +39,7 @@ import sfogl2.SFOGLStateEngine;
 import sfogl2.SFOGLSystemState;
 import shadow.math.SFMatrix3f;
 import shadow.math.SFTransform3f;
+import shadow.math.SFVertex3f;
 
 import static android.opengl.GLES20.GL_CULL_FACE;
 import static android.opengl.GLES20.glViewport;
@@ -51,7 +53,6 @@ public class GraphicsView extends GLSurfaceView {
 
     private CountDownLatch startSignal;
     private Camera camera;
-    private GLSurfaceView surfaceView;
     private Context context;
     private Player me;
     private ArrayList<Player> otherPlayers;
@@ -64,18 +65,16 @@ public class GraphicsView extends GLSurfaceView {
     private SFOGLState sfs;
     private BackgroundSound backgroundSound;
     private int groundDim;
-    private ArrayList<PlayerView> playerViews;
+    private ArrayList<PlayerView> playerViews=new ArrayList();
 
     public GraphicsView(Context context, Player me, ArrayList<Player> otherPlayers, Map map, CountDownLatch startSignal, int groundDim) {
         super(context);
         setEGLContextClientVersion(2);
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
 
-        this.surfaceView = this;
         this.context = context;
         this.me = me;
         this.otherPlayers = otherPlayers;
-        playerViews=new ArrayList();
         for(Player player: otherPlayers){
             playerViews.add(new PlayerView(player, context, R.drawable.wall_texture_01));
         }
@@ -125,7 +124,7 @@ public class GraphicsView extends GLSurfaceView {
         private ShadingProgram program;
         private Sky sky;
         private Node node, groundNode;
-        private ArrayList<Node> buttonsNodes;
+        private ButtonMaster buttonMaster;
 
         private float t = 0;
 
@@ -149,11 +148,12 @@ public class GraphicsView extends GLSurfaceView {
             directionMoveListener.update(width, height);
 
             Model arrowModel = FundamentalGenerator.getModel(context, program, R.drawable.arrow_texture_02, "Arrow.obj");
-            final ButtonsGenerator buttonsGenerator = new ButtonsGenerator(arrowModel);
-            final ButtonsControl buttonsControl = new ButtonsControl(context, program, camera.getOrthoMatrix(), buttonsGenerator.getLeftNode(), buttonsGenerator.getRightNode(), buttonsGenerator.getUpNode(), buttonsGenerator.getDownNode());
 
-            touchListener = new TouchListener(surfaceView, buttonsControl, positionMoveListener, directionMoveListener);
-            buttonsNodes = buttonsGenerator.getButtons();
+            buttonMaster=new ButtonMaster(null, 0.15f, new SFVertex3f(-1f, -0.50f, 1));
+            new MoveButtonsGenerator(buttonMaster,arrowModel,positionMoveListener).generate();
+            final ButtonsControl buttonsControl=new ButtonsControl(context,program,camera.getOrthoMatrix(),buttonMaster);
+
+            touchListener = new TouchListener(buttonsControl, directionMoveListener);
 
             queueEvent(new Runnable() {
                 @Override
@@ -180,9 +180,8 @@ public class GraphicsView extends GLSurfaceView {
 
             program.setupProjection(camera.getOrthoMatrix());
 
-            for (Node buttonNode : buttonsNodes) {
-                buttonNode.draw();
-            }
+            buttonMaster.draw();
+
         }
 
 

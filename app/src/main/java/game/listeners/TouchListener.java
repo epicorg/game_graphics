@@ -1,10 +1,9 @@
 package game.listeners;
 
-import android.opengl.GLSurfaceView;
 import android.support.v4.view.MotionEventCompat;
+import android.util.Log;
 import android.view.MotionEvent;
-
-import game.controls.ButtonPositions;
+import game.controls.Button;
 import game.controls.ButtonsControl;
 
 /**
@@ -16,9 +15,7 @@ public class TouchListener implements TouchListenerInterface {
 
     public static final long TIME_SLEEP = 10;
 
-    private GLSurfaceView surfaceView;
     private ButtonsControl buttonsControl;
-    private PositionMoveListenerInterface positionMoveListener;
     private DirectionMoveListenerInterface directionMoveListener;
 
     private int positionId = -1;
@@ -28,12 +25,9 @@ public class TouchListener implements TouchListenerInterface {
 
     private float previousX, previousY;
     private Thread moveThread;
-    private ButtonPositions positions;
 
-    public TouchListener(GLSurfaceView surfaceView, ButtonsControl buttonsControl, PositionMoveListenerInterface positionMoveListener, DirectionMoveListenerInterface directionMoveListener) {
-        this.surfaceView = surfaceView;
-        this.buttonsControl = buttonsControl;
-        this.positionMoveListener = positionMoveListener;
+    public TouchListener(ButtonsControl buttonsControl, DirectionMoveListenerInterface directionMoveListener) {
+        this.buttonsControl =buttonsControl;
         this.directionMoveListener = directionMoveListener;
     }
 
@@ -82,7 +76,7 @@ public class TouchListener implements TouchListenerInterface {
                 final float touchX = MotionEventCompat.getX(event, i);
                 final float touchY = MotionEventCompat.getY(event, i);
 
-                if (buttonsControl.isInsideAButton(touchX, touchY)) {
+                if (!buttonsControl.isInsideAButton(touchX, touchY)) {
                     startPressing(event, i, touchX, touchY);
                 }
             }
@@ -108,33 +102,20 @@ public class TouchListener implements TouchListenerInterface {
         }
     }
 
-    private void callPositionListener(ButtonPositions buttonPositions, long delta) {
-        switch (buttonPositions) {
-            case LEFT:
-                positionMoveListener.move((float) +Math.PI / 2, 0, delta);
-                break;
-            case RIGHT:
-                positionMoveListener.move((float) -Math.PI / 2, 0, delta);
-                break;
-            case UP:
-                positionMoveListener.move(0, 0, delta);
-                break;
-            case DOWN:
-                positionMoveListener.move((float) -Math.PI, 0, delta);
-                break;
-        }
-    }
 
-    private void startPressing(MotionEvent event, int index, float touchX, float touchY) {
+    private void startPressing(MotionEvent event, int index, final float touchX, final float touchY) {
         isPressing = true;
         positionId = MotionEventCompat.getPointerId(event, index);
 
-        positions = buttonsControl.getPressedButton(touchX, touchY);
         moveThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (isPressing) {
-                    callPositionListener(positions, TIME_SLEEP);
+                    Button pressedButton= buttonsControl.getPressedButton(touchX, touchY);
+                    if (pressedButton!=null)
+                        pressedButton.execute(TIME_SLEEP);
+                    else
+                        Log.d(LOG_TAG,"Null button");
                     try {
                         Thread.sleep(TIME_SLEEP);
                     } catch (InterruptedException e) {

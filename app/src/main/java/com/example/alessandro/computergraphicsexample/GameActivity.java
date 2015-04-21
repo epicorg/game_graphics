@@ -62,12 +62,12 @@ public class GameActivity extends Activity {
                 new Wall(new Square(new SFVertex3f(-1, -1, -0.25), 10, h, 1.5), texture_id)
         );
 
-        for (int i = -groundDim + 1; i < groundDim; i+=2){
-            map.addObjects(new Wall(new Square(new SFVertex3f(-groundDim, -1, i), 2, 2, 2),R.drawable.hedge_texture_02_1),
-                    new Wall(new Square(new SFVertex3f(groundDim, -1, i), 2, 2, 2),R.drawable.hedge_texture_02_1),
-                    new Wall(new Square(new SFVertex3f(i, -1, -groundDim), 2, 2, 2),R.drawable.hedge_texture_02_1),
-                    new Wall(new Square(new SFVertex3f(i, -1, groundDim), 2, 2, 2),R.drawable.hedge_texture_02_1));
-        }
+        double h2=2;
+        map.addObjects(new Wall(new Square(new SFVertex3f(0,-1,groundDim),2*groundDim,h2,2),R.drawable.hedge_texture_02_1));
+        map.addObjects(new Wall(new Square(new SFVertex3f(0,-1,-groundDim),2*groundDim,h2,2),R.drawable.hedge_texture_02_1));
+        map.addObjects(new Wall(new Square(new SFVertex3f(groundDim,-1,0),2,h2,2*groundDim-2),R.drawable.hedge_texture_02_1));
+        map.addObjects(new Wall(new Square(new SFVertex3f(-groundDim,-1,0),2,h2,2*groundDim-2),R.drawable.hedge_texture_02_1));
+
 
         splashLayout = (FrameLayout) findViewById(R.id.splash_screen);
         graphicsContainerLayout = (LinearLayout) findViewById(R.id.graphics_view_container);
