@@ -25,6 +25,7 @@ public class GameActivity extends Activity {
     private LinearLayout graphicsContainerLayout;
     private FrameLayout splashLayout;
     private GraphicsView graphicsView;
+    private int groundDim = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +54,19 @@ public class GameActivity extends Activity {
                 new Wall(new Square(new SFVertex3f(-1, -1, -0.25), 10, h, 1.5), texture_id)
         );
 
+        for (int i = -groundDim + 1; i < groundDim; i+=2){
+            map.addObjects(new Wall(new Square(new SFVertex3f(-groundDim, -1, i), 2, 2, 2),R.drawable.hedge_texture_02_1),
+                    new Wall(new Square(new SFVertex3f(groundDim, -1, i), 2, 2, 2),R.drawable.hedge_texture_02_1),
+                    new Wall(new Square(new SFVertex3f(i, -1, -groundDim), 2, 2, 2),R.drawable.hedge_texture_02_1),
+                    new Wall(new Square(new SFVertex3f(i, -1, groundDim), 2, 2, 2),R.drawable.hedge_texture_02_1));
+        }
+
         splashLayout = (FrameLayout) findViewById(R.id.splash_screen);
         graphicsContainerLayout = (LinearLayout) findViewById(R.id.graphics_view_container);
 
         startSplashScreenThread();
 
-        graphicsView = new GraphicsView(this, me, otherPlayers, map, startSignal);
+        graphicsView = new GraphicsView(this, me, otherPlayers, map, startSignal, groundDim);
         graphicsContainerLayout.addView(graphicsView);
     }
 

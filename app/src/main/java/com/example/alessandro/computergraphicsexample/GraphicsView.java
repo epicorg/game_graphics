@@ -62,8 +62,9 @@ public class GraphicsView extends GLSurfaceView {
     private boolean isReadyForTouch = false;
     private SFOGLState sfs;
     private BackgroundSound backgroundSound;
+    private int groundDim;
 
-    public GraphicsView(Context context, Player me, ArrayList<Player> otherPlayers, Map map, CountDownLatch startSignal) {
+    public GraphicsView(Context context, Player me, ArrayList<Player> otherPlayers, Map map, CountDownLatch startSignal, int groundDim) {
         super(context);
         setEGLContextClientVersion(2);
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
@@ -74,6 +75,7 @@ public class GraphicsView extends GLSurfaceView {
         this.otherPlayers = otherPlayers;
         this.map = map;
         this.startSignal = startSignal;
+        this.groundDim = groundDim;
 
         camera = new Camera(me, 0.125f, 128, 80);
         cm = new CollisionMediator();
@@ -122,7 +124,7 @@ public class GraphicsView extends GLSurfaceView {
             program = ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER);
             TextureKeeper.reload(context);
 
-            groundNode = new GroundGenerator(FundamentalGenerator.getModel(context, program, R.drawable.ground_texture_02, "Ground.obj")).getGroundNode(0, 0, 20, 20, -1);
+            groundNode = new GroundGenerator(FundamentalGenerator.getModel(context, program, R.drawable.ground_texture_02, "Ground.obj")).getGroundNode(0, 0, groundDim, groundDim, -1);
             map.loadMap(cm, context);
             sky = new Sky(context, program, me.getStatus().getPosition());
 
