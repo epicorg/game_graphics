@@ -2,6 +2,7 @@ package com.example.alessandro.computergraphicsexample;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
@@ -10,11 +11,11 @@ import java.util.concurrent.CountDownLatch;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import game.controls.ButtonsControl;
-import game.generators.MoveButtonsGenerator;
 import game.controls.ButtonMaster;
+import game.controls.ButtonsControl;
 import game.generators.FundamentalGenerator;
 import game.generators.GroundGenerator;
+import game.generators.MoveButtonsGenerator;
 import game.graphics.Camera;
 import game.graphics.Map;
 import game.graphics.PlayerView;
@@ -65,7 +66,7 @@ public class GraphicsView extends GLSurfaceView {
     private SFOGLState sfs;
     private BackgroundSound backgroundSound;
     private int groundDim;
-    private ArrayList<PlayerView> playerViews=new ArrayList();
+    private ArrayList<PlayerView> playerViews = new ArrayList();
 
     public GraphicsView(Context context, Player me, ArrayList<Player> otherPlayers, Map map, CountDownLatch startSignal, int groundDim) {
         super(context);
@@ -75,7 +76,7 @@ public class GraphicsView extends GLSurfaceView {
         this.context = context;
         this.me = me;
         this.otherPlayers = otherPlayers;
-        for(Player player: otherPlayers){
+        for (Player player : otherPlayers) {
             playerViews.add(new PlayerView(player, context, R.drawable.wall_texture_01));
         }
         this.map = map;
@@ -89,8 +90,7 @@ public class GraphicsView extends GLSurfaceView {
         positionMoveListener = new PositionMoveListenerXZWithCollisions(me.getStatus(), cm);
         directionMoveListener = new DirectionDirectionMoveListener(me.getStatus().getDirection(), getWidth(), getHeight());
 
-        backgroundSound = new BackgroundSound(context,
-                new GameSoundtracks(R.raw.soundtrack_01,R.raw.soundtrack_02).getSoundtracks(context));
+        backgroundSound = new BackgroundSound(context, new GameSoundtracks(R.raw.soundtrack_01, R.raw.soundtrack_02).getSoundtracks(context));
         setRenderer(new GraphicsRenderer());
     }
 
@@ -100,8 +100,8 @@ public class GraphicsView extends GLSurfaceView {
         backgroundSound.start();
     }
 
-    public void drawPlayers(){
-        for (PlayerView view: playerViews)
+    public void drawPlayers() {
+        for (PlayerView view : playerViews)
             view.draw();
     }
 
@@ -130,6 +130,8 @@ public class GraphicsView extends GLSurfaceView {
 
         @Override
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+            Log.d(LOG_TAG, "onSurfaceCreated");
+
             ShadersKeeper.loadPipelineShaders(context);
             program = ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER);
             TextureKeeper.getInstance().reload(context);
@@ -143,15 +145,17 @@ public class GraphicsView extends GLSurfaceView {
 
         @Override
         public void onSurfaceChanged(GL10 gl, final int width, final int height) {
+            Log.d(LOG_TAG, "onSurfaceChanged");
+
             glViewport(0, 0, width, height);
             camera.updateMatrices((float) width / height);
             directionMoveListener.update(width, height);
 
             Model arrowModel = FundamentalGenerator.getModel(context, program, R.drawable.arrow_texture_02, "Arrow.obj");
 
-            buttonMaster=new ButtonMaster(null, 0.15f, new SFVertex3f(-1f, -0.50f, 1));
-            new MoveButtonsGenerator(buttonMaster,arrowModel,positionMoveListener).generate();
-            final ButtonsControl buttonsControl=new ButtonsControl(context,program,camera.getOrthoMatrix(),buttonMaster);
+            buttonMaster = new ButtonMaster(null, 0.15f, new SFVertex3f(-1f, -0.50f, 1));
+            new MoveButtonsGenerator(buttonMaster, arrowModel, positionMoveListener).generate();
+            final ButtonsControl buttonsControl = new ButtonsControl(context, program, camera.getOrthoMatrix(), buttonMaster);
 
             touchListener = new TouchListener(buttonsControl, directionMoveListener);
 
@@ -181,7 +185,6 @@ public class GraphicsView extends GLSurfaceView {
             program.setupProjection(camera.getOrthoMatrix());
 
             buttonMaster.draw();
-
         }
 
 
