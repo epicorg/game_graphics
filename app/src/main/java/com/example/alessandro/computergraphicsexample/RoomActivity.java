@@ -17,10 +17,10 @@ import org.json.JSONObject;
 import game.GameManager;
 import game.Room;
 import game.player.Player;
-import network.communication.NotConnectedException;
-import network.communication.ServerCommunicationThread;
-import network.interaction.FieldsNames;
-import network.services.CurrentRoom;
+import login.communication.NotConnectedException;
+import login.communication.ServerCommunicationThread;
+import login.interaction.FieldsNames;
+import login.services.CurrentRoom;
 
 /**
  * Created by Andrea on 18/04/2015.

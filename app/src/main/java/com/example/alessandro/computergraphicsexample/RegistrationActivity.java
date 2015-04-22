@@ -18,14 +18,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import network.communication.NotConnectedException;
-import network.communication.ServerCommunicationThread;
-import network.communication.ServerCommunicationThreadListener;
-import network.data.RegistrationData;
-import network.interaction.FieldsNames;
-import network.interaction.ProgressShower;
-import network.interaction.RegistrationErrorStrings;
-import network.services.Register;
+import login.communication.NotConnectedException;
+import login.communication.ServerCommunicationThread;
+import login.communication.ServerCommunicationThreadListener;
+import login.data.RegistrationData;
+import login.interaction.FieldsNames;
+import login.interaction.ProgressShower;
+import login.interaction.RegistrationErrorStrings;
+import login.services.Register;
 
 /**
  * A login screen that offers login via email/password.
