@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -20,37 +18,30 @@ import java.util.concurrent.CountDownLatch;
 
 import game.GameManager;
 import game.Room;
-import game.codes.TextureCodes;
-import game.graphics.Map;
-import game.graphics.Obstacle;
-import game.graphics.Wall;
 import game.musics.BackgroundSound;
 import game.musics.GameSoundtracks;
+import game.net.GameHandler;
+import game.net.GameHandlerListener;
 import game.physics.Circle;
-import game.physics.Square;
 import game.player.Player;
 import game.player.PlayerStatus;
 import game.views.SplashScreen;
 import login.communication.NotConnectedException;
 import login.communication.ServerCommunicationThread;
 import login.interaction.FieldsNames;
-import login.services.Game;
 import shadow.math.SFVertex3f;
 
-public class GameActivity extends Activity {
+public class GameActivity extends Activity implements GameHandlerListener {
 
     public static final String LOG_TAG = "GameActivity";
 
     private ServerCommunicationThread serverCommunicationThread = ServerCommunicationThread.getInstance();
     private BackgroundSound backgroundSound;
     private GameManager gameManager;
+    private GameHandler gameHandler;
 
     private CountDownLatch startSignal = new CountDownLatch(1);
     private GraphicsView graphicsView;
-
-    private int groundWidth = 0;
-    private int groundHeight = 0;
-    private Map map;
 
     private String username;
     private int hashcode;
@@ -79,7 +70,10 @@ public class GameActivity extends Activity {
 
         gameManager = GameManager.getInstance();
         gameManager.setRoom(new Room("TestRoom", 10, 2)); //DEBUG
-        serverCommunicationThread.setHandler(new GameHandler());
+        gameHandler = new GameHandler();
+        gameHandler.addGameHandlerListeners(this);
+
+        serverCommunicationThread.setHandler(gameHandler);
         Log.d(LOG_TAG, "Asking Map..");
         try {
             serverCommunicationThread.send(createMapRequest());
@@ -89,9 +83,10 @@ public class GameActivity extends Activity {
         }
     }
 
-    private void continueAfterMapReceived() {
-        Log.d(LOG_TAG, "continueAfterMapReceived");
-        gameManager.setMap(map);
+    @Override
+    public void onMapReceived() {
+        Log.d(LOG_TAG, "onMapReceived");
+        gameManager.setMap(gameHandler.getMap());
 
         SFVertex3f position = new SFVertex3f(5, 0.5f, -7);
         SFVertex3f direction = new SFVertex3f(-1, -0.25f, 0);
@@ -108,8 +103,10 @@ public class GameActivity extends Activity {
         }
 
         Log.d(LOG_TAG, "Starting GraphicsView..");
-        final LinearLayout graphicsContainerLayout = (LinearLayout) findViewById(R.id.graphics_view_container);
-        graphicsView = new GraphicsView(context, me, otherPlayers, gameManager.getMap(), startSignal, groundWidth, groundHeight);
+        LinearLayout graphicsContainerLayout = (LinearLayout) findViewById(R.id.graphics_view_container);
+        int width = gameHandler.getGroundWidth();
+        int height = gameHandler.getGroundHeight();
+        graphicsView = new GraphicsView(context, me, otherPlayers, gameManager.getMap(), startSignal, width, height);
         graphicsContainerLayout.addView(graphicsView);
     }
 
@@ -142,55 +139,6 @@ public class GameActivity extends Activity {
             e.printStackTrace();
         }
         return request;
-    }
-
-    public class GameHandler extends Handler {
-
-        @Override
-        public void handleMessage(Message msg) {
-            Log.d(LOG_TAG, "handleMessage");
-            switch (msg.what) {
-                case Game.STATUS:
-                    break;
-                case Game.MAP:
-                    processMapMessage(msg);
-                    break;
-                case Game.POSITIONS:
-                    break;
-            }
-        }
-
-        private void processMapMessage(Message msg) {
-            Log.d(LOG_TAG, "processMapMessage");
-            Game.GameMapResult results = (Game.GameMapResult) msg.obj;
-            map = new Map();
-
-            for (Game.GameMapObject o : results.getGameMapObjects()) {
-                if (o.object.equals("Wall")) {
-                    float posX = Float.parseFloat(o.position.split(" ")[0]);
-                    float posY = Float.parseFloat(o.position.split(" ")[1]);
-                    float posZ = Float.parseFloat(o.position.split(" ")[2]);
-                    float sizeX = Float.parseFloat(o.size.split(" ")[0]);
-                    float sizeY = Float.parseFloat(o.size.split(" ")[1]);
-                    float sizeZ = Float.parseFloat(o.size.split(" ")[2]);
-                    int texture = TextureCodes.getTextureIdFromString(o.texture);
-                    map.addObjects(new Wall(new Square(new SFVertex3f(posX, posY, posZ), sizeX, sizeY, sizeZ), texture));
-                } else if (o.object.equals("Obstacle")) {
-                    float posX = Float.parseFloat(o.position.split(" ")[0]);
-                    float posY = Float.parseFloat(o.position.split(" ")[1]);
-                    float posZ = Float.parseFloat(o.position.split(" ")[2]);
-                    float sizeX = Float.parseFloat(o.size.split(" ")[0]);
-                    float sizeY = Float.parseFloat(o.size.split(" ")[1]);
-                    int texture = TextureCodes.getTextureIdFromString(o.texture);
-                    map.addObjects(new Obstacle(new Circle(new SFVertex3f(posX, posY, posZ), sizeX), sizeY, texture));
-                }
-            }
-
-            groundWidth = results.getWidth();
-            groundHeight = results.getHeight();
-
-            continueAfterMapReceived();
-        }
     }
 
 }
