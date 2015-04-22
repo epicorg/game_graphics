@@ -2,6 +2,7 @@ package login.services;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,9 +14,11 @@ import login.interaction.FieldsNames;
 
 public class Game implements Service {
 
+    public static final String LOG_TAG = "Game";
+
     public static final int STATUS = 0;
     public static final int MAP = 1;
-    public static final int POSITIONS = 1;
+    public static final int POSITIONS = 2;
 
     private JSONObject json;
     private Handler handler;
@@ -77,7 +80,8 @@ public class Game implements Service {
                 String object = jObject.getString(FieldsNames.GAME_OBJECT);
                 String texture = jObject.getString(FieldsNames.GAME_TEXTURE);
                 String position = jObject.getString(FieldsNames.GAME_POSITION);
-                gameMapObjects.add(new GameMapObject(object, texture, position));
+                String size = jObject.getString(FieldsNames.GAME_SIZE);
+                gameMapObjects.add(new GameMapObject(object, texture, position, size));
             }
 
             width = json.getInt(FieldsNames.GAME_WIDTH);
@@ -153,14 +157,14 @@ public class Game implements Service {
     }
 
     public class GameMapObject {
-        public String object, texture, position;
+        public String object, texture, position, size;
 
-        public GameMapObject(String object, String texture, String position) {
+        public GameMapObject(String object, String texture, String position, String size) {
             this.object = object;
             this.texture = texture;
             this.position = position;
+            this.size = size;
         }
-
     }
 
     public class GamePositionsResult {

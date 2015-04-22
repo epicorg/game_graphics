@@ -22,6 +22,7 @@ public class FieldsNames {
     public static final String CALL = "call";
     public static final String ROOMS = "rooms";
     public static final String CURRENT_ROOM = "currentRoom";
+    public static final String GAME = "game";
     public static final String UNKNOWN = "unknown";
 
     /**
@@ -107,6 +108,10 @@ public class FieldsNames {
     public static final String GAME_OBJECT = "object";
     public static final String GAME_TEXTURE = "texture";
     public static final String GAME_POSITION = "position";
+    public static final String GAME_SIZE = "size";
+    public static final String GAME_X = "x";
+    public static final String GAME_Y = "y";
+    public static final String GAME_Z = "z";
     public static final String GAME_PLAYER_NAME = "playerName";
 
 }

@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import login.interaction.FieldsNames;
 import login.services.CurrentRoom;
+import login.services.Game;
 import login.services.Login;
 import login.services.Register;
 import login.services.Rooms;
@@ -28,6 +29,8 @@ public class ServiceChooser {
                 return new Rooms(json);
             case FieldsNames.CURRENT_ROOM:
                 return new CurrentRoom(json);
+            case FieldsNames.GAME:
+                return new Game(json);
             default:
                 //TODO
                 return new Unknown();

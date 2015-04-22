@@ -46,7 +46,6 @@ public class RoomActivity extends ActionBarActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room);
-
         context = this;
 
         Intent intent = getIntent();

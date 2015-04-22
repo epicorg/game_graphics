@@ -64,11 +64,11 @@ public class GraphicsView extends GLSurfaceView {
     private Map map;
     private boolean isReadyForTouch = false;
     private SFOGLState sfs;
-    private BackgroundSound backgroundSound;
-    private int groundDim;
+
+    private int groundWidth, groundHeight;
     private ArrayList<PlayerView> playerViews = new ArrayList();
 
-    public GraphicsView(Context context, Player me, ArrayList<Player> otherPlayers, Map map, CountDownLatch startSignal, int groundDim) {
+    public GraphicsView(Context context, Player me, ArrayList<Player> otherPlayers, Map map, CountDownLatch startSignal, int groundWidth, int groundHeight) {
         super(context);
         setEGLContextClientVersion(2);
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
@@ -81,7 +81,8 @@ public class GraphicsView extends GLSurfaceView {
         }
         this.map = map;
         this.startSignal = startSignal;
-        this.groundDim = groundDim;
+        this.groundWidth = groundWidth;
+        this.groundHeight = groundHeight;
 
         camera = new Camera(me, 0.125f, 128, 80);
         cm = new CollisionMediator();
@@ -90,14 +91,12 @@ public class GraphicsView extends GLSurfaceView {
         positionMoveListener = new PositionMoveListenerXZWithCollisions(me.getStatus(), cm);
         directionMoveListener = new DirectionDirectionMoveListener(me.getStatus().getDirection(), getWidth(), getHeight());
 
-        backgroundSound = new BackgroundSound(context, new GameSoundtracks(R.raw.soundtrack_01, R.raw.soundtrack_02).getSoundtracks(context));
         setRenderer(new GraphicsRenderer());
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        backgroundSound.start();
     }
 
     public void drawPlayers() {
@@ -108,7 +107,6 @@ public class GraphicsView extends GLSurfaceView {
     @Override
     public void onPause() {
         super.onPause();
-        backgroundSound.stop();
     }
 
     @Override
@@ -136,7 +134,7 @@ public class GraphicsView extends GLSurfaceView {
             program = ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER);
             TextureKeeper.getInstance().reload(context);
 
-            groundNode = new GroundGenerator(FundamentalGenerator.getModel(context, program, R.drawable.ground_texture_04, "Ground.obj")).getGroundNode(0, 0, groundDim, groundDim, -1);
+            groundNode = new GroundGenerator(FundamentalGenerator.getModel(context, program, R.drawable.ground_texture_04, "Ground.obj")).getGroundNode(0, 0, groundWidth, groundHeight, -1);
             map.loadMap(cm, context);
             sky = new Sky(context, program, me.getStatus().getPosition());
 
