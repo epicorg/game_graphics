@@ -93,4 +93,14 @@ public class FieldsNames {
     public static final String ROOM_START = "start";
     // Others
 
+    // Game
+    // Service Type
+    public static final String GAME_STATUS = "start";
+    public static final String GAME_INFO = "info";
+    // Others
+    public static final String GAME_READY = "ready";
+    public static final String GAME_GO = "go";
+    public static final String GAME_POSITIONS = "positions";
+    public static final String GAME_PLAYER_NAME = "playerName";
+
 }

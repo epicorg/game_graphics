@@ -16,7 +16,6 @@ import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.net.Socket;
 import java.net.SocketException;
-import java.nio.channels.NotYetConnectedException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 

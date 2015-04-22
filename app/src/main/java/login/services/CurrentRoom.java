@@ -8,7 +8,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import game.player.Player;
 import login.interaction.FieldsNames;
@@ -55,7 +54,6 @@ public class CurrentRoom implements Service {
     }
 
     private Message getPlayerListMessage() {
-        Message message;
         CurrentRoomResult currentRoomResult = null;
         try {
             JSONArray jsonPlayers = json.getJSONArray(FieldsNames.LIST);
