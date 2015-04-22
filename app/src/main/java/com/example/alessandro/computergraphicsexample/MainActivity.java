@@ -19,13 +19,13 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import login.communication.NotConnectedException;
-import login.communication.ServerCommunicationThread;
-import login.communication.ServerCommunicationThreadListener;
-import login.data.LoginData;
-import login.interaction.FieldsNames;
-import login.interaction.ProgressShower;
-import login.services.Login;
+import network.communication.NotConnectedException;
+import network.communication.ServerCommunicationThread;
+import network.communication.ServerCommunicationThreadListener;
+import network.data.LoginData;
+import network.interaction.FieldsNames;
+import network.interaction.ProgressShower;
+import network.services.Login;
 
 /**
  * Activity di LogIn in cui l'utente inserisce l'username e la password per
@@ -45,7 +45,7 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_main);
         getViews();
 
         loginPreference = getSharedPreferences("LOGIN_PREF", Context.MODE_PRIVATE);

@@ -22,12 +22,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import game.network.Room;
-import login.communication.NotConnectedException;
-import login.communication.ServerCommunicationThread;
-import login.interaction.FieldsNames;
-import login.interaction.RoomsErrorStrings;
-import login.services.Rooms;
+import game.Room;
+import network.communication.NotConnectedException;
+import network.communication.ServerCommunicationThread;
+import network.interaction.FieldsNames;
+import network.interaction.RoomsErrorStrings;
+import network.services.Rooms;
 
 /**
  * Created by Andrea on 18/04/2015.
@@ -227,6 +227,7 @@ public class RoomsActivity extends ActionBarActivity {
 
             Toast.makeText(context, errors, Toast.LENGTH_LONG).show();
         }
+
     }
 
 }

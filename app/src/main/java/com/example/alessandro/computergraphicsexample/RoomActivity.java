@@ -14,12 +14,13 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import game.network.Room;
+import game.GameManager;
+import game.Room;
 import game.player.Player;
-import login.communication.NotConnectedException;
-import login.communication.ServerCommunicationThread;
-import login.interaction.FieldsNames;
-import login.services.CurrentRoom;
+import network.communication.NotConnectedException;
+import network.communication.ServerCommunicationThread;
+import network.interaction.FieldsNames;
+import network.services.CurrentRoom;
 
 /**
  * Created by Andrea on 18/04/2015.
@@ -84,11 +85,35 @@ public class RoomActivity extends ActionBarActivity {
 
         @Override
         public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case CurrentRoom.LIST:
+                    processListMessage(msg);
+                    break;
+                case CurrentRoom.START:
+                    processStartMessage(msg);
+                    break;
+            }
+        }
+
+        private void processListMessage(Message msg){
             CurrentRoom.CurrentRoomResult results = (CurrentRoom.CurrentRoomResult) msg.obj;
             currentRoom = new Room(roomName, results.getMaxPlayer(), results.getPlayers());
 
             adapter = new ArrayAdapter<Player>(getApplicationContext(), android.R.layout.simple_list_item_1, currentRoom.getPlayers());
             playersList.setAdapter(adapter);
         }
+
+        private void processStartMessage(Message msg){
+            boolean result = (boolean) msg.obj;
+
+            if(result){
+                GameManager gameManager = GameManager.getInstance();
+                gameManager.setRoom(currentRoom);
+
+                Intent intent = new Intent(getApplicationContext(), GameActivity.class);
+                startActivity(intent);
+            }
+        }
+
     }
 }
