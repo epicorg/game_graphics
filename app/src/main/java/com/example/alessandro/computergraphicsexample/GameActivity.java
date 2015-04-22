@@ -13,9 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.concurrent.CountDownLatch;
 
 import game.GameManager;
+import game.Room;
 import game.graphics.Map;
 import game.graphics.Obstacle;
 import game.graphics.Wall;
@@ -35,6 +37,9 @@ public class GameActivity extends Activity {
     private GraphicsView graphicsView;
     private int groundDim = 20;
 
+    private String username;
+    private int hashcode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +55,19 @@ public class GameActivity extends Activity {
         SFVertex3f direction = new SFVertex3f(-1, -0.25f, 0);
 
         Player me = new Player(new PlayerStatus(direction, new Circle(position, 0.75)), "Me");
-        ArrayList<Player> otherPlayers = new ArrayList<>();
+
+        //DEBUG
+        gameManager.setRoom(new Room("TestRoom", 10, 2));
+
+        ArrayList<Player> otherPlayers = gameManager.getRoom().getPlayers();
+        Iterator<Player> iterator = otherPlayers.iterator();
+        while (iterator.hasNext()) {
+            Player p = iterator.next();
+            if (p.getName().equals(username)) {
+                me = p;
+                iterator.remove();
+            }
+        }
 
         Map map = new Map();
         double h = 2.5;
@@ -118,28 +135,20 @@ public class GameActivity extends Activity {
     }
 
     private void animateImage() {
-        final ImageView myImage = (ImageView) findViewById(R.id.imageSplash);
-
-        final Animation myRotation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotator);
-
+        final ImageView imageSplash = (ImageView) findViewById(R.id.imageSplash);
+        final Animation imageRotation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotator);
         final android.view.animation.Interpolator li = new LinearInterpolator();
+        imageSplash.startAnimation(imageRotation);
+        imageRotation.setInterpolator(li);
 
-        myImage.startAnimation(myRotation);
-
-        myRotation.setInterpolator(li);
-
-        myRotation.setAnimationListener(new Animation.AnimationListener() {
-
+        imageRotation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                Animation myRotation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotator);
-                myRotation.setAnimationListener(this);
-                myRotation.setInterpolator(li);
-                myImage.startAnimation(myRotation);
+                imageSplash.startAnimation(imageRotation);
             }
 
             @Override
@@ -149,13 +158,13 @@ public class GameActivity extends Activity {
     }
 
     private void animateText() {
-        final TextView textView = (TextView) findViewById(R.id.loadText);
+        final TextView loadText = (TextView) findViewById(R.id.loadText);
         final Animation fadeIn, fadeOut;
 
         fadeIn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadein);
         fadeOut = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadeout);
 
-        textView.startAnimation(fadeIn);
+        loadText.startAnimation(fadeIn);
 
         fadeIn.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -164,7 +173,7 @@ public class GameActivity extends Activity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                textView.startAnimation(fadeOut);
+                loadText.startAnimation(fadeOut);
             }
 
             @Override
@@ -179,7 +188,7 @@ public class GameActivity extends Activity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                textView.startAnimation(fadeIn);
+                loadText.startAnimation(fadeIn);
             }
 
             @Override

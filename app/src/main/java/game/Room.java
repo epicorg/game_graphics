@@ -31,9 +31,6 @@ public class Room {
     }
 
     public ArrayList<Player> getPlayers() {
-        //TODO
-
-        ArrayList<Player> players = new ArrayList<>();
         return players;
     }
 
