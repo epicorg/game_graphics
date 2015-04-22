@@ -95,12 +95,18 @@ public class FieldsNames {
 
     // Game
     // Service Type
-    public static final String GAME_STATUS = "start";
-    public static final String GAME_INFO = "info";
+    public static final String GAME_STATUS = "status";
+    public static final String GAME_MAP = "map";
+    public static final String GAME_POSITIONS = "positions";
     // Others
     public static final String GAME_READY = "ready";
     public static final String GAME_GO = "go";
-    public static final String GAME_POSITIONS = "positions";
+    public static final String GAME_WIDTH = "width";
+    public static final String GAME_HEIGHT = "height";
+    public static final String GAME_ITEMS = "items";
+    public static final String GAME_OBJECT = "object";
+    public static final String GAME_TEXTURE = "texture";
+    public static final String GAME_POSITION = "position";
     public static final String GAME_PLAYER_NAME = "playerName";
 
 }

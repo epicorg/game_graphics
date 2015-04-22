@@ -3,6 +3,8 @@ package com.example.alessandro.computergraphicsexample;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -21,11 +23,14 @@ import game.physics.Square;
 import game.player.Player;
 import game.player.PlayerStatus;
 import game.views.SplashScreen;
+import login.communication.ServerCommunicationThread;
 import shadow.math.SFVertex3f;
 
 public class GameActivity extends Activity {
 
     public static final String LOG_TAG = "GameActivity";
+
+    private ServerCommunicationThread serverCommunicationThread = ServerCommunicationThread.getInstance();
 
     private GameManager gameManager;
 
@@ -47,16 +52,19 @@ public class GameActivity extends Activity {
         setContentView(R.layout.activity_game);
         context = this;
 
+        Log.d(LOG_TAG, "Starting SplashScreen..");
+        SplashScreen splashScreen = new SplashScreen(this, R.id.game_splash_container, R.id.game_splash_image, R.id.game_splash_text, startSignal);
+        splashScreen.animate();
+
+        serverCommunicationThread.setHandler(new GameHandler());
+
         gameManager = GameManager.getInstance();
+        gameManager.setRoom(new Room("TestRoom", 10, 2)); //DEBUG
 
         SFVertex3f position = new SFVertex3f(5, 0.5f, -7);
         SFVertex3f direction = new SFVertex3f(-1, -0.25f, 0);
 
         me = new Player(new PlayerStatus(direction, new Circle(position, 0.75)), "Me");
-
-        //DEBUG
-        gameManager.setRoom(new Room("TestRoom", 10, 2));
-
         otherPlayers = gameManager.getRoom().getPlayers();
         Iterator<Player> iterator = otherPlayers.iterator();
         while (iterator.hasNext()) {
@@ -90,13 +98,8 @@ public class GameActivity extends Activity {
         map.addObjects(new Wall(new Square(new SFVertex3f(-groundDim, -1, 0), 2, h2, 2 * groundDim - 2), R.drawable.hedge_texture_02_1));
         gameManager.setMap(map);
 
-        final LinearLayout graphicsContainerLayout = (LinearLayout) findViewById(R.id.graphics_view_container);
-
-        Log.d(LOG_TAG, "Starting SplashScreen..");
-        SplashScreen splashScreen = new SplashScreen(this, R.id.game_splash_container, R.id.game_splash_image, R.id.game_splash_text, startSignal);
-        splashScreen.animate();
-
         Log.d(LOG_TAG, "Starting GraphicsView..");
+        final LinearLayout graphicsContainerLayout = (LinearLayout) findViewById(R.id.graphics_view_container);
         graphicsView = new GraphicsView(context, me, otherPlayers, gameManager.getMap(), startSignal, groundDim);
         graphicsContainerLayout.addView(graphicsView);
     }
@@ -111,6 +114,15 @@ public class GameActivity extends Activity {
     protected void onPause() {
         super.onPause();
         graphicsView.onPause();
+    }
+
+    public class GameHandler extends Handler {
+
+        @Override
+        public void handleMessage(Message msg) {
+            //TODO
+        }
+
     }
 
 }

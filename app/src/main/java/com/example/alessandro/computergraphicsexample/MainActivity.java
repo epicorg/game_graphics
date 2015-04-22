@@ -70,7 +70,6 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
     @Override
     protected void onResume() {
         super.onResume();
-
         serverCommunicationThread.setHandler(new LoginHandler());
     }
 

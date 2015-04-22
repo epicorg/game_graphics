@@ -56,6 +56,7 @@ public class RoomActivity extends ActionBarActivity {
 
         roomStatus = (TextView) findViewById(R.id.room_status);
         playersList = (ListView) findViewById(R.id.room_list);
+
         serverCommunicationThread.setHandler(new RoomHandler());
         try {
             serverCommunicationThread.send(createPlayerListRequest());
