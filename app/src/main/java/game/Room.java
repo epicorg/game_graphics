@@ -1,4 +1,4 @@
-package game.network;
+package game;
 
 import java.util.ArrayList;
 
