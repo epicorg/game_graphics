@@ -18,6 +18,7 @@ import java.util.concurrent.CountDownLatch;
 
 import game.GameManager;
 import game.Room;
+import game.Team;
 import game.musics.BackgroundSound;
 import game.musics.GameSoundtracks;
 import game.net.GameHandler;
@@ -47,7 +48,7 @@ public class GameActivity extends Activity implements GameHandlerListener {
     private int hashcode;
 
     private Player me;
-    private ArrayList<Player> otherPlayers;
+    private ArrayList<Player> otherPlayers = new ArrayList<>();
 
     private Context context;
 
@@ -92,7 +93,9 @@ public class GameActivity extends Activity implements GameHandlerListener {
         SFVertex3f direction = new SFVertex3f(-1, -0.25f, 0);
 
         me = new Player(new PlayerStatus(direction, new Circle(position, 0.75)), "Me");
-        otherPlayers = gameManager.getRoom().getPlayers();
+        for (Team team : gameManager.getRoom().getTeams())
+            otherPlayers.addAll(team.getPlayers());
+
         Iterator<Player> iterator = otherPlayers.iterator();
         while (iterator.hasNext()) {
             Player p = iterator.next();
