@@ -27,12 +27,10 @@
             android:layout_weight="50" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/room_list"
+    <LinearLayout
+        android:id="@+id/room_lists_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
-
-    </ListView>
+        android:orientation="vertical"/>
 
 </LinearLayout>

@@ -11,7 +11,7 @@ public class Room {
 
     private String name;
     private int maxPlayers, currentPlayers;
-    private ArrayList<Player> players = new ArrayList<>();
+    private ArrayList<Team> teams;
 
     public Room(String name, int maxPlayers, int currentPlayers) {
         this.name = name;
@@ -19,19 +19,17 @@ public class Room {
         this.currentPlayers = currentPlayers;
     }
 
-    public Room(String name, int maxPlayers, ArrayList<Player> players) {
+    public Room(String name, int maxPlayers, ArrayList<Team> teams) {
         this.name = name;
         this.maxPlayers = maxPlayers;
-        this.players = players;
-        this.currentPlayers = players.size();
-    }
+        this.teams = teams;
 
-    public void join() {
-        //TODO
-    }
-
-    public ArrayList<Player> getPlayers() {
-        return players;
+        currentPlayers = 0;
+        for(Team t : teams){
+            for(Player p : t.getPlayers()){
+                currentPlayers++;
+            }
+        }
     }
 
     public String getName() {
@@ -42,8 +40,24 @@ public class Room {
         return maxPlayers;
     }
 
+    public void setCurrentPlayers(int currentPlayers) {
+        this.currentPlayers = currentPlayers;
+    }
+
     public int getCurrentPlayers() {
         return currentPlayers;
+    }
+
+    public void setTeams(ArrayList<Team> teams) {
+        this.teams = teams;
+    }
+
+    public ArrayList<Team> getTeams() {
+        return teams;
+    }
+
+    public void addTeam(Team t){
+        teams.add(t);
     }
 
     @Override

@@ -208,8 +208,8 @@ public class RoomsActivity extends ActionBarActivity {
             if (roomJoinResult.getResult()) {
                 Intent intent = new Intent(context, RoomActivity.class);
                 intent.putExtra(FieldsNames.USERNAME, username);
-                intent.putExtra(FieldsNames.ROOM_NAME, roomJoinResult.getName());
                 intent.putExtra(FieldsNames.HASHCODE, hashcode);
+                intent.putExtra(FieldsNames.ROOM_NAME, roomJoinResult.getName());
                 startActivity(intent);
             } else {
                 Toast.makeText(context, getString(R.string.rooms_join_error), Toast.LENGTH_LONG).show();

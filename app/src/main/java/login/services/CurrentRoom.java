@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import game.Team;
 import game.player.Player;
 import login.interaction.FieldsNames;
 
@@ -56,15 +57,30 @@ public class CurrentRoom implements Service {
     private Message getPlayerListMessage() {
         CurrentRoomResult currentRoomResult = null;
         try {
-            JSONArray jsonPlayers = json.getJSONArray(FieldsNames.LIST);
             int maxPlayers = json.getInt(FieldsNames.ROOM_MAX_PLAYERS);
 
-            ArrayList<Player> players = new ArrayList<>();
-            for (int i = 0; i < jsonPlayers.length(); i++) {
-                players.add(new Player(null, jsonPlayers.getString(i)));
-            }
+            ArrayList<Team> teams = new ArrayList<>();
+            JSONArray jTeams = json.getJSONArray(FieldsNames.ROOM_TEAM);
+            for (int i = 0; i < jTeams.length(); i++) {
+                JSONObject jTeam = jTeams.getJSONObject(i);
+                String name = jTeam.getString(FieldsNames.NAME);
+                int color = jTeam.getInt(FieldsNames.ROOM_TEAM_COLOR);
 
-            currentRoomResult = new CurrentRoomResult(maxPlayers, players);
+                Team team = new Team(name, color);
+
+                ArrayList<Player> players = new ArrayList<>();
+                JSONArray jPlayers = jTeam.getJSONArray(FieldsNames.LIST);
+                for (int j = 0; j < jPlayers.length(); j++) {
+                    JSONObject jPlayer = jPlayers.getJSONObject(j);
+                    String playerName = jPlayer.getString(FieldsNames.NAME);
+
+                    players.add(new Player(playerName));
+                }
+
+                team.setPlayers(players);
+                teams.add(team);
+            }
+            currentRoomResult = new CurrentRoomResult(maxPlayers, teams);
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -86,22 +102,20 @@ public class CurrentRoom implements Service {
     public class CurrentRoomResult {
 
         private int maxPlayer;
-        private ArrayList<Player> players;
+        private ArrayList<Team> teams;
 
-        public CurrentRoomResult(int maxPlayer, ArrayList<Player> players) {
-
+        public CurrentRoomResult(int maxPlayer, ArrayList<Team> teams) {
             this.maxPlayer = maxPlayer;
-            this.players = players;
+            this.teams = teams;
         }
 
         public int getMaxPlayer() {
             return maxPlayer;
         }
 
-        public ArrayList<Player> getPlayers() {
-            return players;
+        public ArrayList<Team> getTeams() {
+            return teams;
         }
-
     }
 
 }
