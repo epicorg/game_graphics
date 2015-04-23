@@ -19,6 +19,8 @@ import login.interaction.FieldsNames;
 
 public class CurrentRoom implements Service {
 
+    public static final String LOG_TAG = "CurrentRoom";
+
     public static final int LIST = 0;
     public static final int START = 1;
 
@@ -64,7 +66,7 @@ public class CurrentRoom implements Service {
             for (int i = 0; i < jTeams.length(); i++) {
                 JSONObject jTeam = jTeams.getJSONObject(i);
                 String name = jTeam.getString(FieldsNames.NAME);
-                int color = jTeam.getInt(FieldsNames.ROOM_TEAM_COLOR);
+                int color = Integer.parseInt(jTeam.getString(FieldsNames.ROOM_TEAM_COLOR));
 
                 Team team = new Team(name, color);
 

@@ -71,7 +71,7 @@ public class RoomActivity extends ActionBarActivity {
     private JSONObject createPlayerListRequest() {
         JSONObject request = new JSONObject();
         try {
-            request.put(FieldsNames.SERVICE, FieldsNames.ROOMS);
+            request.put(FieldsNames.SERVICE, FieldsNames.CURRENT_ROOM);
             request.put(FieldsNames.SERVICE_TYPE, FieldsNames.ROOM_PLAYER_LIST);
             request.put(FieldsNames.HASHCODE, hashcode);
             request.put(FieldsNames.USERNAME, username);
@@ -101,17 +101,23 @@ public class RoomActivity extends ActionBarActivity {
             CurrentRoom.CurrentRoomResult results = (CurrentRoom.CurrentRoomResult) msg.obj;
             currentRoom = new Room(roomName, results.getMaxPlayer(), results.getTeams());
 
+            int currentPlayers = 0;
+
             roomListsContainer.removeAllViews();
             for (Team t : currentRoom.getTeams()) {
                 ListView listView = new ListView(context);
                 roomListsContainer.addView(listView);
-                ArrayAdapter<Player> adapter = new ArrayAdapter<Player>(getApplicationContext(), android.R.layout.simple_list_item_1, t.getPlayers());
+                ArrayAdapter<Player> adapter = new ArrayAdapter<Player>(context, android.R.layout.simple_list_item_1, t.getPlayers());
 
                 TextView textView = new TextView(context);
                 textView.setText(t.getName());
                 listView.addHeaderView(textView);
                 listView.setAdapter(adapter);
+
+                currentPlayers += t.getPlayers().size();
             }
+
+            roomStatus.setText("(" + currentPlayers + " / " + results.getMaxPlayer() + ")");
         }
 
         private void processStartMessage(Message msg) {
