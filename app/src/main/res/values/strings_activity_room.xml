@@ -2,5 +2,6 @@
 
     <string name="room_list">Players List</string>
     <string name="room_status">Status:</string>
+    <string name="room_exit_message">Exit the room?</string>
 
 </resources>

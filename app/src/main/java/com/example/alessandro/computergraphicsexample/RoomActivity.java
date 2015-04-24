@@ -1,6 +1,8 @@
 package com.example.alessandro.computergraphicsexample;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -68,6 +70,33 @@ public class RoomActivity extends ActionBarActivity {
         getSupportActionBar().setTitle(roomName);
     }
 
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+
+        alertDialogBuilder.setTitle(getString(R.string.room_exit_message));
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        try {
+                            serverCommunicationThread.send(createExitRequest());
+                        } catch (NotConnectedException e) {
+                            Toast.makeText(context, getString(R.string.error_not_connected), Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
     private JSONObject createPlayerListRequest() {
         JSONObject request = new JSONObject();
         try {
@@ -82,6 +111,21 @@ public class RoomActivity extends ActionBarActivity {
         return request;
     }
 
+    private JSONObject createExitRequest() {
+        JSONObject request = new JSONObject();
+        try {
+            request.put(FieldsNames.SERVICE, FieldsNames.CURRENT_ROOM);
+            request.put(FieldsNames.SERVICE_TYPE, FieldsNames.ROOM_ACTIONS);
+            request.put(FieldsNames.HASHCODE, hashcode);
+            request.put(FieldsNames.USERNAME, username);
+            request.put(FieldsNames.ROOM_NAME, roomName);
+            request.put(FieldsNames.ROOM_ACTION, FieldsNames.ROOM_EXIT);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return request;
+    }
+
 
     public class RoomHandler extends Handler {
 
@@ -90,6 +134,9 @@ public class RoomActivity extends ActionBarActivity {
             switch (msg.what) {
                 case CurrentRoom.LIST:
                     processListMessage(msg);
+                    break;
+                case CurrentRoom.EXIT:
+                    processExitMessage(msg);
                     break;
                 case CurrentRoom.START:
                     processStartMessage(msg);
@@ -118,6 +165,14 @@ public class RoomActivity extends ActionBarActivity {
             }
 
             roomStatus.setText("(" + currentPlayers + " / " + results.getMaxPlayer() + ")");
+        }
+
+        private void processExitMessage(Message msg) {
+            boolean result = (boolean) msg.obj;
+
+            if (result) {
+                finish();
+            }
         }
 
         private void processStartMessage(Message msg) {

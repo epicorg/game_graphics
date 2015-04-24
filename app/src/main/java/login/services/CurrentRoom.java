@@ -23,6 +23,7 @@ public class CurrentRoom implements Service {
 
     public static final int LIST = 0;
     public static final int START = 1;
+    public static final int EXIT = 2;
 
     private JSONObject json;
     private Handler handler;
@@ -44,8 +45,8 @@ public class CurrentRoom implements Service {
                 case FieldsNames.ROOM_PLAYER_LIST:
                     message = getPlayerListMessage();
                     break;
-                case FieldsNames.ROOM_START:
-                    //TODO
+                case FieldsNames.ROOM_ACTIONS:
+                    message = getActionsMessage();
                     break;
             }
             message.sendToTarget();
@@ -53,7 +54,6 @@ public class CurrentRoom implements Service {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
     }
 
     private Message getPlayerListMessage() {
@@ -91,10 +91,19 @@ public class CurrentRoom implements Service {
         return handler.obtainMessage(LIST, currentRoomResult);
     }
 
-    private Message getStartMessage() throws JSONException {
-        boolean result = json.getBoolean(FieldsNames.RESULT);
-
-        return handler.obtainMessage(START, result);
+    private Message getActionsMessage() {
+        try {
+            boolean result = json.getBoolean(FieldsNames.NO_ERRORS);
+            switch (json.getString(FieldsNames.ROOM_ACTION)) {
+                case FieldsNames.ROOM_START:
+                    return handler.obtainMessage(START, result);
+                case FieldsNames.ROOM_EXIT:
+                    return handler.obtainMessage(EXIT, result);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void setHandler(Handler handler) {

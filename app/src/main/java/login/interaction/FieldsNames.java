@@ -2,7 +2,7 @@ package login.interaction;
 
 /**
  * @author Noris
- * @version 12
+ * @version 15
  * @date 2015/03/30
  */
 
@@ -78,10 +78,13 @@ public class FieldsNames {
     // Room
     // Service Type
     public static final String ROOM_PLAYER_LIST = "playerList";
-    public static final String ROOM_START = "start";
+    public static final String ROOM_ACTIONS = "action";
     // Others
     public static final String ROOM_TEAM = "team";
     public static final String ROOM_TEAM_COLOR = "teamColor";
+    public static final String ROOM_ACTION = "action";
+    public static final String ROOM_START = "start";
+    public static final String ROOM_EXIT = "exit";
 
     // Game
     // Service Type
@@ -92,6 +95,7 @@ public class FieldsNames {
     public static final String GAME_READY = "ready";
     public static final String GAME_GO = "go";
     public static final String GAME_WIDTH = "width";
+    public static final String GAME_LENGTH = "length";
     public static final String GAME_HEIGHT = "height";
     public static final String GAME_ITEMS = "items";
     public static final String GAME_OBJECT = "object";

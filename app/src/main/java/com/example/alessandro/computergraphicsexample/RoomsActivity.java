@@ -71,6 +71,13 @@ public class RoomsActivity extends ActionBarActivity {
             }
         });
 
+        getSupportActionBar().setTitle(R.string.rooms_list);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         serverCommunicationThread.setHandler(new RoomsHandler());
         try {
             serverCommunicationThread.send(createListRequest());
@@ -78,8 +85,6 @@ public class RoomsActivity extends ActionBarActivity {
             Toast.makeText(this, getString(R.string.error_not_connected), Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
-
-        getSupportActionBar().setTitle(R.string.rooms_list);
     }
 
     @Override
