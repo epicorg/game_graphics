@@ -21,6 +21,10 @@ import java.util.Enumeration;
 
 import login.services.Service;
 
+import static login.communication.ServerCommunicationThreadState.CONNECTED;
+import static login.communication.ServerCommunicationThreadState.CONNECTING;
+import static login.communication.ServerCommunicationThreadState.NOT_CONNECTED;
+
 
 /**
  * Classe di gestione scambio dati con il server
@@ -40,27 +44,23 @@ public class ServerCommunicationThread extends Thread {
     public static final int SERVER_PORT = 7007;
 
     private static ServerCommunicationThread instance;
-    private Handler handler;
+    private static ArrayList<ServerCommunicationThreadListener> threadListeners;
+    private static ServerCommunicationThreadState threadState;
 
+    private Handler handler;
     private Socket socket;
     private BufferedReader reader;
     private PrintWriter writer;
     private ServiceChooser serviceChooser = new ServiceChooser();
 
-    private boolean threadState;
-    private ArrayList<ServerCommunicationThreadListener> threadListeners;
-
     private ServerCommunicationThread() {
-        super();
 
-        threadState = false;
-        threadListeners = new ArrayList<>();
     }
 
     @Override
     public void run() {
         init();
-        if (!threadState) {
+        if (threadState != CONNECTED) {
             return;
         }
 
@@ -81,25 +81,28 @@ public class ServerCommunicationThread extends Thread {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-                setStateAndUpdate(false);
+                setStateAndUpdate(NOT_CONNECTED);
                 return;
             }
         }
     }
 
     public void init() {
+        setStateAndUpdate(CONNECTING);
+
         try {
             socket = new Socket();
             socket.connect(new InetSocketAddress(InetAddress.getByName(SERVER_ADDRESS), SERVER_PORT), 5000);
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             writer = new PrintWriter(socket.getOutputStream(), true);
-            setStateAndUpdate(true);
+            setStateAndUpdate(CONNECTED);
+            Log.e(LOG_TAG, "Init ok");
         } catch (IOException e) {
             e.printStackTrace();
+
+            setStateAndUpdate(NOT_CONNECTED);
             Log.e(LOG_TAG, "Init failed");
-            setStateAndUpdate(false);
         }
-        Log.e(LOG_TAG, "Init ok");
     }
 
     public void exit() {
@@ -107,10 +110,11 @@ public class ServerCommunicationThread extends Thread {
             if (writer != null) writer.close();
             if (reader != null) reader.close();
             if (socket != null) socket.close();
-            setStateAndUpdate(false);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        setStateAndUpdate(NOT_CONNECTED);
 
         try {
             join();
@@ -123,19 +127,17 @@ public class ServerCommunicationThread extends Thread {
 
     public void setHandler(Handler handler) {
         this.handler = handler;
-        setStateAndUpdate(threadState);
     }
 
     public void send(JSONObject object) throws NotConnectedException {
-
-        if(writer == null || threadState == false)
+        if (writer == null || threadState != CONNECTED)
             throw new NotConnectedException();
 
         Log.d(LOG_TAG, "send: " + object.toString());
         writer.println(object.toString());
     }
 
-    private void setStateAndUpdate(boolean state) {
+    private void setStateAndUpdate(ServerCommunicationThreadState state) {
         threadState = state;
         for (ServerCommunicationThreadListener l : threadListeners) {
             l.onThreadStateChanged(threadState);
@@ -161,6 +163,8 @@ public class ServerCommunicationThread extends Thread {
 
     public static ServerCommunicationThread getInstance() {
         if (instance == null) {
+            threadState = NOT_CONNECTED;
+            threadListeners = new ArrayList<>();
             instance = new ServerCommunicationThread();
         }
         return instance;

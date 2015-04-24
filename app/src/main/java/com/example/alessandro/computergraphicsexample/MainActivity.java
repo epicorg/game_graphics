@@ -22,6 +22,7 @@ import java.util.HashMap;
 import login.communication.NotConnectedException;
 import login.communication.ServerCommunicationThread;
 import login.communication.ServerCommunicationThreadListener;
+import login.communication.ServerCommunicationThreadState;
 import login.data.LoginData;
 import login.interaction.FieldsNames;
 import login.interaction.ProgressShower;
@@ -33,7 +34,9 @@ import login.services.Login;
  */
 public class MainActivity extends ActionBarActivity implements ServerCommunicationThreadListener {
 
-    private MainActivity thisActivity = this;
+    public static final String LOG_TAG = "MainActivity";
+
+    private MainActivity activity = this;
     private ServerCommunicationThread serverCommunicationThread;
     private HashMap<Integer, View> views = new HashMap<Integer, View>();
     private SharedPreferences loginPreference;
@@ -51,6 +54,13 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
         loginPreference = getSharedPreferences("LOGIN_PREF", Context.MODE_PRIVATE);
         progressShower = new ProgressShower(views.get(R.id.login_progress), views.get(R.id.login_form), getResources().getInteger(android.R.integer.config_shortAnimTime));
 
+        views.get(R.id.main_refresh).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startThreadIfNotStarted();
+            }
+        });
+
         //DEBUG
         views.get(R.id.game_graphics).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,13 +71,16 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
         });
 
         checkRememberMe();
+        startThreadIfNotStarted();
+    }
 
-        serverCommunicationThread = ServerCommunicationThread.getInstance();
-        serverCommunicationThread.addServerCommunicationThreadListener(this);
-
+    private void startThreadIfNotStarted() {
         try {
+            if (serverCommunicationThread != null) serverCommunicationThread.exit();
+            serverCommunicationThread = ServerCommunicationThread.getInstance();
+            serverCommunicationThread.addServerCommunicationThreadListener(this);
             serverCommunicationThread.start();
-        } catch (IllegalThreadStateException e){
+        } catch (IllegalThreadStateException e) {
             e.printStackTrace();
         }
     }
@@ -140,8 +153,7 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
                 serverCommunicationThread.send(createRequest());
             } catch (NotConnectedException e) {
                 progressShower.showProgress(false);
-                Toast.makeText(thisActivity, getString(R.string.error_not_connected), Toast.LENGTH_SHORT).show();
-                //showAlertDialog(getString(R.string.error_not_connected));
+                Toast.makeText(activity, getString(R.string.error_not_connected), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         }
@@ -167,16 +179,28 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
     }
 
     @Override
-    public void onThreadStateChanged(final boolean threadState) {
+    public void onThreadStateChanged(final ServerCommunicationThreadState state) {
+        Log.d(LOG_TAG, "onThreadStateChanged");
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (threadState) {
-                    ((TextView) views.get(R.id.status)).setText(getString(R.string.main_status_connected));
-                    findViewById(R.id.log_in).setEnabled(true);
-                } else {
-                    ((TextView) views.get(R.id.status)).setText(getString(R.string.main_status_not_connected));
-                    findViewById(R.id.log_in).setEnabled(false);
+                TextView statusTextView = ((TextView) views.get(R.id.main_status));
+                switch (state) {
+                    case CONNECTING:
+                        statusTextView.setText(getString(R.string.main_status_connecting));
+                        findViewById(R.id.log_in).setEnabled(false);
+                        findViewById(R.id.not_registered).setEnabled(false);
+                        break;
+                    case CONNECTED:
+                        statusTextView.setText(getString(R.string.main_status_connected));
+                        findViewById(R.id.log_in).setEnabled(true);
+                        findViewById(R.id.not_registered).setEnabled(true);
+                        break;
+                    case NOT_CONNECTED:
+                        statusTextView.setText(getString(R.string.main_status_not_connected));
+                        findViewById(R.id.log_in).setEnabled(false);
+                        findViewById(R.id.not_registered).setEnabled(false);
+                        break;
                 }
             }
         });
@@ -199,10 +223,10 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
                     editor.commit();
                     Log.d("REMEMBER", "fields saved");
                 }
-                Intent intent = new Intent(thisActivity, RoomsActivity.class);
+                Intent intent = new Intent(activity, RoomsActivity.class);
                 intent.putExtra(FieldsNames.USERNAME, loginData.getUsername());
                 intent.putExtra(FieldsNames.HASHCODE, result.getHashcode());
-                thisActivity.startActivity(intent);
+                activity.startActivity(intent);
             } else {
                 showAlertDialog(getString(R.string.login_failed));
             }
@@ -213,7 +237,7 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
     }
 
     private void showAlertDialog(String error) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(thisActivity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setMessage(error).setTitle(getString(R.string.dialog_error));
         builder.setPositiveButton(getString(R.string.dialog_try_again), new DialogInterface.OnClickListener() {
             @Override
@@ -225,14 +249,18 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
     }
 
     private void getViews() {
-        views.put(R.id.status, findViewById(R.id.status));
-        views.put(R.id.username, findViewById(R.id.username));
-        views.put(R.id.password, findViewById(R.id.password));
-        views.put(R.id.remeberMeBox, findViewById(R.id.remeberMeBox));
-        views.put(R.id.login_form, findViewById(R.id.login_form));
-        views.put(R.id.login_progress, findViewById(R.id.login_progress));
+        putViewIntoMap(R.id.main_status);
+        putViewIntoMap(R.id.main_refresh);
+        putViewIntoMap(R.id.username);
+        putViewIntoMap(R.id.password);
+        putViewIntoMap(R.id.remeberMeBox);
+        putViewIntoMap(R.id.login_form);
+        putViewIntoMap(R.id.login_progress);
+        putViewIntoMap(R.id.game_graphics); //DEBUG
+    }
 
-        views.put(R.id.game_graphics, findViewById(R.id.game_graphics)); //DEBUG
+    private void putViewIntoMap(int id) {
+        views.put(id, findViewById(id));
     }
 
 }

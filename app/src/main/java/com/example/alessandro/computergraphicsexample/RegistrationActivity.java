@@ -21,6 +21,7 @@ import java.util.HashMap;
 import login.communication.NotConnectedException;
 import login.communication.ServerCommunicationThread;
 import login.communication.ServerCommunicationThreadListener;
+import login.communication.ServerCommunicationThreadState;
 import login.data.RegistrationData;
 import login.interaction.FieldsNames;
 import login.interaction.ProgressShower;
@@ -30,7 +31,7 @@ import login.services.Register;
 /**
  * A login screen that offers login via email/password.
  */
-public class RegistrationActivity extends Activity implements ServerCommunicationThreadListener {
+public class RegistrationActivity extends Activity {
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -47,14 +48,9 @@ public class RegistrationActivity extends Activity implements ServerCommunicatio
         setContentView(R.layout.activity_registration);
         getViews();
         serverCommunicationThread = ServerCommunicationThread.getInstance();
-        serverCommunicationThread.addServerCommunicationThreadListener(this);
-
-
 
         progressShower = new ProgressShower(views.get(R.id.login_progress), views.get(R.id.registration_form),
                 getResources().getInteger(android.R.integer.config_shortAnimTime));
-
-
     }
 
     @Override
@@ -71,8 +67,6 @@ public class RegistrationActivity extends Activity implements ServerCommunicatio
         views.put(R.id.registration_form, findViewById(R.id.registration_form));
         views.put(R.id.login_progress, findViewById(R.id.login_progress));
         views.put(R.id.confirm_password, findViewById(R.id.confirm_password));
-
-        views.put(R.id.status, findViewById(R.id.status));
     }
 
     /**
@@ -96,7 +90,7 @@ public class RegistrationActivity extends Activity implements ServerCommunicatio
             try {
                 serverCommunicationThread.send(createRequest(registrationData));
             } catch (NotConnectedException e) {
-                Toast.makeText(thisActivity,getString(R.string.error_not_connected),Toast.LENGTH_LONG).show();
+                Toast.makeText(thisActivity, getString(R.string.error_not_connected), Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         }
@@ -127,22 +121,6 @@ public class RegistrationActivity extends Activity implements ServerCommunicatio
         return new RegistrationData(username, email, password, confirmPassword);
     }
 
-    @Override
-    public void onThreadStateChanged(final boolean threadState) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (threadState) {
-                    ((TextView) views.get(R.id.status)).setText("Connected");
-                    findViewById(R.id.registration).setEnabled(true);
-                } else {
-                    ((TextView) views.get(R.id.status)).setText("Not Connected");
-                    findViewById(R.id.registration).setEnabled(false);
-                }
-            }
-        });
-    }
-
     public class RegistrationHandler extends Handler {
 
         @Override
@@ -157,6 +135,7 @@ public class RegistrationActivity extends Activity implements ServerCommunicatio
             progressShower.showProgress(false);
             Log.d("RESULT", String.valueOf(result.isOk()));
         }
+
     }
 
     private void showAlertDialog(String error) {

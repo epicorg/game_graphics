@@ -5,6 +5,6 @@ package login.communication;
  */
 public interface ServerCommunicationThreadListener {
 
-    public void onThreadStateChanged(boolean threadState);
+    public void onThreadStateChanged(ServerCommunicationThreadState state);
 
 }
