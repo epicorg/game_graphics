@@ -18,6 +18,11 @@
     <string name="error_communication">Impossibile comunicare correttamente col server</string>
     <string name="login_failed">Password o username errati</string>
 
+    <string name="main_status_connecting">Connecting..</string>
+    <string name="main_status_connected">Connected</string>
+    <string name="main_status_not_connected">Not Connected</string>
+    <string name="main_status_press_to_rety">Press here to retry</string>
+
     <string name="dialog_error">Errore</string>
     <string name="dialog_try_again">Riprova</string>
     <string name="login_exit_message">Press BACK again to Exit</string>

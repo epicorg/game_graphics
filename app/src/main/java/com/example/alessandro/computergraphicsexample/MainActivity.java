@@ -64,7 +64,12 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
 
         serverCommunicationThread = ServerCommunicationThread.getInstance();
         serverCommunicationThread.addServerCommunicationThreadListener(this);
-        serverCommunicationThread.start();
+
+        try {
+            serverCommunicationThread.start();
+        } catch (IllegalThreadStateException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -76,7 +81,6 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
-            serverCommunicationThread.exit();
             super.onBackPressed();
             return;
         }
@@ -168,10 +172,10 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
             @Override
             public void run() {
                 if (threadState) {
-                    ((TextView) views.get(R.id.status)).setText("Connected");
+                    ((TextView) views.get(R.id.status)).setText(getString(R.string.main_status_connected));
                     findViewById(R.id.log_in).setEnabled(true);
                 } else {
-                    ((TextView) views.get(R.id.status)).setText("Not Connected");
+                    ((TextView) views.get(R.id.status)).setText(getString(R.string.main_status_not_connected));
                     findViewById(R.id.log_in).setEnabled(false);
                 }
             }
