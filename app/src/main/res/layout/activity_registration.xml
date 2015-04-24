@@ -74,13 +74,10 @@
 
             <Button
                 android:id="@+id/registration"
-                style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/action_registration"
-                android:textStyle="bold"
-                android:enabled="false"
                 android:onClick="attemptRegistration" />
 
         </LinearLayout>

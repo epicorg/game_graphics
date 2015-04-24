@@ -44,8 +44,9 @@ public class ServerCommunicationThread extends Thread {
     public static final int SERVER_PORT = 7007;
 
     private static ServerCommunicationThread instance;
-    private static ArrayList<ServerCommunicationThreadListener> threadListeners;
-    private static ServerCommunicationThreadState threadState;
+
+    private ArrayList<ServerCommunicationThreadListener> threadListeners;
+    private ServerCommunicationThreadState threadState;
 
     private Handler handler;
     private Socket socket;
@@ -144,6 +145,10 @@ public class ServerCommunicationThread extends Thread {
         }
     }
 
+    public ServerCommunicationThreadState getThreadState() {
+        return threadState;
+    }
+
     public static String getLocalIpAddress() {
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
@@ -163,9 +168,9 @@ public class ServerCommunicationThread extends Thread {
 
     public static ServerCommunicationThread getInstance() {
         if (instance == null) {
-            threadState = NOT_CONNECTED;
-            threadListeners = new ArrayList<>();
             instance = new ServerCommunicationThread();
+            instance.threadState = NOT_CONNECTED;
+            instance.threadListeners = new ArrayList<>();
         }
         return instance;
     }

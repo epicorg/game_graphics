@@ -1,15 +1,14 @@
 package com.example.alessandro.computergraphicsexample;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -20,8 +19,6 @@ import java.util.HashMap;
 
 import login.communication.NotConnectedException;
 import login.communication.ServerCommunicationThread;
-import login.communication.ServerCommunicationThreadListener;
-import login.communication.ServerCommunicationThreadState;
 import login.data.RegistrationData;
 import login.interaction.FieldsNames;
 import login.interaction.ProgressShower;
@@ -31,7 +28,7 @@ import login.services.Register;
 /**
  * A login screen that offers login via email/password.
  */
-public class RegistrationActivity extends Activity {
+public class RegistrationActivity extends ActionBarActivity {
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.

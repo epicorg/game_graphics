@@ -75,13 +75,16 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
     }
 
     private void startThreadIfNotStarted() {
+        if (serverCommunicationThread != null)
+            serverCommunicationThread.exit();
+
+        serverCommunicationThread = ServerCommunicationThread.getInstance();
+        serverCommunicationThread.addServerCommunicationThreadListener(this);
         try {
-            if (serverCommunicationThread != null) serverCommunicationThread.exit();
-            serverCommunicationThread = ServerCommunicationThread.getInstance();
-            serverCommunicationThread.addServerCommunicationThreadListener(this);
             serverCommunicationThread.start();
         } catch (IllegalThreadStateException e) {
             e.printStackTrace();
+            updateThreadState(serverCommunicationThread.getThreadState());
         }
     }
 
@@ -184,26 +187,30 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                TextView statusTextView = ((TextView) views.get(R.id.main_status));
-                switch (state) {
-                    case CONNECTING:
-                        statusTextView.setText(getString(R.string.main_status_connecting));
-                        findViewById(R.id.log_in).setEnabled(false);
-                        findViewById(R.id.not_registered).setEnabled(false);
-                        break;
-                    case CONNECTED:
-                        statusTextView.setText(getString(R.string.main_status_connected));
-                        findViewById(R.id.log_in).setEnabled(true);
-                        findViewById(R.id.not_registered).setEnabled(true);
-                        break;
-                    case NOT_CONNECTED:
-                        statusTextView.setText(getString(R.string.main_status_not_connected));
-                        findViewById(R.id.log_in).setEnabled(false);
-                        findViewById(R.id.not_registered).setEnabled(false);
-                        break;
-                }
+                updateThreadState(state);
             }
         });
+    }
+
+    private void updateThreadState(ServerCommunicationThreadState state) {
+        TextView statusTextView = ((TextView) views.get(R.id.main_status));
+        switch (state) {
+            case CONNECTING:
+                statusTextView.setText(getString(R.string.main_status_connecting));
+                findViewById(R.id.log_in).setEnabled(false);
+                findViewById(R.id.not_registered).setEnabled(false);
+                break;
+            case CONNECTED:
+                statusTextView.setText(getString(R.string.main_status_connected));
+                findViewById(R.id.log_in).setEnabled(true);
+                findViewById(R.id.not_registered).setEnabled(true);
+                break;
+            case NOT_CONNECTED:
+                statusTextView.setText(getString(R.string.main_status_not_connected));
+                findViewById(R.id.log_in).setEnabled(false);
+                findViewById(R.id.not_registered).setEnabled(false);
+                break;
+        }
     }
 
     /**
