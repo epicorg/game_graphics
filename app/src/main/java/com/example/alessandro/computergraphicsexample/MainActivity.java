@@ -1,5 +1,6 @@
 package com.example.alessandro.computergraphicsexample;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -7,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +19,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import game.net.LoginHandler;
+import game.net.LoginHandlerListener;
 import login.communication.NotConnectedException;
 import login.communication.ServerCommunicationThread;
 import login.communication.ServerCommunicationThreadListener;
@@ -26,21 +28,21 @@ import login.communication.ServerCommunicationThreadState;
 import login.data.LoginData;
 import login.interaction.FieldsNames;
 import login.interaction.ProgressShower;
-import login.services.Login;
 
 /**
  * Activity di LogIn in cui l'utente inserisce l'username e la password per
  * essere riconosciuto dal server
  */
-public class MainActivity extends ActionBarActivity implements ServerCommunicationThreadListener {
+public class MainActivity extends ActionBarActivity implements ServerCommunicationThreadListener, LoginHandlerListener {
 
     public static final String LOG_TAG = "MainActivity";
 
-    private MainActivity activity = this;
+    private Activity activity;
     private ServerCommunicationThread serverCommunicationThread;
     private HashMap<Integer, View> views = new HashMap<Integer, View>();
-    private SharedPreferences loginPreference;
+
     private ProgressShower progressShower;
+    private SharedPreferences loginPreference;
     private LoginData loginData;
 
     private boolean doubleBackToExitPressedOnce;
@@ -49,6 +51,7 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        activity = this;
         getViews();
 
         loginPreference = getSharedPreferences("LOGIN_PREF", Context.MODE_PRIVATE);
@@ -80,6 +83,7 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
 
         serverCommunicationThread = ServerCommunicationThread.getInstance();
         serverCommunicationThread.addServerCommunicationThreadListener(this);
+        setThreadHandler();
         try {
             serverCommunicationThread.start();
         } catch (IllegalThreadStateException e) {
@@ -91,7 +95,13 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
     @Override
     protected void onResume() {
         super.onResume();
-        serverCommunicationThread.setHandler(new LoginHandler());
+        setThreadHandler();
+    }
+
+    private void setThreadHandler() {
+        LoginHandler loginHandler = new LoginHandler(this);
+        loginHandler.addLoginHandlerListeners(this);
+        serverCommunicationThread.setHandler(loginHandler);
     }
 
     @Override
@@ -123,7 +133,7 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
     /**
      * Invocato per attivare/disattivare la funzione RememberMe
      */
-    public void rememberMe(View view) {
+    private void rememberMe(View view) {
         CheckBox rememberBox = (CheckBox) findViewById(R.id.remeberMeBox);
         SharedPreferences.Editor editor = loginPreference.edit();
         if (rememberBox.isChecked())
@@ -131,6 +141,16 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
         else
             editor.putBoolean("Remember", false);
         editor.commit();
+    }
+
+    private void saveRememberMeData() {
+        if (loginPreference.getBoolean("Remember", false)) {
+            SharedPreferences.Editor editor = loginPreference.edit();
+            editor.putString(FieldsNames.USERNAME, loginData.getUsername());
+            editor.putString(FieldsNames.PASSWORD, loginData.getPassword());
+            editor.commit();
+            Log.d("REMEMBER", "fields saved");
+        }
     }
 
     /**
@@ -213,48 +233,6 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
         }
     }
 
-    /**
-     * Handler che permette la comunicazione tra il Thread di login attivato alla ricezione della risposta dal server e
-     * l'Activity di login stessa ricevendo i risultati del Login
-     */
-    public class LoginHandler extends Handler {
-
-        @Override
-        public void handleMessage(Message msg) {
-            Login.LoginResult result = (Login.LoginResult) msg.obj;
-            if (result.isOk()) {
-                if (loginPreference.getBoolean("Remember", false)) {
-                    SharedPreferences.Editor editor = loginPreference.edit();
-                    editor.putString(FieldsNames.USERNAME, loginData.getUsername());
-                    editor.putString(FieldsNames.PASSWORD, loginData.getPassword());
-                    editor.commit();
-                    Log.d("REMEMBER", "fields saved");
-                }
-                Intent intent = new Intent(activity, RoomsActivity.class);
-                intent.putExtra(FieldsNames.USERNAME, loginData.getUsername());
-                intent.putExtra(FieldsNames.HASHCODE, result.getHashcode());
-                activity.startActivity(intent);
-            } else {
-                showAlertDialog(getString(R.string.login_failed));
-            }
-            progressShower.showProgress(false);
-            Log.d("RESULT", String.valueOf(result.isOk()));
-        }
-
-    }
-
-    private void showAlertDialog(String error) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setMessage(error).setTitle(getString(R.string.dialog_error));
-        builder.setPositiveButton(getString(R.string.dialog_try_again), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        builder.create().show();
-    }
-
     private void getViews() {
         putViewIntoMap(R.id.main_status);
         putViewIntoMap(R.id.main_refresh);
@@ -268,6 +246,28 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
 
     private void putViewIntoMap(int id) {
         views.put(id, findViewById(id));
+    }
+
+    @Override
+    public void onLoginComplete(boolean result) {
+        if (result) {
+            saveRememberMeData();
+        } else {
+            showAlertDialog(activity.getString(R.string.login_failed));
+        }
+        progressShower.showProgress(false);
+    }
+
+    private void showAlertDialog(String error) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage(error).setTitle(activity.getString(R.string.dialog_error));
+        builder.setPositiveButton(activity.getString(R.string.dialog_try_again), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.create().show();
     }
 
 }

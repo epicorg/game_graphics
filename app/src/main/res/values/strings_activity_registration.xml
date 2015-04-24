@@ -3,6 +3,7 @@
 
     <!-- Strings related to login -->
 
+    <string name="registration_title">Registration</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_confirm_password">Conferma password</string>
     <string name="action_registration">Registrati</string>
@@ -17,5 +18,5 @@
     <string name="password_long">Password troppo lunga</string>
     <string name="email_already_used">Email già usata</string>
     <string name="username_already_used">Username già usato</string>
-    
+
 </resources>

@@ -65,7 +65,7 @@ public class CurrentRoom implements Service {
             JSONArray jTeams = json.getJSONArray(FieldsNames.ROOM_TEAM);
             for (int i = 0; i < jTeams.length(); i++) {
                 JSONObject jTeam = jTeams.getJSONObject(i);
-                String name = jTeam.getString(FieldsNames.NAME);
+                String name = jTeam.getString(FieldsNames.ROOM_NAME);
                 int color = Integer.parseInt(jTeam.getString(FieldsNames.ROOM_TEAM_COLOR));
 
                 Team team = new Team(name, color);
@@ -74,7 +74,7 @@ public class CurrentRoom implements Service {
                 JSONArray jPlayers = jTeam.getJSONArray(FieldsNames.LIST);
                 for (int j = 0; j < jPlayers.length(); j++) {
                     JSONObject jPlayer = jPlayers.getJSONObject(j);
-                    String playerName = jPlayer.getString(FieldsNames.NAME);
+                    String playerName = jPlayer.getString(FieldsNames.USERNAME);
 
                     players.add(new Player(playerName));
                 }

@@ -2,7 +2,7 @@ package login.interaction;
 
 /**
  * @author Noris
- * @version 15
+ * @version 17
  * @date 2015/03/30
  */
 
@@ -10,7 +10,7 @@ public class FieldsNames {
 
     /**
      * ************************************************************************
-     * SERVICE NAMES
+     * SERVICES NAMES
      * ************************************************************************
      */
 
@@ -36,13 +36,12 @@ public class FieldsNames {
     public static final String RESULT = "result";
     public static final String HASHCODE = "hashcode";
     public static final String LIST = "list";
-    public static final String NAME = "name";
+    public static final String USERNAME = "username";
 
     // Register
     public static final String EMAIL = "email";
 
     // Register, Login
-    public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
 
     // Call
@@ -109,15 +108,16 @@ public class FieldsNames {
 
     /**
      * ************************************************************************
-     * ERROR NAMES
+     * ERRORS NAMES
      * ************************************************************************
      */
 
     public static final String NO_ERRORS = "noErrors";
     public static final String ERRORS = "errors";
 
-    //Common
+    //Commons
     public static final String INVALID = "invalidField";
     public static final String OFFLINE = "offline";
     public static final String SERVER_ERROR = "serverError";
+    public static final String MISSING_FIELD = "missingField";
 }

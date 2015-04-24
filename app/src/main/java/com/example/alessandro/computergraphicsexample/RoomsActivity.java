@@ -71,7 +71,7 @@ public class RoomsActivity extends ActionBarActivity {
             }
         });
 
-        getSupportActionBar().setTitle(R.string.rooms_list);
+        getSupportActionBar().setTitle(R.string.rooms_title);
     }
 
     @Override

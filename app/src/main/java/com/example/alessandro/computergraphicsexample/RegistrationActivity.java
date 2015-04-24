@@ -48,6 +48,8 @@ public class RegistrationActivity extends ActionBarActivity {
 
         progressShower = new ProgressShower(views.get(R.id.login_progress), views.get(R.id.registration_form),
                 getResources().getInteger(android.R.integer.config_shortAnimTime));
+
+        getSupportActionBar().setTitle(getString(R.string.registration_title));
     }
 
     @Override

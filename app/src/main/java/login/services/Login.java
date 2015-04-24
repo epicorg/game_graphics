@@ -30,14 +30,12 @@ public class Login implements Service {
     private void readFields() {
         try {
             boolean value = json.getBoolean(FieldsNames.NO_ERRORS);
-            LoginResult result;
-            if (value) {
-                int hashcode = json.getInt(FieldsNames.HASHCODE);
-                result = new LoginResult(true, hashcode);
 
-            } else {
-                result = new LoginResult(false, 0);
-            }
+            LoginResult result;
+            String username = json.getString(FieldsNames.USERNAME);
+            int hashcode = json.getInt(FieldsNames.HASHCODE);
+            result = new LoginResult(value, username, hashcode);
+
             Message message = handler.obtainMessage(0, result);
             message.sendToTarget();
         } catch (JSONException e) {
@@ -54,10 +52,12 @@ public class Login implements Service {
     public class LoginResult {
 
         private boolean ok;
+        private String username;
         private int hashcode;
 
-        public LoginResult(boolean ok, int hashcode) {
+        public LoginResult(boolean ok, String username, int hashcode) {
             this.ok = ok;
+            this.username = username;
             this.hashcode = hashcode;
         }
 
@@ -65,8 +65,13 @@ public class Login implements Service {
             return ok;
         }
 
+        public String getUsername() {
+            return username;
+        }
+
         public int getHashcode() {
             return hashcode;
         }
+
     }
 }

@@ -67,7 +67,7 @@ public class RoomActivity extends ActionBarActivity {
             e.printStackTrace();
         }
 
-        getSupportActionBar().setTitle(roomName);
+        getSupportActionBar().setTitle(getString(R.string.room_title) + ": " + roomName);
     }
 
     @Override

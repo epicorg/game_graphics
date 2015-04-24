@@ -97,12 +97,12 @@ public class ServerCommunicationThread extends Thread {
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             writer = new PrintWriter(socket.getOutputStream(), true);
             setStateAndUpdate(CONNECTED);
-            Log.e(LOG_TAG, "Init ok");
+            Log.d(LOG_TAG, "Init ok");
         } catch (IOException e) {
             e.printStackTrace();
 
             setStateAndUpdate(NOT_CONNECTED);
-            Log.e(LOG_TAG, "Init failed");
+            Log.d(LOG_TAG, "Init failed");
         }
     }
 
