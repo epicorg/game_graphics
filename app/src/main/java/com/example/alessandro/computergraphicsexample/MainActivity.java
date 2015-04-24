@@ -133,7 +133,7 @@ public class MainActivity extends ActionBarActivity implements ServerCommunicati
     /**
      * Invocato per attivare/disattivare la funzione RememberMe
      */
-    private void rememberMe(View view) {
+    public void rememberMe(View view) {
         CheckBox rememberBox = (CheckBox) findViewById(R.id.remeberMeBox);
         SharedPreferences.Editor editor = loginPreference.edit();
         if (rememberBox.isChecked())
