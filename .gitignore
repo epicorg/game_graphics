@@ -1,12 +1,67 @@
-.gradle
-/local.properties
-/.idea/workspace.xml
-/.idea/libraries
-.DS_Store
-/build
+# PROJECT
 
 app/src/main/java/game/graphics/Decoration.java
-
 app/src/main/java/game/graphics/Obstacle.java
-
 app/src/main/java/game/graphics/Decoration.java
+
+
+# ANDROID
+
+# Gradle files
+.gradle/
+build/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Log/OS Files
+*.log
+
+# Android Studio generated files and folders
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+output.json
+
+# Keystore files
+*.jks
+*.keystore
+
+# Android Profiling
+*.hprof
+
+
+# INTELLIJ IDEA
+
+# User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# Gradle
+.idea/**/gradle.xml
+.idea/**/libraries
+
+# Gradle with auto-import
+.idea/artifacts
+.idea/compiler.xml
+.idea/jarRepositories.xml
+.idea/modules.xml
+.idea/*.iml
+.idea/modules
+*.iml
+*.ipr
+
+# Editor-based Rest Client
+.idea/httpRequests
+
+# Android Studio 3.1+ serialized cache file
+.idea/caches/build_file_checksums.ser
+
+
+# MISC
+
+.DS_Store

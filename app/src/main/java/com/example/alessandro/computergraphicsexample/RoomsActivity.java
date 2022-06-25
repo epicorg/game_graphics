@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
-import android.support.v7.app.ActionBarActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,7 +44,7 @@ import game.net.services.Rooms;
  * @author Torlaschi
  * @date 18/04/2015
  */
-public class RoomsActivity extends ActionBarActivity {
+public class RoomsActivity extends AppCompatActivity {
 
     public static final String LOG_TAG = "RoomsActivity";
 

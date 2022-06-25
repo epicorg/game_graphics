@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBarActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -37,7 +37,7 @@ import game.player.Player;
  * @author Torlaschi
  * @date 18/04/2015
  */
-public class RoomActivity extends ActionBarActivity {
+public class RoomActivity extends AppCompatActivity {
 
     public static final String LOG_TAG = "RoomActivity";
 

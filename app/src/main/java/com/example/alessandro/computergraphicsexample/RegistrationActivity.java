@@ -5,7 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBarActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -28,7 +28,7 @@ import game.net.services.Register;
  * A login screen where the user can register with username,
  * email and password.
  */
-public class RegistrationActivity extends ActionBarActivity {
+public class RegistrationActivity extends AppCompatActivity {
 
     /**
      * Keeps track of the login task to ensure we can cancel it if requested.

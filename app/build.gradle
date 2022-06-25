@@ -1,16 +1,17 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+
+    compileSdkVersion 32
 
     defaultConfig {
         applicationId "com.example.alessandro.computergraphicsexample"
         minSdkVersion 15
-        targetSdkVersion 21
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -20,7 +21,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile project(':apache-commons-codec-1.10new')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'commons-codec:commons-codec:1.5'
 }

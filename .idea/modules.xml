@@ -2,10 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/apache-commons-codec-1.10new/apache-commons-codec-1.10new.iml" filepath="$PROJECT_DIR$/apache-commons-codec-1.10new/apache-commons-codec-1.10new.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/game_graphics.iml" filepath="$PROJECT_DIR$/game_graphics.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/apache-commons-codec-1.10new/game_graphics.apache-commons-codec-1.10new.iml" filepath="$PROJECT_DIR$/.idea/modules/apache-commons-codec-1.10new/game_graphics.apache-commons-codec-1.10new.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/game_graphics.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/game_graphics.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/game_graphics.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/game_graphics.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/game_graphics.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/game_graphics.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/game_graphics.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/game_graphics.app.unitTest.iml" />
     </modules>
   </component>
 </project>
-

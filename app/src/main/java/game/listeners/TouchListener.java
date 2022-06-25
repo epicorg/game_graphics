@@ -1,6 +1,5 @@
 package game.listeners;
 
-import android.support.v4.view.MotionEventCompat;
 import android.util.Log;
 import android.view.MotionEvent;
 
@@ -50,14 +49,14 @@ public class TouchListener implements TouchListenerInterface {
 
     @Override
     public void onTouchEvent(final MotionEvent event) {
-        final int action = MotionEventCompat.getActionMasked(event);
-        final int index = MotionEventCompat.getActionIndex(event);
+        final int action = event.getActionMasked();
+        final int index = event.getActionIndex();
 
         switch (action) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_POINTER_DOWN:
-                final float touchX = MotionEventCompat.getX(event, index);
-                final float touchY = MotionEventCompat.getY(event, index);
+                final float touchX = event.getX(index);
+                final float touchY = event.getY(index);
 
                 if (buttonsControl.isInsideAButton(touchX, touchY) && !isPressing) {
                     startPressing(event, index, touchX, touchY);
@@ -67,9 +66,9 @@ public class TouchListener implements TouchListenerInterface {
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
-                if (isPressing && (MotionEventCompat.getPointerId(event, index) == positionId)) {
+                if (isPressing && (event.getPointerId(index) == positionId)) {
                     stopPressing();
-                } else if (isMoving && (MotionEventCompat.getPointerId(event, index) == directionId)) {
+                } else if (isMoving && (event.getPointerId(index) == directionId)) {
                     stopMoving();
                 }
                 break;
@@ -86,15 +85,15 @@ public class TouchListener implements TouchListenerInterface {
     private void actionMovePositionProcessor(MotionEvent event) {
         for (int i = 0; i < event.getPointerCount(); i++) {
             if (event.getPointerId(i) == positionId && isPressing) {
-                final float touchX = MotionEventCompat.getX(event, i);
-                final float touchY = MotionEventCompat.getY(event, i);
+                final float touchX = event.getX(i);
+                final float touchY = event.getY(i);
 
                 if (!buttonsControl.isInsideAButton(touchX, touchY)) {
                     stopPressing();
                 }
             } else if (event.getPointerId(i) != directionId && !isPressing) {
-                final float touchX = MotionEventCompat.getX(event, i);
-                final float touchY = MotionEventCompat.getY(event, i);
+                final float touchX = event.getX(i);
+                final float touchY = event.getY(i);
 
                 if (buttonsControl.isInsideAButton(touchX, touchY)) {
                     startPressing(event, i, touchX, touchY);
@@ -107,8 +106,8 @@ public class TouchListener implements TouchListenerInterface {
         if (isMoving) {
             for (int i = 0; i < event.getPointerCount(); i++) {
                 if (event.getPointerId(i) == directionId) {
-                    final float touchX = MotionEventCompat.getX(event, i);
-                    final float touchY = MotionEventCompat.getY(event, i);
+                    final float touchX = event.getX(i);
+                    final float touchY = event.getY(i);
 
                     float dx = touchX - previousX;
                     float dy = touchY - previousY;
@@ -124,7 +123,7 @@ public class TouchListener implements TouchListenerInterface {
 
     private void startPressing(MotionEvent event, int index, final float touchX, final float touchY) {
         isPressing = true;
-        positionId = MotionEventCompat.getPointerId(event, index);
+        positionId = event.getPointerId(index);
 
         moveThread = new Thread(new Runnable() {
             @Override
@@ -156,7 +155,7 @@ public class TouchListener implements TouchListenerInterface {
 
     private void startMoving(MotionEvent event, int index, float touchX, float touchY) {
         isMoving = true;
-        directionId = MotionEventCompat.getPointerId(event, index);
+        directionId = event.getPointerId(index);
 
         previousX = touchX;
         previousY = touchY;

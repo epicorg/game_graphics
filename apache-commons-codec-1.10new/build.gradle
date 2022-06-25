@@ -1,2 +1,0 @@
-configurations.create("default")
-artifacts.add("default", file('apache-commons-codec-1.10.jar'))
