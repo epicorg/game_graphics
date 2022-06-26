@@ -13,14 +13,12 @@ import java.util.HashMap;
 import game.net.fieldsnames.CommonFields;
 import game.net.fieldsnames.GameFields;
 import game.net.fieldsnames.ServicesFields;
-import shadow.math.SFVertex3f;
+import graphic.shadow.math.SFVertex3f;
 
 /**
  * Manages game data.
  */
 public class Game implements Service {
-
-    public static final String LOG_TAG = "Game";
 
     public static final int STATUS = 0;
     public static final int MAP = 1;
@@ -49,6 +47,7 @@ public class Game implements Service {
                     message = getGamePositionsMessage();
                     break;
             }
+            assert message != null;
             message.sendToTarget();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -116,7 +115,6 @@ public class Game implements Service {
 
         try {
             JSONArray jPlayers = json.getJSONArray(GameFields.GAME_PLAYERS.toString());
-
             for (int i = 0; i < jPlayers.length(); i++) {
                 JSONObject jPlayer = jPlayers.getJSONObject(i);
                 String username = jPlayer.getString(CommonFields.USERNAME.toString());
@@ -132,7 +130,6 @@ public class Game implements Service {
 
                 gamePositionsObjectHashMap.put(username, new GamePositionsObject(new SFVertex3f(xPos, yPos, zPos), new SFVertex3f(xDir, yDir, zDir)));
             }
-
             gamePositionsResult = new GamePositionsResult(gamePositionsObjectHashMap);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -145,7 +142,7 @@ public class Game implements Service {
         this.handler = handler;
     }
 
-    public class GameStatusResult {
+    public static class GameStatusResult {
 
         public boolean go;
         public String gameEnd;
@@ -157,7 +154,7 @@ public class Game implements Service {
 
     }
 
-    public class GameMapResult {
+    public static class GameMapResult {
 
         public int width, height;
         public ArrayList<GameMapObject> gameMapObjects;
@@ -172,7 +169,7 @@ public class Game implements Service {
 
     }
 
-    public class GameMapObject {
+    public static class GameMapObject {
         public String object, texture, position, size;
 
         public GameMapObject(String object, String texture, String position, String size) {
@@ -183,9 +180,9 @@ public class Game implements Service {
         }
     }
 
-    public class GamePositionsResult {
+    public static class GamePositionsResult {
 
-        private HashMap<String, GamePositionsObject> gamePositionsObjectHashMap;
+        private final HashMap<String, GamePositionsObject> gamePositionsObjectHashMap;
 
         public GamePositionsResult(HashMap<String, GamePositionsObject> gamePositionsObjectHashMap) {
             this.gamePositionsObjectHashMap = gamePositionsObjectHashMap;
@@ -197,7 +194,7 @@ public class Game implements Service {
 
     }
 
-    public class GamePositionsObject {
+    public static class GamePositionsObject {
 
         public SFVertex3f pos, dir;
 

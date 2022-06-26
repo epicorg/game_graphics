@@ -1,18 +1,19 @@
 package game.net.communication;
 
+import static game.net.communication.ServerCommunicationThreadState.CONNECTED;
+import static game.net.communication.ServerCommunicationThreadState.CONNECTING;
+import static game.net.communication.ServerCommunicationThreadState.ENCRYPTING;
+import static game.net.communication.ServerCommunicationThreadState.NOT_CONNECTED;
+
 import java.util.HashMap;
-
-import game.net.communication.ServerCommunicationThreadState;
-
-import static game.net.communication.ServerCommunicationThreadState.*;
-
+import java.util.Objects;
 
 /**
- * Class that maps the {@link ServerCommunicationThreadState} to corrisponding state values.
+ * Class that maps the {@link ServerCommunicationThreadState} to corresponding state values.
  */
 public class ConnectionStateMap {
 
-    private HashMap<ServerCommunicationThreadState, ConnectionStateValues> map;
+    private final HashMap<ServerCommunicationThreadState, ConnectionStateValues> map;
 
     public ConnectionStateMap() {
         map = new HashMap<>();
@@ -23,16 +24,16 @@ public class ConnectionStateMap {
     }
 
     public boolean getConnectionStateLogin(ServerCommunicationThreadState state) {
-        return map.get(state).loginEnabled;
+        return Objects.requireNonNull(map.get(state)).loginEnabled;
     }
 
     public boolean getConnectionStateRegistered(ServerCommunicationThreadState state) {
-        return map.get(state).notRegistered;
+        return Objects.requireNonNull(map.get(state)).notRegistered;
     }
 
-    private class ConnectionStateValues {
+    private static class ConnectionStateValues {
 
-        private boolean loginEnabled, notRegistered;
+        private final boolean loginEnabled, notRegistered;
 
         public ConnectionStateValues(boolean loginEnabled, boolean notRegistered) {
             this.loginEnabled = loginEnabled;

@@ -1,5 +1,7 @@
 package game.net.communication;
 
+import androidx.annotation.NonNull;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,8 +12,8 @@ import org.json.JSONObject;
  */
 public class JSONd {
 
-    private Enum name;
-    private Object value;
+    private final Enum<?> name;
+    private final Object value;
 
     /**
      * Creates a new <code>JSONd</code>, with represents a request with the given name and value.
@@ -19,7 +21,7 @@ public class JSONd {
      * @param name  <code>Enum</code> that maps the value of the request.
      * @param value Value of the request.
      */
-    public JSONd(Enum name, Object value) {
+    public JSONd(Enum<?> name, Object value) {
         this.name = name;
         this.value = value;
     }
@@ -28,12 +30,13 @@ public class JSONd {
      * Creates a JSON request with the data given in the constructor.
      *
      * @param request <code>JSONObject</code> that represents the request.
-     * @throws <code>JSONException</code>.
      */
     public void putRequest(JSONObject request) throws JSONException {
         request.put(name.toString(), value);
     }
 
+    @NonNull
+    @Override
     public String toString() {
         return "[" + name + ";" + value + "]";
     }

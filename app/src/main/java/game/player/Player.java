@@ -1,7 +1,9 @@
 package game.player;
 
+import androidx.annotation.NonNull;
+
 import game.physics.Circle;
-import shadow.math.SFVertex3f;
+import graphic.shadow.math.SFVertex3f;
 
 /**
  * This class represent a User: its features are name and status.
@@ -12,10 +14,11 @@ import shadow.math.SFVertex3f;
  */
 public class Player {
 
-    public static final SFVertex3f DEFAULT_POSITION = new SFVertex3f(5, 0.5f, -7), DEFAULT_DIRECTION = new SFVertex3f(-1, -0.25f, 0);
+    public static final SFVertex3f DEFAULT_POSITION = new SFVertex3f(5, 0.5f, -7);
+    public static final SFVertex3f DEFAULT_DIRECTION = new SFVertex3f(-1, -0.25f, 0);
     public static final float DEFAULT_RADIUS = 0.75f;
-    private volatile String name;
-    private volatile PlayerStatus status;
+    private final String name;
+    private final PlayerStatus status;
 
     /**
      * Creates a new <code>Player</code> with given name and status.
@@ -42,7 +45,6 @@ public class Player {
     }
 
     /**
-     *
      * @return <code>Player</code> username.
      */
     public String getName() {
@@ -50,13 +52,13 @@ public class Player {
     }
 
     /**
-     *
      * @return <code>Player</code> status.
      */
     public PlayerStatus getStatus() {
         return status;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return name;

@@ -16,10 +16,9 @@ import javax.crypto.NoSuchPaddingException;
  * @author Noris
  * @date 27/04/2015
  */
-
 public class Decrypter {
 
-    private Key asymmetricKey;
+    private final Key asymmetricKey;
     private byte[] decryptedData;
 
     public Decrypter(Key asymmetricKey) {
@@ -27,21 +26,17 @@ public class Decrypter {
     }
 
     /**
-     * Decrypts a <code>String</code> using the symmetric <code>Key</code> (obviously the <code>Key</code> must be the
-     * same used to encrypt the <code>String</code>).
+     * Decrypts a <code>String</code> using the symmetric <code>Key</code> (obviously the <code>Key</code>
+     * must be the same used to encrypt the <code>String</code>).
      *
      * @param encryptedString the encrypted <code>String</code>.
      */
     public void decrypt(String encryptedString) {
-
         byte[] encryptedData = StringConverter.stringToBytes(encryptedString);
-
         try {
-
             Cipher cipher = Cipher.getInstance(EncryptionConst.SYMMETRIC_ALGORITHM);
             cipher.init(Cipher.DECRYPT_MODE, asymmetricKey);
             decryptedData = cipher.doFinal(encryptedData);
-
         } catch (InvalidKeyException e) {
             e.printStackTrace();
         } catch (NoSuchAlgorithmException e) {

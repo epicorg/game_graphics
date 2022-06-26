@@ -1,10 +1,8 @@
 package game.net.interaction;
 
-
-import com.example.alessandro.computergraphicsexample.R;
-
 import java.util.HashMap;
 
+import epic.org.R;
 import game.net.fieldsnames.CommonFields;
 import game.net.fieldsnames.RegisterFields;
 
@@ -14,13 +12,13 @@ import game.net.fieldsnames.RegisterFields;
  * @author Micieli
  * @date 31/03/2015
  */
-
 public class RegistrationErrorStrings {
 
-    private HashMap<String, Integer> errors = new HashMap<>();
+    private final HashMap<String, Integer> errors = new HashMap<>();
 
     /**
-     * Creates a new <code>RegistrationErrorStrings</code> and maps every error descriptions with a corrisponding error <code>String</code>.
+     * Creates a new <code>RegistrationErrorStrings</code> and maps every error descriptions with a
+     * corresponding error <code>String</code>.
      */
     public RegistrationErrorStrings() {
         createMap();

@@ -18,11 +18,10 @@ import game.player.PlayerStatus;
  */
 public class MapInterpreter implements Interpreter {
 
-    public static final String LOG_TAG = "MapInterpreter";
     private int groundWidth, groundHeight;
-    private PlayerStatus status;
+    private final PlayerStatus status;
     private Map map;
-    private LinkedList<GameHandlerListener> gameHandlerListeners = new LinkedList<>();
+    private final LinkedList<GameHandlerListener> gameHandlerListeners;
 
     /**
      * Creates a new <code>MapInterpreter</code>.
@@ -41,9 +40,8 @@ public class MapInterpreter implements Interpreter {
     }
 
     @Override
-    public void interpret(Message msg) {
-        //Log.d(LOG_TAG, "processMapMessage");
-        Game.GameMapResult results = (Game.GameMapResult) msg.obj;
+    public void interpret(Message message) {
+        Game.GameMapResult results = (Game.GameMapResult) message.obj;
         map = new Map();
 
         for (Game.GameMapObject o : results.gameMapObjects) {

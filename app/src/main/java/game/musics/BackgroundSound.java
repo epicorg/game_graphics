@@ -16,10 +16,10 @@ import java.io.IOException;
  */
 public class BackgroundSound {
 
-    public static final String LOG_TAG = "BackgroundSound";
+    private static final String LOG_TAG = "BackgroundSound";
 
-    private Context context;
-    private Uri[] soundtracks;
+    private final Context context;
+    private final Uri[] soundtracks;
 
     private MediaPlayer mediaPlayer;
     private int position;
@@ -40,22 +40,17 @@ public class BackgroundSound {
     private void setup() {
         position = 0;
         mediaPlayer = MediaPlayer.create(context, soundtracks[position]);
-
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                Log.d(LOG_TAG, "Soundtrack finished.");
-
-                position = (position + 1) % soundtracks.length;
-                mediaPlayer.reset();
-                try {
-                    mediaPlayer.setDataSource(context, soundtracks[position]);
-                    mediaPlayer.prepare();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                mediaPlayer.start();
+        mediaPlayer.setOnCompletionListener(mp -> {
+            Log.d(LOG_TAG, "Soundtrack finished");
+            position = (position + 1) % soundtracks.length;
+            mediaPlayer.reset();
+            try {
+                mediaPlayer.setDataSource(context, soundtracks[position]);
+                mediaPlayer.prepare();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            mediaPlayer.start();
         });
     }
 
@@ -64,7 +59,7 @@ public class BackgroundSound {
      */
     public void start() {
         mediaPlayer.start();
-        Log.d(LOG_TAG, "Soundtrack started.");
+        Log.d(LOG_TAG, "Soundtrack started");
     }
 
     /**
@@ -72,7 +67,7 @@ public class BackgroundSound {
      */
     public void pause() {
         mediaPlayer.pause();
-        Log.d(LOG_TAG, "Soundtrack paused.");
+        Log.d(LOG_TAG, "Soundtrack paused");
     }
 
     /**
@@ -80,7 +75,7 @@ public class BackgroundSound {
      */
     public void stop() {
         mediaPlayer.stop();
-        Log.d(LOG_TAG, "Soundtrack stopped.");
+        Log.d(LOG_TAG, "Soundtrack stopped");
     }
 
     /**
@@ -91,7 +86,7 @@ public class BackgroundSound {
     }
 
     /**
-     * Unmutes music.
+     * Un-mutes music.
      */
     public void unMute() {
         mediaPlayer.setVolume(1, 1);

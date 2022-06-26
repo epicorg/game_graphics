@@ -11,8 +11,8 @@ public interface LoginHandlerListener {
     /**
      * Called on finishing login operation.
      *
-     * @param result indicates wether the login operation were successful.
+     * @param result indicates whether the login operation were successful
      */
-    public void onLoginComplete(boolean result);
+    void onLoginComplete(boolean result);
 
 }

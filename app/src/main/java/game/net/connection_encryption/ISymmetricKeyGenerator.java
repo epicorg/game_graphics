@@ -13,4 +13,5 @@ public interface ISymmetricKeyGenerator {
     void generateKey();
 
     SecretKey getKey();
+
 }

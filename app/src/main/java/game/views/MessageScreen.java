@@ -7,8 +7,7 @@ import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.alessandro.computergraphicsexample.R;
-
+import epic.org.R;
 import game.miscellaneous.Waiter;
 
 /**
@@ -19,12 +18,12 @@ import game.miscellaneous.Waiter;
  */
 public class MessageScreen implements Waiter {
 
-    public static final String LOG_TAG = "MessageScreen";
+    private static final String LOG_TAG = "MessageScreen";
 
-    private Activity activity;
+    private final Activity activity;
     private int textColor;
-    private int backgroundColor;
-    private LinearLayout container;
+    private final int backgroundColor;
+    private final LinearLayout container;
 
     private TextView textView;
 
@@ -39,7 +38,6 @@ public class MessageScreen implements Waiter {
         this.activity = activity;
         this.backgroundColor = backgroundColor;
         this.container = container;
-
         setup();
     }
 
@@ -64,31 +62,24 @@ public class MessageScreen implements Waiter {
      */
     public void setText(String text, int color) {
         textColor = color;
-
         textView.setText(text);
         textView.setTextColor(textColor);
     }
 
     public void show() {
-        Log.d(LOG_TAG, "show");
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                container.addView(textView);
-                container.setBackgroundColor(backgroundColor);
-                container.bringToFront();
-            }
+        Log.d(LOG_TAG, "Show");
+        activity.runOnUiThread(() -> {
+            container.addView(textView);
+            container.setBackgroundColor(backgroundColor);
+            container.bringToFront();
         });
     }
 
     public void hide() {
-        Log.d(LOG_TAG, "hide");
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                container.removeAllViews();
-                container.setBackgroundColor(Color.TRANSPARENT);
-            }
+        Log.d(LOG_TAG, "Hide");
+        activity.runOnUiThread(() -> {
+            container.removeAllViews();
+            container.setBackgroundColor(Color.TRANSPARENT);
         });
     }
 
@@ -96,4 +87,5 @@ public class MessageScreen implements Waiter {
     public void unleash() {
         show();
     }
+
 }

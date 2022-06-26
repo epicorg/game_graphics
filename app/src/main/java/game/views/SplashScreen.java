@@ -9,26 +9,22 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.alessandro.computergraphicsexample.R;
-
+import epic.org.R;
 import game.miscellaneous.Waiter;
 
 /**
  * Represents the loading screen fo the game. Has an animated image and text.
- * The <code>unleash</code> operation corrisponds to the disappearing of the screen.
+ * The <code>unleash</code> operation corresponds to the disappearing of the screen.
  *
  * @author Torlaschi
  * @date 22/04/2015
  */
 public class SplashScreen implements Waiter {
 
-    public static final String LOG_TAG = "SplashScreen";
-
-    private Activity activity;
-
-    private FrameLayout frameLayout;
-    private ImageView imageView;
-    private TextView textView;
+    private final Activity activity;
+    private final FrameLayout frameLayout;
+    private final ImageView imageView;
+    private final TextView textView;
 
     /**
      * Creates a new <code>SplashScreen</code> with a given <code>ImageView</code> and <code>TextView</code>.
@@ -39,10 +35,9 @@ public class SplashScreen implements Waiter {
      * @param textViewId    id of the <code>TextView</code> to draw text on the <code>SplashScreen</code>.
      */
     public SplashScreen(Activity activity, int frameLayoutId, int imageViewId, int textViewId) {
-        frameLayout = (FrameLayout) activity.findViewById(frameLayoutId);
-        imageView = (ImageView) activity.findViewById(imageViewId);
-        textView = (TextView) activity.findViewById(textViewId);
-
+        frameLayout = activity.findViewById(frameLayoutId);
+        imageView = activity.findViewById(imageViewId);
+        textView = activity.findViewById(textViewId);
         this.activity = activity;
     }
 
@@ -91,15 +86,11 @@ public class SplashScreen implements Waiter {
 
     @Override
     public void unleash() {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                frameLayout.setVisibility(View.GONE);
-            }
-        });
+        activity.runOnUiThread(() -> frameLayout.setVisibility(View.GONE));
     }
 
-    public abstract class AnimationAdapter implements Animation.AnimationListener {
+    public abstract static class AnimationAdapter implements Animation.AnimationListener {
+
         @Override
         public void onAnimationStart(Animation animation) {
         }
@@ -111,6 +102,7 @@ public class SplashScreen implements Waiter {
         @Override
         public void onAnimationRepeat(Animation animation) {
         }
+
     }
 
 }

@@ -13,8 +13,8 @@ import game.player.Player;
  */
 public class Team {
 
-    private String name;
-    private int color;
+    private final String name;
+    private final int color;
 
     private ArrayList<Player> players = new ArrayList<>();
 

@@ -4,9 +4,9 @@ import android.content.Context;
 
 import java.util.HashMap;
 
-import objLoader.ObjLoader;
-import sfogl.integration.ArrayObject;
-import sfogl.integration.Mesh;
+import graphic.objLoader.ObjLoader;
+import graphic.integration.ArrayObject;
+import graphic.integration.Mesh;
 
 /**
  * Singleton that manages the {@link Mesh} loaded from files.
@@ -18,16 +18,18 @@ import sfogl.integration.Mesh;
  */
 
 public enum MeshKeeper {
+
     MESH_KEEPER;
 
-    public final String LOG_TAG = "MeshKeeper";
+    private static final String LOG = MeshKeeper.class.getSimpleName();
 
-    private HashMap<String, Mesh> map = new HashMap<>();
+    private final HashMap<String, Mesh> map = new HashMap<>();
 
     /**
      * Returns a <code>Mesh</code> object from geometry file.
+     *
      * @param context <code>Context</code> from which to retrieve the file.
-     * @param obj <code>String</code> name of the file containing the <code>Mesh</code> geometry.
+     * @param obj     <code>String</code> name of the file containing the <code>Mesh</code> geometry.
      * @return a <code>Mesh</code> object from the given geometry file, or the previusly mapped one if
      * the same obj was was requested before.
      */

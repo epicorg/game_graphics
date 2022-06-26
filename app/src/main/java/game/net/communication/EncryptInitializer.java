@@ -12,7 +12,6 @@ import game.net.fieldsnames.ServicesFields;
  * @author Micieli
  * @date 2015/05/29
  */
-
 public class EncryptInitializer {
 
     public void initConnection() {
@@ -30,4 +29,5 @@ public class EncryptInitializer {
             e.printStackTrace();
         }
     }
+
 }

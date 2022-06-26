@@ -1,11 +1,11 @@
 package game.graphics;
 
-import game.player.Player;
-
 import static android.opengl.Matrix.frustumM;
 import static android.opengl.Matrix.multiplyMM;
 import static android.opengl.Matrix.orthoM;
 import static android.opengl.Matrix.setLookAtM;
+
+import game.player.Player;
 
 /**
  * Video camera: it manages the matrices for 3D and 2D projections following the position of a {@link Player}.
@@ -14,27 +14,27 @@ import static android.opengl.Matrix.setLookAtM;
  */
 public class Camera {
 
-    private final float[] orthoMatrix = new float[16],
+    private final float[] orthogonalMatrix = new float[16],
             resultMatrix = new float[16];
-    private float[] projectionMatrix = new float[16];
-    private Player me;
-    private float znear, zfar, k;
+    private final float[] projectionMatrix = new float[16];
+    private final Player me;
+    private final float zNear, zFar, k;
 
     /**
      * Creates a new camera object from a <code>Player</code> position, on the strength of its direction.
      *
      * @param player The <code>Player</code> to be followed.
-     * @param znear  Minimum distance between an object and the camera
+     * @param zNear  Minimum distance between an object and the camera
      *               to have the object displayed in the 3D projection.
-     * @param zfar   Maximum distance between an object and the camera
+     * @param zFar   Maximum distance between an object and the camera
      *               to have the object displayed in the 3D projection.
      * @param angle  Vision angle of the 3D projection between up-down and right-left, expressed in degrees.
      */
-    public Camera(Player player, float znear, float zfar, float angle) {
+    public Camera(Player player, float zNear, float zFar, float angle) {
         this.me = player;
-        this.znear = znear;
-        this.zfar = zfar;
-        this.k = znear * (float) Math.tan(angle * Math.PI / 360);
+        this.zNear = zNear;
+        this.zFar = zFar;
+        this.k = zNear * (float) Math.tan(angle * Math.PI / 360);
     }
 
     /**
@@ -45,14 +45,14 @@ public class Camera {
      */
     public void updateMatrices(float ratio) {
         setProjection(ratio);
-        setOrthoMatrix(ratio);
+        setOrthogonalMatrix(ratio);
     }
 
     /**
      * @return 2D projection matrix.
      */
-    public float[] getOrthoMatrix() {
-        return orthoMatrix;
+    public float[] getOrthogonalMatrix() {
+        return orthogonalMatrix;
     }
 
     /**
@@ -63,18 +63,18 @@ public class Camera {
         return resultMatrix;
     }
 
-    private void setOrthoMatrix(float ratio) {
+    private void setOrthogonalMatrix(float ratio) {
         if (ratio > 1)
-            orthoM(orthoMatrix, 0, -ratio, ratio, -1, 1, -1, 1);
+            orthoM(orthogonalMatrix, 0, -ratio, ratio, -1, 1, -1, 1);
         else
-            orthoM(orthoMatrix, 0, -1, 1, -(1 / ratio), (1 / ratio), -1, 1);
+            orthoM(orthogonalMatrix, 0, -1, 1, -(1 / ratio), (1 / ratio), -1, 1);
     }
 
     private void setProjection(float ratio) {
         if (ratio > 1)
-            frustumM(projectionMatrix, 0, -k, k, -(k / ratio), (k / ratio), znear, zfar);
+            frustumM(projectionMatrix, 0, -k, k, -(k / ratio), (k / ratio), zNear, zFar);
         else
-            frustumM(projectionMatrix, 0, -k * ratio, k * ratio, -k, k, znear, zfar);
+            frustumM(projectionMatrix, 0, -k * ratio, k * ratio, -k, k, zNear, zFar);
     }
 
     private void setResultMatrix() {

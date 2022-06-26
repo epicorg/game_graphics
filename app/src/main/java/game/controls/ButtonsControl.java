@@ -1,6 +1,5 @@
 package game.controls;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.opengl.GLES20;
@@ -8,41 +7,40 @@ import android.opengl.GLES20;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.HashMap;
+import java.util.Objects;
 
 import game.graphics.MaterialKeeper;
-import sfogl.integration.Material;
-import sfogl.integration.Node;
-import sfogl.integration.ShadingProgram;
-import sfogl2.SFOGLSystemState;
+import graphic.integration.Material;
+import graphic.integration.Node;
+import graphic.integration.ShadingProgram;
+import graphic.sfogl2.SFOGLSystemState;
 
 /**
  * It allows to control if the {@link Button}, which are associated with a {@link ButtonMaster},
- * are pressed through colorpicking.
+ * are pressed through color picking.
  *
  * @see ShadingProgram
  */
 public class ButtonsControl {
 
-    public static final String LOG_TAG = "ButtonsControl";
+    private final HashMap<Integer, ButtonControlObject> buttonsMap = new HashMap<>();
 
-    private HashMap<Integer, ButtonControlObject> buttonsMap = new HashMap<>();
-
-    private ShadingProgram program;
-    private float[] orthoMatrix;
+    private final ShadingProgram program;
+    private final float[] orthogonalMatrix;
 
     private Bitmap buttonsBitmap;
-    private ButtonMaster buttonMaster;
+    private final ButtonMaster buttonMaster;
 
     /**
      * Creates a nwe <code>ButtonControl</code>.
      *
-     * @param program      <code>ShadingProgram</code> to be used.
-     * @param orthoMatrix  2D projection matrix.
-     * @param buttonMaster <code>ButtonMaster</code> which contains the <code>Button</code> to be controlled.
+     * @param program          <code>ShadingProgram</code> to be used.
+     * @param orthogonalMatrix 2D projection matrix.
+     * @param buttonMaster     <code>ButtonMaster</code> which contains the <code>Button</code> to be controlled.
      */
-    public ButtonsControl(ShadingProgram program, float[] orthoMatrix, ButtonMaster buttonMaster) {
+    public ButtonsControl(ShadingProgram program, float[] orthogonalMatrix, ButtonMaster buttonMaster) {
         this.program = program;
-        this.orthoMatrix = orthoMatrix;
+        this.orthogonalMatrix = orthogonalMatrix;
         this.buttonMaster = buttonMaster;
         int n = 0;
         for (Button b : buttonMaster.getButtons()) {
@@ -60,7 +58,7 @@ public class ButtonsControl {
      * @param height Screen height.
      */
     public void update(int width, int height) {
-        program.setupProjection(orthoMatrix);
+        program.setupProjection(orthogonalMatrix);
         SFOGLSystemState.cleanupColorAndDepth(0, 0, 0, 1);
         drawForColorPicking();
 
@@ -68,9 +66,8 @@ public class ButtonsControl {
         ByteBuffer buffer = ByteBuffer.allocateDirect(size * 4);
         buffer.order(ByteOrder.nativeOrder());
         GLES20.glReadPixels(0, 0, width, height, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, buffer);
-        int pixelsBuffer[] = new int[size];
+        int[] pixelsBuffer = new int[size];
         buffer.asIntBuffer().get(pixelsBuffer);
-        buffer = null;
 
         for (int i = 0; i < size; ++i) {
             pixelsBuffer[i] = ((pixelsBuffer[i] & 0xff00ff00)) | ((pixelsBuffer[i] & 0x000000ff) << 16) | ((pixelsBuffer[i] & 0x00ff0000) >> 16);
@@ -91,7 +88,7 @@ public class ButtonsControl {
      * @return The <code>Button</code> in the specified position (touchX,touchY).
      */
     public Button getPressedButton(float touchX, float touchY) {
-        return buttonsMap.get(getColorAt(touchX, touchY)).button;
+        return Objects.requireNonNull(buttonsMap.get(getColorAt(touchX, touchY))).button;
     }
 
     private int generateNewColor(int n) {
@@ -99,9 +96,8 @@ public class ButtonsControl {
     }
 
     private void drawForColorPicking() {
-        for (ButtonControlObject o : buttonsMap.values()) {
+        for (ButtonControlObject o : buttonsMap.values())
             savePreviousMaterialDrawRestore(buttonMaster.getButtonNode(o.button), o.material);
-        }
     }
 
     private void savePreviousMaterialDrawRestore(Node node, Material material) {
@@ -115,7 +111,7 @@ public class ButtonsControl {
         return buttonsBitmap.getPixel((int) touchX, (int) touchY) | 0xff000000;
     }
 
-    private class ButtonControlObject {
+    private static class ButtonControlObject {
 
         public Button button;
         public Material material;

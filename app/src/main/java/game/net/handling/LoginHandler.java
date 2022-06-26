@@ -5,21 +5,22 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import com.example.alessandro.computergraphicsexample.RoomsActivity;
+
 import java.util.ArrayList;
+
+import epic.org.RoomsActivity;
 import game.data.UserData;
 import game.net.fieldsnames.CommonFields;
 import game.net.services.Login;
 
 /**
- * {@link Handler} which allows the communication between login thread, activated
- * when server response is received, and login {@link android.app.Activity} when login data are received.
+ * {@link Handler} which allows the communication between login thread, activated when server
+ * response is received, and login {@link android.app.Activity} when login data are received.
  */
 public class LoginHandler extends Handler {
 
-    private Context context;
-
-    private ArrayList<LoginHandlerListener> loginHandlerListeners = new ArrayList<>();
+    private final Context context;
+    private final ArrayList<LoginHandlerListener> loginHandlerListeners = new ArrayList<>();
 
     /**
      * Creates a new <code>LoginHandler</code>.
@@ -43,15 +44,15 @@ public class LoginHandler extends Handler {
     /**
      * Removes a <code>LoginHandlerListener</code>.
      *
-     * @param l the <code>LoginHandlerListener</code> to remove; in case it does't exists, does nothing.
+     * @param listener the <code>LoginHandlerListener</code> to remove; in case it doesn't exist, it does nothing.
      */
-    public void removeLoginHandlerListeners(LoginHandlerListener l) {
-        loginHandlerListeners.remove(l);
+    public void removeLoginHandlerListeners(LoginHandlerListener listener) {
+        loginHandlerListeners.remove(listener);
     }
 
     @Override
-    public void handleMessage(Message msg) {
-        Login.LoginResult result = (Login.LoginResult) msg.obj;
+    public void handleMessage(Message message) {
+        Login.LoginResult result = (Login.LoginResult) message.obj;
         if (result.isOk()) {
             for (LoginHandlerListener l : loginHandlerListeners)
                 l.onLoginComplete(true);
@@ -64,7 +65,7 @@ public class LoginHandler extends Handler {
             for (LoginHandlerListener l : loginHandlerListeners)
                 l.onLoginComplete(false);
         }
-        Log.d("RESULT", String.valueOf(result.isOk()));
+        Log.d("LoginHandler", String.valueOf(result.isOk()));
     }
 
 }

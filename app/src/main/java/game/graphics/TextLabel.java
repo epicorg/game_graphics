@@ -6,11 +6,11 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 import game.generators.FundamentalGenerator;
-import sfogl.integration.ArrayObject;
-import sfogl.integration.Node;
-import shadow.math.SFMatrix3f;
-import shadow.math.SFTransform3f;
-import shadow.math.SFVertex3f;
+import graphic.integration.ArrayObject;
+import graphic.integration.Node;
+import graphic.shadow.math.SFMatrix3f;
+import graphic.shadow.math.SFTransform3f;
+import graphic.shadow.math.SFVertex3f;
 
 /**
  * It represents a text label dynamically oriented on the basis of a specified direction.
@@ -20,8 +20,9 @@ import shadow.math.SFVertex3f;
 public class TextLabel {
 
     private Node node;
-    private SFVertex3f direction, position;
-    private float h;
+    private final SFVertex3f direction;
+    private SFVertex3f position;
+    private final float h;
 
     /**
      * Creates a new textLabel
@@ -63,9 +64,9 @@ public class TextLabel {
         return new ArrayObject(
                 new float[]{
                         -width / 2, -height / 2, 0,
-                        -width / 2, +height / 2, 0,
-                        +width / 2, -height / 2, 0,
-                        +width / 2, +height / 2, 0
+                        -width / 2, height / 2, 0,
+                        width / 2, -height / 2, 0,
+                        width / 2, height / 2, 0
                 },
                 new float[]{
                         0, 0, -1

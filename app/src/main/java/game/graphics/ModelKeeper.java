@@ -3,10 +3,11 @@ package game.graphics;
 import android.content.Context;
 
 import java.util.HashMap;
+import java.util.Objects;
 
-import sfogl.integration.Material;
-import sfogl.integration.Mesh;
-import sfogl.integration.Model;
+import graphic.integration.Material;
+import graphic.integration.Mesh;
+import graphic.integration.Model;
 
 /**
  * Singleton that manages the {@link Model} loaded from files.
@@ -14,11 +15,10 @@ import sfogl.integration.Model;
  * automatically load them when needed.
  */
 public enum ModelKeeper {
+
     MODEL_KEEPER;
 
-    public final String LOG_TAG = "ModelKeeper";
-
-    private HashMap<ModelData, Model> map = new HashMap<>();
+    private final HashMap<ModelData, Model> map = new HashMap<>();
 
     /**
      * Builds a <code>Model</code> from file, or returns it immediately in case it was already loaded.
@@ -55,10 +55,10 @@ public enum ModelKeeper {
         map.clear();
     }
 
-    private class ModelData {
+    private static class ModelData {
 
-        private String obj;
-        private Material material;
+        private final String obj;
+        private final Material material;
 
         public ModelData(String obj, Material material) {
             this.obj = obj;
@@ -72,9 +72,8 @@ public enum ModelKeeper {
 
             ModelData modelData = (ModelData) o;
 
-            if (obj != null ? !obj.equals(modelData.obj) : modelData.obj != null) return false;
-            return !(material != null ? !material.equals(modelData.material) : modelData.material != null);
-
+            if (!Objects.equals(obj, modelData.obj)) return false;
+            return Objects.equals(material, modelData.material);
         }
 
         @Override

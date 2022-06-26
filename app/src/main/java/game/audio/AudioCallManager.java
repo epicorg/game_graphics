@@ -24,9 +24,9 @@ import game.net.communication.ServerCommunicationThread;
  */
 public class AudioCallManager {
 
-    public static final String LOG_TAG = "AudioCallManager";
+    private static final String LOG_TAG = "AudioCallManager";
 
-    private static AudioCallManager instance = new AudioCallManager();
+    private static final AudioCallManager instance = new AudioCallManager();
     private AudioGroup audioGroup;
     private AudioStream audioStream;
     private Context context;
@@ -53,24 +53,20 @@ public class AudioCallManager {
         audioStream.setCodec(AudioCodec.PCMU);
         audioStream.setMode(RtpStream.MODE_NORMAL);
         int localPort = audioStream.getLocalPort();
-        Log.d(LOG_TAG, "NewStream:");
-        Log.d(LOG_TAG, "localIp: " + localIpAddress);
-        Log.d(LOG_TAG, "localPort: " + localPort);
+        Log.d(LOG_TAG, "New Stream");
+        Log.d(LOG_TAG, "Local IP: " + localIpAddress);
+        Log.d(LOG_TAG, "Local Port: " + localPort);
         return localPort;
     }
 
     public void associateStream() {
-        Log.d(LOG_TAG, "Associate:");
-        Log.d(LOG_TAG, "ServerIp: " + serverIp);
-        Log.d(LOG_TAG, "ServerPort: " + serverPort);
+        Log.d(LOG_TAG, "Associate");
+        Log.d(LOG_TAG, "Server IP: " + serverIp);
+        Log.d(LOG_TAG, "Server Port: " + serverPort);
         audioStream.associate(serverIp, serverPort);
         audioStream.join(audioGroup);
         AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-
-        if (audio.isWiredHeadsetOn())
-            audio.setSpeakerphoneOn(false);
-        else
-            audio.setSpeakerphoneOn(true);
+        audio.setSpeakerphoneOn(!audio.isWiredHeadsetOn());
     }
 
     public void releaseResources() {
@@ -85,10 +81,7 @@ public class AudioCallManager {
 
     public void muteUnMute() {
         AudioManager Audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        if (Audio.isMicrophoneMute())
-            Audio.setMicrophoneMute(false);
-        else
-            Audio.setMicrophoneMute(true);
+        Audio.setMicrophoneMute(!Audio.isMicrophoneMute());
     }
 
     public void setContext(Context context) {
@@ -102,6 +95,5 @@ public class AudioCallManager {
     public void setServerPort(int serverPort) {
         this.serverPort = serverPort;
     }
-
 
 }

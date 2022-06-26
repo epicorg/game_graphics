@@ -1,50 +1,53 @@
 package game.physics;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
-import shadow.math.SFVertex3f;
+
+import graphic.shadow.math.SFVertex3f;
 
 /**
  * This class represents a cylindrical collision box.
  *
  * @author De Pace
  */
-public class Circle implements CollisionBox{
+public class Circle implements CollisionBox {
 
-    private SFVertex3f pos;
-    private float radius;
+    private final SFVertex3f pos;
+    private final float radius;
 
     /**
      * Builds a new circular <code>CollisionBox</code>.
      *
-     * @param pos <code>CollisionBox</code> center.
+     * @param pos    <code>CollisionBox</code> center.
      * @param radius <code>CollisionBox</code> radius.
      */
     public Circle(SFVertex3f pos, double radius) {
         this.pos = pos;
-        this.radius = (float)radius;
+        this.radius = (float) radius;
     }
 
     @Override
     public ArrayList<SFVertex3f> getAxes(SFVertex3f otherCenter) {
-        SFVertex3f axis=new SFVertex3f(otherCenter.getX(),0,otherCenter.getZ());
-        axis.subtract(new SFVertex3f(getPos().getX(), 0, getPos().getZ()));
+        SFVertex3f axis = new SFVertex3f(otherCenter.getX(), 0, otherCenter.getZ());
+        axis.subtract(new SFVertex3f(getPosition().getX(), 0, getPosition().getZ()));
         axis.normalize3f();
-        ArrayList<SFVertex3f> list=new ArrayList<>();
+        ArrayList<SFVertex3f> list = new ArrayList<>();
         list.add(axis);
         return list;
     }
 
     @Override
     public float[] getProjections(SFVertex3f axis) {
-        float[] ps=new float[2];
-        float p0=(new SFVertex3f(getPos().getX(),0,getPos().getZ())).dot3f(axis);
-        ps[0]=p0-radius;
-        ps[1]=p0+radius;
+        float[] ps = new float[2];
+        float p0 = (new SFVertex3f(getPosition().getX(), 0, getPosition().getZ())).dot3f(axis);
+        ps[0] = p0 - radius;
+        ps[1] = p0 + radius;
         return ps;
     }
 
     @Override
-    public SFVertex3f getPos() {
+    public SFVertex3f getPosition() {
         return pos;
     }
 
@@ -53,8 +56,10 @@ public class Circle implements CollisionBox{
         return radius;
     }
 
+    @NonNull
     @Override
     public String toString() {
-        return "Circle. Pos:" + pos.getX() + "," + pos.getY() + "," + pos.getZ();
+        return "Circle Position: " + pos.getX() + "," + pos.getY() + "," + pos.getZ();
     }
+
 }

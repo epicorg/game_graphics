@@ -1,10 +1,12 @@
 package game.player;
 
+import androidx.annotation.NonNull;
+
 import game.physics.Circle;
 import game.physics.CollisionBox;
 import game.physics.CollisionMediator;
-import shadow.math.SFMatrix3f;
-import shadow.math.SFVertex3f;
+import graphic.shadow.math.SFMatrix3f;
+import graphic.shadow.math.SFVertex3f;
 
 /**
  * This class manages the status of a {@link Player}.
@@ -16,12 +18,10 @@ import shadow.math.SFVertex3f;
  */
 public class PlayerStatus {
 
-    public static final String LOG_TAG = "PlayerStatus";
-
     private static final int NUMBER_OF_ANGLE_DIVISIONS = 50;
-    private SFVertex3f position;
-    private SFVertex3f direction;
-    private Circle circle;
+    private final SFVertex3f position;
+    private final SFVertex3f direction;
+    private final Circle circle;
 
     /**
      * Creates a new <code>PlayerStatus</code> with a given direction and <code>Circle</code> as <code>CollisionBox</code>.
@@ -30,7 +30,7 @@ public class PlayerStatus {
      * @param circle    Circle that represents the <code>Player</code>'s <code>CollisionBox</code>.
      */
     public PlayerStatus(SFVertex3f direction, Circle circle) {
-        this.position = new SFVertex3f(circle.getPos());
+        this.position = new SFVertex3f(circle.getPosition());
         this.direction = direction;
         this.circle = circle;
     }
@@ -44,7 +44,7 @@ public class PlayerStatus {
      */
     public void setPositionValue(float x, float y, float z) {
         position.set3f(x, y, z);
-        circle.getPos().set3f(x, y, z);
+        circle.getPosition().set3f(x, y, z);
     }
 
     /**
@@ -54,26 +54,28 @@ public class PlayerStatus {
      * @param cm     manages the collisions with other <code>CollisionBox</code>.
      */
     public void move(SFVertex3f motion, CollisionMediator cm) {
-        circle.getPos().set(position);
-        SFVertex3f circlePosition = circle.getPos();
+        circle.getPosition().set(position);
+        SFVertex3f circlePosition = circle.getPosition();
         SFVertex3f originalPosition = new SFVertex3f(circlePosition);
         circlePosition.add3f(motion);
 
-        CollisionBox box = cm.collide(circle);
+        CollisionBox collisionBox = cm.collide(circle);
+
         // Correct for obstacles
-        if (box != null) {
-            correctMotion(circlePosition, originalPosition, motion, box);
-        }
-        box = cm.collide(circle);
+        if (collisionBox != null)
+            correctMotion(circlePosition, originalPosition, motion, collisionBox);
+
+        collisionBox = cm.collide(circle);
+
         // Correct for junctions
-        if (box != null) {
-            correctMotion(circlePosition, originalPosition, motion, box);
-        }
+        if (collisionBox != null)
+            correctMotion(circlePosition, originalPosition, motion, collisionBox);
+
         // Reset if blocked, else update effective position
         CollisionBox box2 = cm.collide(circle);
-        if (box2 != null) {
+        if (box2 != null)
             circlePosition.set(originalPosition);
-        } else
+        else
             position.set(circlePosition);
     }
 
@@ -83,7 +85,7 @@ public class PlayerStatus {
             for (int j = -1; j < 2; j += 2) {
                 SFMatrix3f rotationMatrix = SFMatrix3f.getRotationY(i * j * (float) Math.PI / (2 * NUMBER_OF_ANGLE_DIVISIONS));
                 vertex = new SFVertex3f(tempVertex);
-                vertex = rotationMatrix.Mult(vertex);
+                vertex = rotationMatrix.mult(vertex);
                 v.set(v0);
                 v.add(vertex);
                 if (!CollisionMediator.checkCollision(circle, box)) {
@@ -101,9 +103,11 @@ public class PlayerStatus {
         return direction;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "POS: " + getPosition().getX() + " - " + getPosition().getY() + " - " + getPosition().getZ() +
                 "DIR: " + getDirection().getX() + " - " + getDirection().getY() + " - " + getDirection().getZ();
     }
+
 }

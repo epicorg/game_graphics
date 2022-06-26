@@ -2,17 +2,15 @@ package game.generators;
 
 import android.content.Context;
 
-import com.example.alessandro.computergraphicsexample.R;
-
+import epic.org.R;
 import game.controls.Button;
-import game.controls.ButtonAction;
 import game.controls.ButtonMaster;
 import game.views.SettingsScreen;
-import sfogl.integration.Model;
-import sfogl.integration.Node;
-import sfogl.integration.ShadingProgram;
-import shadow.math.SFMatrix3f;
-import shadow.math.SFVertex3f;
+import graphic.integration.Model;
+import graphic.integration.Node;
+import graphic.integration.ShadingProgram;
+import graphic.shadow.math.SFMatrix3f;
+import graphic.shadow.math.SFVertex3f;
 
 /**
  * This class builds the pause {@link Button}.
@@ -22,12 +20,10 @@ import shadow.math.SFVertex3f;
  */
 public class SettingsButtonsGenerator {
 
-    public static final String LOG_TAG = "SettingsButtonsGen";
-
-    private Context context;
-    private ShadingProgram program;
-    private ButtonMaster buttonMaster;
-    private SettingsScreen settingsScreen;
+    private final Context context;
+    private final ShadingProgram program;
+    private final ButtonMaster buttonMaster;
+    private final SettingsScreen settingsScreen;
 
     /**
      * Creates a new <code><SettingsButtonGenerator</code>.
@@ -53,16 +49,11 @@ public class SettingsButtonsGenerator {
     public void generate(SFVertex3f position, float scale) {
         Node parentNode = new Node();
         parentNode.getRelativeTransform().setPosition(position);
-        parentNode.getRelativeTransform().setMatrix(SFMatrix3f.getRotationY((float) (Math.PI / 2)).MultMatrix(SFMatrix3f.getScale(scale, scale, scale)));
+        parentNode.getRelativeTransform().setMatrix(SFMatrix3f.getRotationY((float) (Math.PI / 2)).multMatrix(SFMatrix3f.getScale(scale, scale, scale)));
 
         Model pauseModel = FundamentalGenerator.getModel(context, program, R.drawable.button_circle_pause_texture_01, "ButtonCirclePause01.obj");
         buttonMaster.setModel(pauseModel);
-        buttonMaster.addButton(new Button("PAUSE", new ButtonAction() {
-                    @Override
-                    public void action(Object parameter) {
-                        settingsScreen.show();
-                    }
-                }, false, false),
+        buttonMaster.addButton(new Button("PAUSE", parameter -> settingsScreen.show(), false, false),
                 new SFVertex3f(0, 0, 0), 0, parentNode);
     }
 

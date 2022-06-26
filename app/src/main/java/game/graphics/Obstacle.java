@@ -5,9 +5,9 @@ import android.content.Context;
 import game.generators.FundamentalGenerator;
 import game.physics.Circle;
 import game.physics.CollisionBox;
-import sfogl.integration.Node;
-import shadow.math.SFMatrix3f;
-import shadow.math.SFVertex3f;
+import graphic.integration.Node;
+import graphic.shadow.math.SFMatrix3f;
+import graphic.shadow.math.SFVertex3f;
 
 /**
  * Cylindrical obstacle.
@@ -17,11 +17,11 @@ import shadow.math.SFVertex3f;
  */
 public class Obstacle implements MazeObject {
 
-    private Circle c;
-    private int texture_id;
-    private float height;
-    private String model;
-    private boolean supportCulling;
+    private final Circle c;
+    private final int texture_id;
+    private final float height;
+    private final String model;
+    private final boolean supportCulling;
 
     /**
      * Creates a new Obstacle from specified dimension and texture.
@@ -44,7 +44,7 @@ public class Obstacle implements MazeObject {
         Node node = new Node();
         node.setModel(FundamentalGenerator.getModel(context, ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER),
                 texture_id, model));
-        node.getRelativeTransform().setPosition(c.getPos());
+        node.getRelativeTransform().setPosition(c.getPosition());
         node.getRelativeTransform().setMatrix(SFMatrix3f.getScale(c.getRadius(), height, c.getRadius()));
         return node;
     }
@@ -68,5 +68,5 @@ public class Obstacle implements MazeObject {
         float sizeY = Float.parseFloat(size.split(" ")[1]);
         return new Obstacle(new Circle(new SFVertex3f(posX, posY, posZ), sizeX), sizeY, textureId, model, supportCulling);
     }
-}
 
+}

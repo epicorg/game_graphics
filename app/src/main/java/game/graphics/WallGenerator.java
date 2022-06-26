@@ -5,10 +5,10 @@ import android.util.Log;
 
 import java.util.HashMap;
 
-import sfogl.integration.ArrayObject;
-import sfogl.integration.Mesh;
-import sfogl.integration.Model;
-import sfogl.integration.ShadingProgram;
+import graphic.integration.ArrayObject;
+import graphic.integration.Mesh;
+import graphic.integration.Model;
+import graphic.integration.ShadingProgram;
 
 /**
  * Utility class to generate a {@link Model} for parallelepiped with proportional texture.
@@ -18,15 +18,15 @@ import sfogl.integration.ShadingProgram;
  */
 public class WallGenerator {
 
-    public final String LOG_TAG = "WallGenerator";
+    private static final String LOG = WallGenerator.class.getSimpleName();
 
-    private float w, h, l;
-    private int texture;
-    private Context context;
-    private ShadingProgram program;
+    private final float w, h, l;
+    private final int texture;
+    private final Context context;
+    private final ShadingProgram program;
 
-    private HashMap<String, Mesh> meshMap;
-    private HashMap<String, Model> modelMap;
+    private final HashMap<String, Mesh> meshMap;
+    private final HashMap<String, Model> modelMap;
 
     /**
      * Creates a new WallGenerator with the parameters to build a parallelepiped.
@@ -38,7 +38,6 @@ public class WallGenerator {
      * @param h       y dimension of the parallelepiped.
      * @param l       z dimension of the parallelepiped.
      */
-
     public WallGenerator(Context context, ShadingProgram program, int texture, float w, float h, float l) {
         this.program = program;
         this.context = context;
@@ -56,17 +55,17 @@ public class WallGenerator {
      */
     public Model getModel() {
         String dimensions = w + "," + h + "," + l;
-        Log.d(LOG_TAG, "New WallModel:");
+        Log.d(LOG, "New WallModel:");
 
         Mesh mesh;
         if ((mesh = meshMap.get(dimensions)) == null) {
-            mesh = new Mesh(generatemodel());
+            mesh = new Mesh(generateModel());
             mesh.init();
             meshMap.put(dimensions, mesh);
         }
 
         String textureAndDimensions = texture + "," + dimensions;
-        Log.d(LOG_TAG, "TextureAndDimensions: " + textureAndDimensions);
+        Log.d(LOG, "TextureAndDimensions: " + textureAndDimensions);
 
         Model model;
         if ((model = modelMap.get(textureAndDimensions)) == null) {
@@ -79,7 +78,7 @@ public class WallGenerator {
         return model;
     }
 
-    private ArrayObject generatemodel() {
+    private ArrayObject generateModel() {
         float hh = 2 * h;
         return new ArrayObject(
                 new float[]{

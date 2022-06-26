@@ -5,9 +5,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.alessandro.computergraphicsexample.R;
-
 import java.util.HashMap;
+
+import epic.org.R;
 
 /**
  * This class gets the username and the password the user inserted.
@@ -17,10 +17,10 @@ import java.util.HashMap;
  */
 public class LoginData {
 
-    public static final int MIN_LENGHT = 8;
+    public static final int PASSWORD_MIN_LENGTH = 8;
 
-    private String username;
-    private String password;
+    private final String username;
+    private final String password;
 
     /**
      * Creates a new <code>LoginData</code> with given username and password.
@@ -33,8 +33,8 @@ public class LoginData {
         this.password = password;
     }
 
-    private boolean isPasswordLognEnought() {
-        return password.length() >= MIN_LENGHT;
+    private boolean isPasswordLongEnough() {
+        return password.length() >= PASSWORD_MIN_LENGTH;
     }
 
     private boolean isPasswordValid() {
@@ -65,18 +65,21 @@ public class LoginData {
         TextView userField = (TextView) views.get(R.id.username);
 
         if (!isPasswordValid()) {
+            assert passwordField != null;
             passwordField.setError(context.getString(R.string.error_invalid_password));
             passwordField.requestFocus();
             cancel = true;
         }
 
-        if (!TextUtils.isEmpty(getPassword()) && !isPasswordLognEnought()) {
+        if (!TextUtils.isEmpty(getPassword()) && !isPasswordLongEnough()) {
+            assert passwordField != null;
             passwordField.setError(context.getString(R.string.error_short_password));
             passwordField.requestFocus();
             cancel = true;
         }
 
         if (TextUtils.isEmpty(getUsername())) {
+            assert userField != null;
             userField.setError(context.getString(R.string.error_field_required));
             userField
                     .requestFocus();
@@ -84,7 +87,5 @@ public class LoginData {
         }
         return cancel;
     }
+
 }
-
-
-

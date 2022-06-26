@@ -20,14 +20,11 @@ import game.net.fieldsnames.AudioFields;
  */
 public class Audio implements Service {
 
-    private JSONObject jsonRequest;
-
     @Override
     public void start(JSONObject json) {
-        this.jsonRequest = json;
         AudioCallManager audioCallManager = AudioCallManager.getInstance();
         try {
-            int serverPort = jsonRequest.getInt(AudioFields.AUDIO_PORT_SERVER.toString());
+            int serverPort = json.getInt(AudioFields.AUDIO_PORT_SERVER.toString());
             InetAddress serverIp = InetAddress.getByName(ServerCommunicationThread.getServerAddress());
             audioCallManager.setServerPort(serverPort);
             audioCallManager.setServerIp(serverIp);
@@ -41,6 +38,5 @@ public class Audio implements Service {
 
     @Override
     public void setHandler(Handler handler) {
-
     }
 }

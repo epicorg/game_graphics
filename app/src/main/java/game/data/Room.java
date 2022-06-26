@@ -1,5 +1,7 @@
 package game.data;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 
 import game.player.Player;
@@ -15,8 +17,9 @@ import game.player.Player;
  */
 public class Room {
 
-    private String name;
-    private int maxPlayers, currentPlayers;
+    private final String name;
+    private final int maxPlayers;
+    private int currentPlayers;
     private ArrayList<Team> teams;
 
     /**
@@ -45,11 +48,9 @@ public class Room {
         this.teams = teams;
 
         currentPlayers = 0;
-        for (Team t : teams) {
-            for (Player p : t.getPlayers()) {
+        for (Team t : teams)
+            for (Player ignored : t.getPlayers())
                 currentPlayers++;
-            }
-        }
     }
 
     /**
@@ -66,10 +67,6 @@ public class Room {
         return maxPlayers;
     }
 
-//    public void setCurrentPlayers(int currentPlayers) {
-//        this.currentPlayers = currentPlayers;
-//    }
-
     /**
      * @return the current number of <code>Player</code>.
      */
@@ -77,20 +74,12 @@ public class Room {
         return currentPlayers;
     }
 
-//    public void setTeams(ArrayList<Team> teams) {
-//        this.teams = teams;
-//    }
-
     /**
      * @return the <code>Team</code> list of this the requested <code>Room</code>.
      */
     public ArrayList<Team> getTeams() {
         return teams;
     }
-
-//    public void addTeam(Team t) {
-//        teams.add(t);
-//    }
 
     /**
      * Returns a <code>Player</code> in this <code>Room</code> given the username.
@@ -107,6 +96,7 @@ public class Room {
         return null;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return getName() + " (" + getCurrentPlayers() + " / " + getMaxPlayers() + ")";

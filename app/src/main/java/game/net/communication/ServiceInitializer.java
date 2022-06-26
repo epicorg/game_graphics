@@ -15,15 +15,14 @@ import game.net.services.Service;
 import game.net.services.Unknown;
 
 /**
- * This class creates and initializes the specific {@link Service}
- * from the {@link ServicesFields} values.
+ * This class creates and initializes the specific {@link Service} from the {@link ServicesFields} values.
  *
  * @author De Pace
  */
 public class ServiceInitializer {
 
-    public HashMap<Enum, Service> mapServices() {
-        HashMap<Enum, Service> map = new HashMap<>();
+    public HashMap<Enum<?>, Service> mapServices() {
+        HashMap<Enum<?>, Service> map = new HashMap<>();
         map.put(ServicesFields.LOGIN, new Login());
         map.put(ServicesFields.REGISTER, new Register());
         map.put(ServicesFields.ROOMS, new Rooms());

@@ -5,19 +5,18 @@ import android.content.res.Resources;
 import android.os.Message;
 import android.util.Log;
 
-import com.example.alessandro.computergraphicsexample.R;
-
 import java.util.Arrays;
 import java.util.LinkedList;
 
+import epic.org.R;
+import game.net.fieldsnames.GameFields;
 import game.net.handling.GameHandlerListener;
 import game.net.handling.GamePositionSender;
-import game.net.fieldsnames.GameFields;
 import game.net.services.Game;
 import game.views.MessageScreen;
 
 /**
- * Responsible for intepreting {@link Message} about game status data.
+ * Responsible for interpreting {@link Message} about game status data.
  *
  * @see MessageScreen
  * @see GamePositionSender
@@ -25,11 +24,12 @@ import game.views.MessageScreen;
  */
 public class StatusInterpreter implements Interpreter {
 
-    public static final String LOG_TAG = "StatusInterpreter";
-    private MessageScreen messageScreen;
-    private GamePositionSender gamePositionSender;
-    private Resources res;
-    private LinkedList<GameHandlerListener> gameHandlerListeners = new LinkedList<>();
+    private static final String LOG_TAG = "StatusInterpreter";
+
+    private final MessageScreen messageScreen;
+    private final GamePositionSender gamePositionSender;
+    private final Resources res;
+    private final LinkedList<GameHandlerListener> gameHandlerListeners;
 
     /**
      * Creates a new <code>StatusInterpreter</code>.
@@ -38,7 +38,8 @@ public class StatusInterpreter implements Interpreter {
      * @param gamePositionSender   <code>GamePositionSender/code> to stop sending position data.
      * @param gameHandlerListeners <code>GameHandlerListener</code> to call at game start and end.
      */
-    public StatusInterpreter(Context context, MessageScreen messageScreen, GamePositionSender gamePositionSender, GameHandlerListener... gameHandlerListeners) {
+    public StatusInterpreter(Context context, MessageScreen messageScreen, GamePositionSender gamePositionSender,
+                             GameHandlerListener... gameHandlerListeners) {
         this.res = context.getResources();
         this.messageScreen = messageScreen;
         this.gamePositionSender = gamePositionSender;
@@ -51,16 +52,17 @@ public class StatusInterpreter implements Interpreter {
     }
 
     @Override
-    public void interpret(Message msg) {
-//        Log.d(LOG_TAG, "processStatusMessage");
-        Game.GameStatusResult results = (Game.GameStatusResult) msg.obj;
+    public void interpret(Message message) {
+        Game.GameStatusResult results = (Game.GameStatusResult) message.obj;
 
         if (results.go)
-            Log.d(LOG_TAG, "results.isGo");
+            Log.d(LOG_TAG, "Go");
+
         for (GameHandlerListener l : gameHandlerListeners)
             l.onGameGo();
+
         if (results.gameEnd != null) {
-            Log.d(LOG_TAG, "results.getGameEnd");
+            Log.d(LOG_TAG, "Game End");
             String gameEnd = results.gameEnd;
             switch (GameFields.valueOf(gameEnd)) {
                 case GAME_WIN:
@@ -80,17 +82,14 @@ public class StatusInterpreter implements Interpreter {
             gamePositionSender.setSending(false);
             messageScreen.show();
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(res.getInteger(R.integer.endWaitTime));
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    for (GameHandlerListener l : gameHandlerListeners)
-                        l.onGameFinish();
+            new Thread(() -> {
+                try {
+                    Thread.sleep(res.getInteger(R.integer.endWaitTime));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+                for (GameHandlerListener l : gameHandlerListeners)
+                    l.onGameFinish();
             }).start();
         }
     }

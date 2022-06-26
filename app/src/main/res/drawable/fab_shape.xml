@@ -21,7 +21,6 @@
                         <shape android:shape="oval">
                             <solid android:color="#10000000" />
                             <padding android:bottom="2px" android:left="2px" android:right="2px" android:top="2px" />
-                            ;
                         </shape>
                     </item>
                     <item>
@@ -52,7 +51,6 @@
                         <shape android:shape="oval">
                             <solid android:color="#15000000" />
                             <padding android:bottom="1px" android:left="1px" android:right="1px" android:top="1px" />
-                            ;
                         </shape>
                     </item>
                     <item>
@@ -72,9 +70,7 @@
             </item>
         </layer-list>
     </item>
-
     <item android:state_enabled="true">
-
         <layer-list>
             <!-- Shadow -->
             <item android:right="1dp" android:top="1dp">
@@ -135,15 +131,12 @@
                     </item>
                 </layer-list>
             </item>
-
-            <!-- Blue button -->
+            <!-- Blue Button -->
             <item>
                 <shape android:shape="oval">
                     <solid android:color="#CDDC39" />
                 </shape>
             </item>
         </layer-list>
-
     </item>
-
 </selector>

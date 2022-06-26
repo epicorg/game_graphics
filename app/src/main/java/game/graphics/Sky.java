@@ -3,17 +3,17 @@ package game.graphics;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 
-import com.example.alessandro.computergraphicsexample.R;
+import epic.org.R;
 
 import java.util.List;
 
 import game.generators.FundamentalGenerator;
-import sfogl.integration.ArrayObject;
-import sfogl.integration.Node;
-import sfogl.integration.ShadingProgram;
-import shadow.math.SFMatrix3f;
-import shadow.math.SFTransform3f;
-import shadow.math.SFVertex3f;
+import graphic.integration.ArrayObject;
+import graphic.integration.Node;
+import graphic.integration.ShadingProgram;
+import graphic.shadow.math.SFMatrix3f;
+import graphic.shadow.math.SFTransform3f;
+import graphic.shadow.math.SFVertex3f;
 
 /**
  * Represents a skybox.
@@ -28,7 +28,7 @@ public class Sky {
     private static final int SKY_DISTANCE = 100;
     private static final short[] indices = new short[]{3, 2, 0, 0, 1, 3};
 
-    private ArrayObject arrayObjectPosX = new ArrayObject(
+    private final ArrayObject arrayObjectPosX = new ArrayObject(
             new float[]{
                     +SKY_DISTANCE, -SKY_DISTANCE, -SKY_DISTANCE,
                     +SKY_DISTANCE, -SKY_DISTANCE, +SKY_DISTANCE,
@@ -46,7 +46,7 @@ public class Sky {
             },
             indices
     );
-    private ArrayObject arrayObjectPosY = new ArrayObject(
+    private final ArrayObject arrayObjectPosY = new ArrayObject(
             new float[]{
                     +SKY_DISTANCE, +SKY_DISTANCE, +SKY_DISTANCE,
                     -SKY_DISTANCE, +SKY_DISTANCE, +SKY_DISTANCE,
@@ -65,7 +65,7 @@ public class Sky {
             },
             indices
     );
-    private ArrayObject arrayObjectPosZ = new ArrayObject(
+    private final ArrayObject arrayObjectPosZ = new ArrayObject(
             new float[]{
                     -SKY_DISTANCE, -SKY_DISTANCE, +SKY_DISTANCE,
                     -SKY_DISTANCE, +SKY_DISTANCE, +SKY_DISTANCE,
@@ -83,7 +83,7 @@ public class Sky {
             },
             indices
     );
-    private ArrayObject arrayObjectNegX = new ArrayObject(
+    private final ArrayObject arrayObjectNegX = new ArrayObject(
             new float[]{
                     -SKY_DISTANCE, +SKY_DISTANCE, +SKY_DISTANCE,
                     -SKY_DISTANCE, -SKY_DISTANCE, +SKY_DISTANCE,
@@ -101,7 +101,7 @@ public class Sky {
             },
             indices
     );
-    private ArrayObject arrayObjectNegZ = new ArrayObject(
+    private final ArrayObject arrayObjectNegZ = new ArrayObject(
             new float[]{
                     +SKY_DISTANCE, -SKY_DISTANCE, -SKY_DISTANCE,
                     +SKY_DISTANCE, +SKY_DISTANCE, -SKY_DISTANCE,
@@ -119,10 +119,10 @@ public class Sky {
             },
             indices
     );
-    private Context context;
-    private ShadingProgram program;
-    private SFVertex3f position;
-    private Node mainNode = new Node();
+    private final Context context;
+    private final ShadingProgram program;
+    private final SFVertex3f position;
+    private final Node mainNode = new Node();
 
     /**
      * Creates a new <code>Sky</code> cube centered in the given position.

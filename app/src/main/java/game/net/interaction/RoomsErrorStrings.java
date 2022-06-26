@@ -1,10 +1,8 @@
 package game.net.interaction;
 
-
-import com.example.alessandro.computergraphicsexample.R;
-
 import java.util.HashMap;
 
+import epic.org.R;
 import game.net.fieldsnames.RoomsFields;
 
 /**
@@ -13,13 +11,13 @@ import game.net.fieldsnames.RoomsFields;
  * @author Micieli
  * @since 31/03/2015
  */
-
 public class RoomsErrorStrings {
 
-    private HashMap<String, Integer> errors = new HashMap<>();
+    private final HashMap<String, Integer> errors = new HashMap<>();
 
     /**
-     * Creates a new <code>RoomsErrorStrings</code> and maps every error descriptions with a corrisponding error <code>String</code>.
+     * Creates a new <code>RoomsErrorStrings</code> and maps every error descriptions with a
+     * corresponding error <code>String</code>.
      */
     public RoomsErrorStrings() {
         createMap();

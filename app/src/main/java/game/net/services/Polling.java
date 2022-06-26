@@ -19,8 +19,6 @@ import game.net.fieldsnames.ServicesFields;
  */
 public class Polling implements Service {
 
-    public static final String LOG_TAG = "Polling";
-
     @Override
     public void start(JSONObject json) {
         try {
@@ -32,14 +30,11 @@ public class Polling implements Service {
 
     private JSONObject generatePollingResponse() {
         RequestMaker maker = UserData.DATA.getRequestMakerWithData(CommonFields.USERNAME, CommonFields.HASHCODE);
-        JSONObject response = maker.getNewRequestWithDefaultRequests(new JSONd(ServicesFields.SERVICE, ServicesFields.POLLING));
-        //Log.d(LOG_TAG, response.toString());
-        return response;
+        return maker.getNewRequestWithDefaultRequests(new JSONd(ServicesFields.SERVICE, ServicesFields.POLLING));
     }
 
     @Override
     public void setHandler(Handler handler) {
-
     }
 
 }

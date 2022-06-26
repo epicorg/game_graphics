@@ -19,8 +19,8 @@ public interface Interpreter {
     /**
      * Interprets a <code>Message</code>.
      *
-     * @param msg <code>Message</code> to interpret.
+     * @param message <code>Message</code> to interpret.
      */
-    void interpret(Message msg);
+    void interpret(Message message);
 
 }

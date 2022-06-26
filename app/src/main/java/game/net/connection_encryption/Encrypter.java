@@ -15,11 +15,10 @@ import javax.crypto.NoSuchPaddingException;
  * @author Noris
  * @date 27/04/2015
  */
-
 public class Encrypter {
 
     private byte[] encryptedData;
-    private Key asymmetricKey;
+    private final Key asymmetricKey;
 
     public Encrypter(Key asymmetricKey) {
         this.asymmetricKey = asymmetricKey;
@@ -31,15 +30,11 @@ public class Encrypter {
      * @param unencryptedString the <code>String</code> to encrypt.
      */
     public void encrypt(String unencryptedString) {
-
         byte[] unencryptedData = unencryptedString.getBytes();
-
         try {
-
             Cipher cipher = Cipher.getInstance(EncryptionConst.SYMMETRIC_ALGORITHM);
             cipher.init(Cipher.ENCRYPT_MODE, asymmetricKey);
             encryptedData = cipher.doFinal(unencryptedData);
-
         } catch (InvalidKeyException e) {
             e.printStackTrace();
         } catch (NoSuchAlgorithmException e) {

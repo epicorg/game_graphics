@@ -11,21 +11,21 @@ import java.util.HashMap;
  */
 public class MapResources<R> {
 
-    private HashMap<String, R> map = new HashMap<>();
-    private R defaultValue;
-    private String resourceType, logtag;
+    private final HashMap<String, R> map = new HashMap<>();
+    private final R defaultValue;
+    private final String resourceType, logTag;
 
     /**
      * Creates a new <code>MapResources</code>  for a given type.
      *
      * @param defaultValue Value of the default parameter to return from getResource in case of not mapped <code>String</code> .
-     * @param resourceType <code>String</code>  that describes the type of resource of this <code>MapResources</code>.
-     * @param logtag       <code>Log</code>  tag for error messages in case a resource is not mapped.
+     * @param resourceType <code>String</code> that describes the type of resource of this <code>MapResources</code>.
+     * @param logTag       <code>Log</code> tag for error messages in case a resource is not mapped.
      */
-    public MapResources(R defaultValue, String resourceType, String logtag) {
+    public MapResources(R defaultValue, String resourceType, String logTag) {
         this.defaultValue = defaultValue;
         this.resourceType = resourceType;
-        this.logtag = logtag;
+        this.logTag = logTag;
     }
 
     /**
@@ -41,7 +41,7 @@ public class MapResources<R> {
         else {
             String message = resourceType + " " + name + " not mapped!";
             if (defaultValue != null) {
-                Log.d(logtag, message);
+                Log.d(logTag, message);
                 return defaultValue;
             } else
                 throw new RuntimeException(message);

@@ -1,5 +1,10 @@
 package game.net.communication;
 
+import static game.net.communication.ServerCommunicationThreadState.CONNECTED;
+import static game.net.communication.ServerCommunicationThreadState.CONNECTING;
+import static game.net.communication.ServerCommunicationThreadState.ENCRYPTING;
+import static game.net.communication.ServerCommunicationThreadState.NOT_CONNECTED;
+
 import android.os.Handler;
 import android.util.Log;
 
@@ -23,19 +28,12 @@ import game.net.connection_encryption.ConnectionEncrypter;
 import game.net.fieldsnames.ServicesFields;
 import game.net.services.Service;
 
-import static game.net.communication.ServerCommunicationThreadState.CONNECTED;
-import static game.net.communication.ServerCommunicationThreadState.CONNECTING;
-import static game.net.communication.ServerCommunicationThreadState.ENCRYPTING;
-import static game.net.communication.ServerCommunicationThreadState.NOT_CONNECTED;
-
 /**
- * This class manages exchange of data between client and server.
+ * Manages exchange of data between client and server.
  * <p/>
- * How to use:
- * at the application launch, the thread has to be started getting the instance with the appropriated method
- * and calling the run() method.
- * Every time the activity changes, the context must be set.
- * <p/>
+ * How to use: at the application launch, the thread has to be started getting the instance with the
+ * appropriated method and calling the run() method. Every time the activity changes, the context
+ * must be set.
  *
  * @author Micieli
  * @date 31/03/2015
@@ -43,7 +41,8 @@ import static game.net.communication.ServerCommunicationThreadState.NOT_CONNECTE
  */
 public class ServerCommunicationThread extends Thread {
 
-    public static final String LOG_TAG = "ServerCommunicationT";
+    private static final String LOG_TAG = "ServerCommunication";
+
     public static final int WAIT_TIME = 5000;
 
     public static final int SERVER_PORT = 7007;
@@ -58,23 +57,22 @@ public class ServerCommunicationThread extends Thread {
     private Socket socket;
     private BufferedReader reader;
     private PrintWriter writer;
-    private ServiceChooser serviceChooser = new ServiceChooser();
+    private final ServiceChooser serviceChooser = new ServiceChooser();
 
     private ServerCommunicationThread() {
-
     }
 
     /**
-     * @return the Ip address of the first <code>InetAddress</code> of the first <code>NetworkInterface</code>.
+     * @return the IP address of the first <code>InetAddress</code> of the first <code>NetworkInterface</code>.
      */
     public static String getLocalIpAddress() {
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
-                NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
-                    InetAddress inetAddress = enumIpAddr.nextElement();
+                NetworkInterface networkInterface = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddress = networkInterface.getInetAddresses(); enumIpAddress.hasMoreElements(); ) {
+                    InetAddress inetAddress = enumIpAddress.nextElement();
                     if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
-                        return inetAddress.getHostAddress().toString();
+                        return inetAddress.getHostAddress();
                     }
                 }
             }
@@ -115,7 +113,7 @@ public class ServerCommunicationThread extends Thread {
     }
 
     /**
-     * Initilizes the <code>ServerCommunicationThread</code> with custom parameters.
+     * Initializes the <code>ServerCommunicationThread</code> with custom parameters.
      *
      * @param waitTime   time to wait while trying to connect to the server.
      * @param serverPort port of the server to connect to.
@@ -130,9 +128,8 @@ public class ServerCommunicationThread extends Thread {
 
         init();
 
-        if (threadState != CONNECTED) {
+        if (threadState != CONNECTED)
             return;
-        }
 
         encrypt();
 
@@ -143,9 +140,6 @@ public class ServerCommunicationThread extends Thread {
                 line = reader.readLine();
                 if (line != null) {
                     received = new JSONObject(ConnectionEncrypter.decryptResponse(line));
-                    // received = new JSONObject(line);
-                    //Log.d(LOG_TAG, "Received: " + line);
-
                     Service service = serviceChooser.setService(received);
                     service.setHandler(handler);
                     service.start(received);
@@ -163,7 +157,7 @@ public class ServerCommunicationThread extends Thread {
     private void encrypt() {
         EncryptInitializer initializer = new EncryptInitializer();
         initializer.initConnection();
-        Log.d(LOG_TAG, "start encryption!");
+        Log.d(LOG_TAG, "Start encryption");
         setStateAndUpdate(ENCRYPTING);
     }
 
@@ -177,12 +171,11 @@ public class ServerCommunicationThread extends Thread {
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             writer = new PrintWriter(socket.getOutputStream(), true);
             setStateAndUpdate(CONNECTED);
-            Log.d(LOG_TAG, "Init ok");
+            Log.d(LOG_TAG, "Initialization successful");
         } catch (IOException e) {
             e.printStackTrace();
-
             setStateAndUpdate(NOT_CONNECTED);
-            Log.d(LOG_TAG, "Init failed");
+            Log.d(LOG_TAG, "Initialization failed");
         }
     }
 
@@ -206,7 +199,7 @@ public class ServerCommunicationThread extends Thread {
             e.printStackTrace();
         }
         instance = null;
-        Log.e(LOG_TAG, "Exit ok");
+        Log.e(LOG_TAG, "Exit successful");
     }
 
 
@@ -218,27 +211,20 @@ public class ServerCommunicationThread extends Thread {
         if (writer == null || (threadState != CONNECTED && threadState != ENCRYPTING))
             throw new NotConnectedException();
 
-        // Log.d(LOG_TAG, "Send: " + object.toString());
-        // Log.d(LOG_TAG, UserData.DATA.toString());
-
         try {
-            if (object.getString(ServicesFields.SERVICE.toString()).equals(ServicesFields.ENCRYPT.toString())) {
-                writer.println(object.toString());
-            } else {
+            if (object.getString(ServicesFields.SERVICE.toString()).equals(ServicesFields.ENCRYPT.toString()))
+                writer.println(object);
+            else
                 writer.println(ConnectionEncrypter.encryptRequest(object.toString()));
-            }
         } catch (JSONException e) {
-            writer.println(object.toString());
+            writer.println(object);
         }
-
-        // writer.println(object.toString());
     }
 
     public void setStateAndUpdate(ServerCommunicationThreadState state) {
         threadState = state;
-        for (ServerCommunicationThreadListener l : threadListeners) {
+        for (ServerCommunicationThreadListener l : threadListeners)
             l.onThreadStateChanged(threadState);
-        }
     }
 
     public ServerCommunicationThreadState getThreadState() {
@@ -252,4 +238,5 @@ public class ServerCommunicationThread extends Thread {
     public void removeServerCommunicationThreadListener(ServerCommunicationThreadListener l) {
         threadListeners.remove(l);
     }
+
 }

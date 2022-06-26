@@ -42,16 +42,15 @@ public class Login implements Service {
         }
     }
 
-
     public void setHandler(Handler handler) {
         this.handler = handler;
     }
 
-    public class LoginResult {
+    public static class LoginResult {
 
-        private boolean ok;
-        private String username;
-        private int hashcode;
+        private final boolean ok;
+        private final String username;
+        private final int hashcode;
 
         public LoginResult(boolean ok, String username, int hashcode) {
             this.ok = ok;
@@ -72,4 +71,5 @@ public class Login implements Service {
         }
 
     }
+
 }

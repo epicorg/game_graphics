@@ -4,9 +4,9 @@ import android.content.Context;
 
 import java.util.HashMap;
 
-import sfogl.integration.BitmapTexture;
-import sfogl.integration.Material;
-import sfogl.integration.ShadingProgram;
+import graphic.integration.BitmapTexture;
+import graphic.integration.Material;
+import graphic.integration.ShadingProgram;
 
 /**
  * Singleton that manages the {@link Material} loaded from files.
@@ -18,22 +18,21 @@ import sfogl.integration.ShadingProgram;
  */
 
 public enum MaterialKeeper {
+
     MATERIAL_KEEPER;
 
-    public final String LOG_TAG = "MaterialKeeper";
-
-    private HashMap<Integer, Material> mapFromResources = new HashMap<>();
-    private HashMap<Integer, Material> mapFromColors = new HashMap<>();
+    private final HashMap<Integer, Material> mapFromResources = new HashMap<>();
+    private final HashMap<Integer, Material> mapFromColors = new HashMap<>();
 
     public Material getMaterial(Context context, ShadingProgram program, int textureId) {
         if (mapFromResources.containsKey(textureId))
             return mapFromResources.get(textureId);
         else {
             BitmapTexture texture = TextureKeeper.TEXTURE_KEEPER.getTexture(context, textureId);
-            Material mat = new Material(program);
-            mat.getTextures().add(texture);
-            mapFromResources.put(textureId, mat);
-            return mat;
+            Material material = new Material(program);
+            material.getTextures().add(texture);
+            mapFromResources.put(textureId, material);
+            return material;
         }
     }
 
@@ -42,10 +41,10 @@ public enum MaterialKeeper {
             return mapFromColors.get(color);
         else {
             BitmapTexture texture = TextureKeeper.TEXTURE_KEEPER.getColorTexture(color);
-            Material mat = new Material(program);
-            mat.getTextures().add(texture);
-            mapFromColors.put(color, mat);
-            return mat;
+            Material material = new Material(program);
+            material.getTextures().add(texture);
+            mapFromColors.put(color, material);
+            return material;
         }
     }
 

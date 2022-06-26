@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-import sfogl.integration.Model;
-import sfogl.integration.Node;
-import shadow.math.SFMatrix3f;
-import shadow.math.SFTransform3f;
-import shadow.math.SFVertex3f;
+import graphic.integration.Model;
+import graphic.integration.Node;
+import graphic.shadow.math.SFMatrix3f;
+import graphic.shadow.math.SFTransform3f;
+import graphic.shadow.math.SFVertex3f;
 
 /**
  * It keeps a list of {@link Button} and draws them.
@@ -18,10 +18,9 @@ import shadow.math.SFVertex3f;
  */
 public class ButtonMaster {
 
-    private HashMap<Button, Node> map = new HashMap<>();
-    public static final String LOG_TAG = "ButtonsMaster";
+    private final HashMap<Button, Node> map = new HashMap<>();
     private Model model;
-    private ArrayList<Node> parentNodes;
+    private final ArrayList<Node> parentNodes;
 
     /**
      * Creates a new <code>ButtonMaster</code>.

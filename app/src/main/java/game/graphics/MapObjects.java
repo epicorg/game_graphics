@@ -1,6 +1,6 @@
 package game.graphics;
 
-import com.example.alessandro.computergraphicsexample.R;
+import epic.org.R;
 
 /**
  * It's a singleton that manages the {@link MazeObject} database and the relative textures.
@@ -9,9 +9,11 @@ import com.example.alessandro.computergraphicsexample.R;
  * @see MazeObject
  */
 public enum MapObjects {
+
     MAP;
 
-    public static final String LOG_TAG = "MapObjects";
+    private static final String LOG_TAG = "MapObjects";
+
     public static final int DEFAULT_TEXTURE = R.drawable.wall_texture_01;
     private MapResources<MazeObject> map;
     private MapResources<Integer> codes;
@@ -50,6 +52,5 @@ public enum MapObjects {
         codes.mapResource("meat_texture_01", R.drawable.meat_texture_01);
         codes.mapResource("carrot_texture_01", R.drawable.carrot_texture_01);
     }
-
 
 }

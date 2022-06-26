@@ -4,9 +4,8 @@ import android.util.Base64;
 
 /**
  * @author Noris
- * @date 2015/06/01
+ * @date 01/06/2015
  */
-
 public class StringConverter {
 
     /*

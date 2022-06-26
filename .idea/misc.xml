@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="EntryPointsManager">
-    <entry_points version="2.0" />
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/noris/Desktop/game_graphics/app/src/main/res/drawable/button_background_disabled.xml" value="0.195" />
+        <entry key="..\:/Users/noris/Desktop/game_graphics/app/src/main/res/drawable/button_background_enabled.xml" value="0.195" />
+        <entry key="..\:/Users/noris/Desktop/game_graphics/app/src/main/res/drawable/fab_shape.xml" value="0.195" />
+        <entry key="..\:/Users/noris/Desktop/game_graphics/app/src/main/res/layout/activity_game.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/noris/Desktop/game_graphics/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/noris/Desktop/game_graphics/app/src/main/res/layout/activity_registration.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/noris/Desktop/game_graphics/app/src/main/res/layout/activity_room.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/noris/Desktop/game_graphics/app/src/main/res/layout/activity_rooms.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/noris/Desktop/game_graphics/app/src/main/res/layout/activity_start.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/noris/Desktop/game_graphics/app/src/main/res/layout/dialog_new_room.xml" value="0.358695652173913" />
+      </map>
+    </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_16_PREVIEW" project-jdk-name="1.7" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_16" project-jdk-name="1.7" project-jdk-type="JavaSDK" />
   <component name="SvnBranchConfigurationManager">
     <option name="myConfigurationMap">
       <map>

@@ -2,9 +2,11 @@ package game.net.handling;
 
 import android.os.Handler;
 import android.os.Message;
-import java.util.HashMap;
-import game.net.interpreters.Interpreter;
 
+import java.util.HashMap;
+import java.util.Objects;
+
+import game.net.interpreters.Interpreter;
 
 /**
  * Class containing a map of {@link Interpreter} to read the messages sent from the server about the game.
@@ -13,8 +15,7 @@ import game.net.interpreters.Interpreter;
  */
 public class GameHandler extends Handler {
 
-    public static final String LOG_TAG = "GameHandler";
-    private HashMap<Integer, Interpreter> map;
+    private final HashMap<Integer, Interpreter> map;
 
     /**
      * Construct a new <code>GameHandler</code>.
@@ -29,8 +30,7 @@ public class GameHandler extends Handler {
 
     @Override
     public void handleMessage(Message msg) {
-        //Log.d(LOG_TAG, "handleMessage");
-        map.get(msg.what).interpret(msg);
+        Objects.requireNonNull(map.get(msg.what)).interpret(msg);
     }
 
 }

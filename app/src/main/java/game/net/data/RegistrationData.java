@@ -5,8 +5,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
-
-import com.example.alessandro.computergraphicsexample.R;
+import epic.org.R;
 
 import java.util.HashMap;
 
@@ -18,8 +17,8 @@ import java.util.HashMap;
  */
 public class RegistrationData extends LoginData {
 
-    private String email;
-    private String confirmPassword;
+    private final String email;
+    private final String confirmPassword;
 
     /**
      * Creates a new <code>RegistrationData</code> with given user data.
@@ -64,20 +63,24 @@ public class RegistrationData extends LoginData {
         EditText mEmailView = ((EditText) views.get(R.id.email));
 
         if (!passwordsMatches()) {
+            assert mConfirmPasswordView != null;
             mConfirmPasswordView.setError(context.getString(R.string.error_passwords_different));
             mConfirmPasswordView.requestFocus();
             cancel = true;
         }
 
         if (TextUtils.isEmpty(getEmail())) {
+            assert mEmailView != null;
             mEmailView.setError(context.getString(R.string.error_field_required));
             mEmailView.requestFocus();
             cancel = true;
         } else if (!isEmailValid()) {
+            assert mEmailView != null;
             mEmailView.setError(context.getString(R.string.error_invalid_email));
             mEmailView.requestFocus();
             cancel = true;
         }
         return cancel;
     }
+
 }

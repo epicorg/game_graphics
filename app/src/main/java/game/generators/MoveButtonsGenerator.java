@@ -2,18 +2,16 @@ package game.generators;
 
 import android.content.Context;
 
-import com.example.alessandro.computergraphicsexample.R;
-
+import epic.org.R;
 import game.controls.Button;
-import game.controls.ButtonAction;
 import game.controls.ButtonMaster;
 import game.graphics.MaterialKeeper;
 import game.listeners.PositionMoveListenerInterface;
-import sfogl.integration.Model;
-import sfogl.integration.Node;
-import sfogl.integration.ShadingProgram;
-import shadow.math.SFMatrix3f;
-import shadow.math.SFVertex3f;
+import graphic.integration.Model;
+import graphic.integration.Node;
+import graphic.integration.ShadingProgram;
+import graphic.shadow.math.SFMatrix3f;
+import graphic.shadow.math.SFVertex3f;
 
 /**
  * This class creates the 4 {@link Button} of movement.
@@ -23,10 +21,10 @@ import shadow.math.SFVertex3f;
  */
 public class MoveButtonsGenerator {
 
-    private Context context;
-    private ShadingProgram program;
-    private ButtonMaster buttonMaster;
-    private PositionMoveListenerInterface positionMoveListener;
+    private final Context context;
+    private final ShadingProgram program;
+    private final ButtonMaster buttonMaster;
+    private final PositionMoveListenerInterface positionMoveListener;
 
     /**
      * Creates a new <code>MoveButtonsGenerator</code>.
@@ -61,36 +59,16 @@ public class MoveButtonsGenerator {
         Model model = FundamentalGenerator.getModelFromFileAndMaterial(context, MaterialKeeper.MATERIAL_KEEPER.getColorMaterial(program, color), "Arrow.obj");
 
         buttonMaster.setModel(model);
-        buttonMaster.addButton(new Button("LEFT", new ButtonAction() {
-                    @Override
-                    public void action(Object parameter) {
-                        positionMoveListener.move((float) +Math.PI / 2, 0, (long) parameter);
-                    }
-                }, true, true),
+        buttonMaster.addButton(new Button("LEFT", parameter -> positionMoveListener.move((float) Math.PI / 2, 0, (long) parameter), true, true),
                 new SFVertex3f(-distance, 0, 0), (float) -Math.PI / 2, parentNode);
 
-        buttonMaster.addButton(new Button("RIGHT", new ButtonAction() {
-                    @Override
-                    public void action(Object parameter) {
-                        positionMoveListener.move((float) -Math.PI / 2, 0, (long) parameter);
-                    }
-                }, true, true),
+        buttonMaster.addButton(new Button("RIGHT", parameter -> positionMoveListener.move((float) -Math.PI / 2, 0, (long) parameter), true, true),
                 new SFVertex3f(distance, 0, 0), (float) Math.PI / 2, parentNode);
 
-        buttonMaster.addButton(new Button("UP", new ButtonAction() {
-                    @Override
-                    public void action(Object parameter) {
-                        positionMoveListener.move(0, 0, (long) parameter);
-                    }
-                }, true, true),
+        buttonMaster.addButton(new Button("UP", parameter -> positionMoveListener.move(0, 0, (long) parameter), true, true),
                 new SFVertex3f(0, distance, 0), (float) 0, parentNode);
 
-        buttonMaster.addButton(new Button("DOWN", new ButtonAction() {
-                    @Override
-                    public void action(Object parameter) {
-                        positionMoveListener.move((float) -Math.PI, 0, (long) parameter);
-                    }
-                }, true, true),
+        buttonMaster.addButton(new Button("DOWN", parameter -> positionMoveListener.move((float) -Math.PI, 0, (long) parameter), true, true),
                 new SFVertex3f(0, -distance, 0), (float) -Math.PI, parentNode);
     }
 

@@ -12,20 +12,15 @@ import javax.crypto.SecretKey;
  * @date 27/04/2015
  * @see KeyGenerator
  */
-
 public class SymmetricKeyGenerator implements ISymmetricKeyGenerator {
 
     private SecretKey key;
 
     public void generateKey() {
         try {
-
-            // SecureRandom secureRandom = new SecureRandom();
-
             KeyGenerator keyGenerator = KeyGenerator.getInstance(EncryptionConst.SYMMETRIC_ALGORITHM);
-            keyGenerator.init(EncryptionConst.SYMMETRIC_KEYSIZE);
+            keyGenerator.init(EncryptionConst.SYMMETRIC_KEY_SIZE);
             key = keyGenerator.generateKey();
-
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }

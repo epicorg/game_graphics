@@ -14,7 +14,7 @@ public interface DirectionMoveListenerInterface {
      * @param width  width of the screen.
      * @param height height of the screen.
      */
-    public void update(int width, int height);
+    void update(int width, int height);
 
     /**
      * Performs a move direction action.

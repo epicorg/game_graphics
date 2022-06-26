@@ -23,22 +23,16 @@ import game.net.fieldsnames.ServicesFields;
  * @author Noris
  * @date 28/04/2015
  */
-
 public class Encrypt implements Service {
 
-    private static final String LOG_TAG = "encryption";
+    private static final String LOG_TAG = "Encrypt";
 
     private Handler handler;
 
-    private JSONObject jsonRequest;
-    private JSONObject jsonResponse;
-
     @Override
     public void start(JSONObject json) {
-        this.jsonResponse = json;
-
         try {
-            String publicKey = jsonResponse.getString(EncryptFields.PUBLIC_KEY.toString());
+            String publicKey = json.getString(EncryptFields.PUBLIC_KEY.toString());
 
             KeyWrapper wrapper = new KeyWrapper(ConnectionEncrypter.getSymmetricKey());
             wrapper.wrapKey(KeyConverter.stringToPublicKey(publicKey));
@@ -55,10 +49,9 @@ public class Encrypt implements Service {
             try {
                 ServerCommunicationThread.getInstance().send(request);
                 ServerCommunicationThread.getInstance().setStateAndUpdate(ServerCommunicationThreadState.CONNECTED);
-                Log.d(LOG_TAG, "Encryption ended!");
+                Log.d(LOG_TAG, "Encryption ended");
                 Message message = handler.obtainMessage(0, true);
                 message.sendToTarget();
-
             } catch (NotConnectedException e) {
                 e.printStackTrace();
             }
@@ -66,7 +59,6 @@ public class Encrypt implements Service {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -75,11 +67,9 @@ public class Encrypt implements Service {
     }
 
     private JSONObject encryptionRequest() throws JSONException {
-
         JSONObject encryptionRequest = new JSONObject();
         encryptionRequest.put(ServicesFields.SERVICE.toString(), ServicesFields.ENCRYPT.toString());
         encryptionRequest.put(ServicesFields.SERVICE_TYPE.toString(), EncryptFields.PUBLIC_KEY_REQUEST.toString());
-
         return encryptionRequest;
     }
 

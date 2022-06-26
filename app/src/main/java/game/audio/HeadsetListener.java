@@ -12,26 +12,28 @@ import android.media.AudioManager;
  */
 public class HeadsetListener extends BroadcastReceiver {
 
-    private Context context;
+    private final Context context;
 
     public HeadsetListener(Context context) {
         this.context = context;
 
     }
-    public void init(){
+
+    public void init() {
         IntentFilter receiverFilter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
-        context.registerReceiver( this , receiverFilter );
+        context.registerReceiver(this, receiverFilter);
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        int state = intent.getIntExtra("state",0);
+        int state = intent.getIntExtra("state", 0);
         AudioManager Audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
-        Audio.setSpeakerphoneOn(state == 0? true : false);
+        Audio.setSpeakerphoneOn(state == 0);
     }
 
-    public void release(){
+    public void release() {
         context.unregisterReceiver(this);
     }
+
 }

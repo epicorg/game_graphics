@@ -1,12 +1,11 @@
 package game.net.interpreters;
 
 import android.os.Message;
-import android.util.Log;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 import game.data.Room;
-import game.data.Team;
 import game.net.services.Game;
 import game.player.Player;
 
@@ -17,9 +16,7 @@ import game.player.Player;
  */
 public class PositionsInterpreter implements Interpreter {
 
-    public static final String LOG_TAG = "PositionsInterpreter";
-
-    private Room room;
+    private final Room room;
 
     /**
      * Creates a new <code>PositionInterpreter</code>.
@@ -36,15 +33,14 @@ public class PositionsInterpreter implements Interpreter {
     }
 
     @Override
-    public void interpret(Message msg) {
-        //Log.d(LOG_TAG, "processPositionsMessage");
-        Game.GamePositionsResult results = (Game.GamePositionsResult) msg.obj;
+    public void interpret(Message message) {
+        Game.GamePositionsResult results = (Game.GamePositionsResult) message.obj;
         HashMap<String, Game.GamePositionsObject> gamePositionsObjectHashMap = results.getGamePositionsObjectHashMap();
 
         for (String s : gamePositionsObjectHashMap.keySet()) {
             Player p = room.getPlayerByUsername(s);
-            p.getStatus().getPosition().set(gamePositionsObjectHashMap.get(s).pos);
-            p.getStatus().getDirection().set(gamePositionsObjectHashMap.get(s).dir);
+            p.getStatus().getPosition().set(Objects.requireNonNull(gamePositionsObjectHashMap.get(s)).pos);
+            p.getStatus().getDirection().set(Objects.requireNonNull(gamePositionsObjectHashMap.get(s)).dir);
         }
     }
 

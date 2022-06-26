@@ -8,10 +8,10 @@ package game.controls;
  */
 public class Button {
 
-    private String name;
-    private ButtonAction action;
-    private boolean continuousPressing;
-    private boolean needToBeReady;
+    private final String name;
+    private final ButtonAction action;
+    private final boolean continuousPressing;
+    private final boolean needToBeReady;
 
     /**
      * Creates a new <code>Button</code>.

@@ -3,11 +3,10 @@ package game.net.fieldsnames;
 /**
  * Possible registration fields.
  */
-
 public enum RegisterFields {
-	
-	EMAIL,
-	REGISTER_SHORT,
+
+    EMAIL,
+    REGISTER_SHORT,
     REGISTER_LONG,
     REGISTER_INVALID_CHAR,
     REGISTER_INVALID_DOMAIN,

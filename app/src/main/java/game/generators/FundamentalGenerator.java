@@ -6,15 +6,15 @@ import android.opengl.GLES20;
 
 import game.graphics.MaterialKeeper;
 import game.graphics.ModelKeeper;
-import sfogl.integration.ArrayObject;
-import sfogl.integration.BitmapTexture;
-import sfogl.integration.Material;
-import sfogl.integration.Mesh;
-import sfogl.integration.Model;
-import sfogl.integration.Node;
-import sfogl.integration.ShadingProgram;
-import sfogl2.SFOGLTextureModel;
-import shadow.graphics.SFImageFormat;
+import graphic.integration.ArrayObject;
+import graphic.integration.BitmapTexture;
+import graphic.integration.Material;
+import graphic.integration.Mesh;
+import graphic.integration.Model;
+import graphic.integration.Node;
+import graphic.integration.ShadingProgram;
+import graphic.sfogl2.SFOGLTextureModel;
+import graphic.shadow.graphics.SFImageFormat;
 
 /**
  * Utility class with static methods which are used to generate {@link Model}and {@link Node}.

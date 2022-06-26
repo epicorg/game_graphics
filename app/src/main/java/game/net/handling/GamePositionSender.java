@@ -2,17 +2,17 @@ package game.net.handling;
 
 import org.json.JSONObject;
 
-import game.net.communication.JSONd;
-import game.net.communication.RequestMaker;
 import game.miscellaneous.Waiter;
+import game.net.communication.JSONd;
+import game.net.communication.NotConnectedException;
+import game.net.communication.RequestMaker;
+import game.net.communication.ServerCommunicationThread;
 import game.net.fieldsnames.CommonFields;
 import game.net.fieldsnames.GameFields;
 import game.net.fieldsnames.RoomFields;
 import game.net.fieldsnames.ServicesFields;
 import game.player.Player;
 import game.player.PlayerStatus;
-import game.net.communication.NotConnectedException;
-import game.net.communication.ServerCommunicationThread;
 
 /**
  * Class containing a thread which sends the current {@link Player}'s position and direction to the server.
@@ -21,17 +21,15 @@ import game.net.communication.ServerCommunicationThread;
  */
 public class GamePositionSender implements Waiter {
 
-    public static final String LOG_TAG = "GamePositionSender";
-
     public static final long waitTime = 100;
 
-    private Player player;
-    private String roomName;
+    private final Player player;
+    private final String roomName;
 
-    private ServerCommunicationThread serverCommunicationThread = ServerCommunicationThread.getInstance();
+    private final ServerCommunicationThread serverCommunicationThread = ServerCommunicationThread.getInstance();
 
     private boolean sending = true;
-    private RequestMaker requestMaker = new RequestMaker();
+    private final RequestMaker requestMaker = new RequestMaker();
 
     /**
      * Constructs a sender for the specified <code>Player</code>.
@@ -56,20 +54,20 @@ public class GamePositionSender implements Waiter {
         this.sending = sending;
     }
 
-    private Runnable sendPositionRunnable = new Runnable() {
+    private final Runnable sendPositionRunnable = new Runnable() {
         @Override
         public void run() {
             while (sending) {
                 PlayerStatus playerStatus = player.getStatus();
-                Enum[] names = new Enum[]{GameFields.GAME_X, GameFields.GAME_Y, GameFields.GAME_Z};
+                Enum<?>[] names = new Enum[]{GameFields.GAME_X, GameFields.GAME_Y, GameFields.GAME_Z};
                 JSONObject request = requestMaker.getNewRequest(new JSONd(ServicesFields.SERVICE, ServicesFields.GAME.toString()),
                         new JSONd(ServicesFields.SERVICE_TYPE, GameFields.GAME_POSITIONS.toString()),
                         new JSONd(CommonFields.USERNAME, player.getName()),
                         new JSONd(RoomFields.ROOM_NAME, roomName),
                         new JSONd(GameFields.GAME_POSITION, requestMaker.getNewRequest(names, playerStatus.getPosition())),
                         new JSONd(GameFields.GAME_DIRECTION, requestMaker.getNewRequest(names, playerStatus.getDirection()))
-
                 );
+
                 try {
                     serverCommunicationThread.send(request);
                 } catch (NotConnectedException e) {

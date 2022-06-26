@@ -2,9 +2,9 @@ package game.generators;
 
 import java.util.ArrayList;
 
-import sfogl.integration.Model;
-import sfogl.integration.Node;
-import shadow.math.SFTransform3f;
+import graphic.integration.Model;
+import graphic.integration.Node;
+import graphic.shadow.math.SFTransform3f;
 
 /**
  * It manages the ground building.
@@ -14,7 +14,7 @@ import shadow.math.SFTransform3f;
  */
 public class GroundGenerator {
 
-    private Model model;
+    private final Model model;
 
     /**
      * Creates a new <code>GroundGenerator</code> from a specified Model.

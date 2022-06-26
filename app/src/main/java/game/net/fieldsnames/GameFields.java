@@ -3,37 +3,37 @@ package game.net.fieldsnames;
 /**
  * Possible fields about game: they include service type.
  */
-
 public enum GameFields {
 
-     GAME_STATUS,
-     GAME_MAP,
-     GAME_POSITIONS,
-     GAME_END,
+    GAME_STATUS,
+    GAME_MAP,
+    GAME_POSITIONS,
+    GAME_END,
 
 
-     GAME_READY,
-     GAME_GO,
-     GAME_EXIT,
+    GAME_READY,
+    GAME_GO,
+    GAME_EXIT,
 
-     GAME_WIN,
-     GAME_LOSE,
-     GAME_DRAW,
-     GAME_INTERRUPTED,
+    GAME_WIN,
+    GAME_LOSE,
+    GAME_DRAW,
+    GAME_INTERRUPTED,
 
-     GAME_WIDTH,
-     GAME_LENGTH,
-     GAME_HEIGHT,
-     GAME_PLAYER_POSITION, 
-     GAME_ITEMS,
-     GAME_OBJECT,
-     GAME_TEXTURE, 
-     GAME_POSITION, 
-     GAME_PLAYERS,
-     GAME_DIRECTION,
-     GAME_SIZE,
-     GAME_X,
-     GAME_Y,
-     GAME_Z,
-     GAME_PLAYER_NAME
+    GAME_WIDTH,
+    GAME_LENGTH,
+    GAME_HEIGHT,
+    GAME_PLAYER_POSITION,
+    GAME_ITEMS,
+    GAME_OBJECT,
+    GAME_TEXTURE,
+    GAME_POSITION,
+    GAME_PLAYERS,
+    GAME_DIRECTION,
+    GAME_SIZE,
+    GAME_X,
+    GAME_Y,
+    GAME_Z,
+    GAME_PLAYER_NAME
+
 }

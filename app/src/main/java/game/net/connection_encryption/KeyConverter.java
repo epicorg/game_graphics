@@ -13,11 +13,10 @@ import javax.crypto.spec.SecretKeySpec;
  * Some useful {@link Key} conversion methods.
  *
  * @author Noris
- * @date 2015/04/28
+ * @date 28/04/2015
  * @see StringConverter
  * @see Key
  */
-
 public class KeyConverter {
 
     /**
@@ -37,11 +36,8 @@ public class KeyConverter {
      * @return the <code>PublicKey</code>.
      */
     public static PublicKey stringToPublicKey(String key) {
-
         byte[] decodedKey = StringConverter.stringToBytes(key);
-
         X509EncodedKeySpec eks = new X509EncodedKeySpec(decodedKey);
-
         KeyFactory keyFactor = null;
 
         try {
@@ -51,12 +47,12 @@ public class KeyConverter {
         }
 
         try {
+            assert keyFactor != null;
             return keyFactor.generatePublic(eks);
         } catch (InvalidKeySpecException e) {
             e.printStackTrace();
             return null;
         }
-
     }
 
     /**
@@ -66,10 +62,8 @@ public class KeyConverter {
      * @return the <code>Key</code>.
      */
     public static Key stringToSymmetricKey(String key) {
-
         byte[] decodedKey = StringConverter.stringToBytes(key);
         return new SecretKeySpec(decodedKey, EncryptionConst.SYMMETRIC_ALGORITHM);
-
     }
 
 }

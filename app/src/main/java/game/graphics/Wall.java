@@ -4,8 +4,8 @@ import android.content.Context;
 
 import game.physics.CollisionBox;
 import game.physics.Square;
-import sfogl.integration.Node;
-import shadow.math.SFVertex3f;
+import graphic.integration.Node;
+import graphic.shadow.math.SFVertex3f;
 
 /**
  * It represents a wall with the form of a parallelepiped.
@@ -15,8 +15,8 @@ import shadow.math.SFVertex3f;
  */
 public class Wall implements MazeObject {
 
-    private Square box;
-    private int textureID;
+    private final Square box;
+    private final int textureID;
 
     /**
      * Creates a new wall. Its dimension is proportional to those of the specific <code>Square</code>.
@@ -33,8 +33,8 @@ public class Wall implements MazeObject {
     public Node getNode(Context context) {
         Node node = new Node();
         node.setModel(new WallGenerator(context, ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER),
-                textureID, box.getxSize(), box.getySize(), box.getzSize()).getModel());
-        SFVertex3f position = box.getPos();
+                textureID, box.getXSize(), box.getYSize(), box.getZSize()).getModel());
+        SFVertex3f position = box.getPosition();
         node.getRelativeTransform().setPosition(position.getX(), position.getY(), position.getZ());
         return node;
     }
@@ -59,4 +59,5 @@ public class Wall implements MazeObject {
         float sizeZ = Float.parseFloat(size.split(" ")[2]);
         return new Wall(new Square(new SFVertex3f(posX, posY, posZ), sizeX, sizeY, sizeZ), textureId);
     }
+
 }

@@ -1,14 +1,13 @@
 package game.graphics;
 
 import android.content.Context;
-import android.util.Log;
 
 import game.generators.FundamentalGenerator;
 import game.player.Player;
-import sfogl.integration.Node;
-import shadow.math.SFMatrix3f;
-import shadow.math.SFTransform3f;
-import shadow.math.SFVertex3f;
+import graphic.integration.Node;
+import graphic.shadow.math.SFMatrix3f;
+import graphic.shadow.math.SFTransform3f;
+import graphic.shadow.math.SFVertex3f;
 
 /**
  * Represents a graphical view of a {@link Player}.
@@ -19,10 +18,10 @@ import shadow.math.SFVertex3f;
  */
 public class PlayerView {
 
-    public static final String LOG_TAG = "GameActivity";
+    private static final String LOG_TAG = "GameActivity";
 
-    private Player player;
-    private Node node;
+    private final Player player;
+    private final Node node;
 
     /**
      * Creates a new <code>PlayerView</code> for a given <code>Player</code>.

@@ -8,9 +8,9 @@ import android.util.Log;
 
 import java.util.HashMap;
 
-import sfogl.integration.BitmapTexture;
-import sfogl2.SFOGLTextureModel;
-import shadow.graphics.SFImageFormat;
+import graphic.integration.BitmapTexture;
+import graphic.sfogl2.SFOGLTextureModel;
+import graphic.shadow.graphics.SFImageFormat;
 
 /**
  * It manages the texture loaded from resources.
@@ -20,12 +20,13 @@ import shadow.graphics.SFImageFormat;
  * @author De Pace
  */
 public enum TextureKeeper {
+
     TEXTURE_KEEPER;
 
-    public final String LOG_TAG = "TextureKeeper";
+    private static final String LOG_TAG = "TextureKeeper";
 
-    private HashMap<Integer, BitmapTexture> mapFromResources = new HashMap<>();
-    private HashMap<Integer, BitmapTexture> mapFromColors = new HashMap<>();
+    private final HashMap<Integer, BitmapTexture> mapFromResources = new HashMap<>();
+    private final HashMap<Integer, BitmapTexture> mapFromColors = new HashMap<>();
 
     /**
      * Loads a new texture from an image in the resources
@@ -62,12 +63,10 @@ public enum TextureKeeper {
      * @param context <code>Context</code> to find resources.
      */
     public void reload(Context context) {
-        for (int i : mapFromResources.keySet()) {
-            loadTextureFromId(context, i, "Reloaded Texture: " + i);
-        }
-        for (int color : mapFromColors.keySet()) {
+        for (int texture : mapFromResources.keySet())
+            loadTextureFromId(context, texture, "Reloaded Texture: " + texture);
+        for (int color : mapFromColors.keySet())
             loadColorTexture(color, "Reloaded ColorTexture: " + color);
-        }
     }
 
     private BitmapTexture loadColorTexture(int color, String message) {
@@ -92,7 +91,6 @@ public enum TextureKeeper {
 
     private BitmapTexture getBitmapTextureFromResource(Context context, int textureId) {
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), textureId);
-
         return getBitmapTextureFromBitmap(bitmap);
     }
 
@@ -108,7 +106,6 @@ public enum TextureKeeper {
         int textureModel = SFOGLTextureModel.generateTextureObjectModel(SFImageFormat.RGBA, GLES20.GL_REPEAT, GLES20.GL_REPEAT, GLES20.GL_LINEAR, GLES20.GL_LINEAR);
         BitmapTexture tex = BitmapTexture.loadBitmapTexture(bitmap, textureModel);
         tex.init();
-
         return tex;
     }
 

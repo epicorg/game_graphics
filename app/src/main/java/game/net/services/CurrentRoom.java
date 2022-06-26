@@ -25,8 +25,6 @@ import game.player.Player;
 
 public class CurrentRoom implements Service {
 
-    public static final String LOG_TAG = "CurrentRoom";
-
     public static final int LIST = 0;
     public static final int START = 1;
     public static final int EXIT = 2;
@@ -53,7 +51,6 @@ public class CurrentRoom implements Service {
             }
             message.sendToTarget();
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -86,7 +83,6 @@ public class CurrentRoom implements Service {
             }
             currentRoomResult = new CurrentRoomResult(maxPlayers, teams);
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -112,10 +108,10 @@ public class CurrentRoom implements Service {
         this.handler = handler;
     }
 
-    public class CurrentRoomResult {
+    public static class CurrentRoomResult {
 
-        private int maxPlayer;
-        private ArrayList<Team> teams;
+        private final int maxPlayer;
+        private final ArrayList<Team> teams;
 
         public CurrentRoomResult(int maxPlayer, ArrayList<Team> teams) {
             this.maxPlayer = maxPlayer;

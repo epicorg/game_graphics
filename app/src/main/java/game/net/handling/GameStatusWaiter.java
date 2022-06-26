@@ -1,9 +1,9 @@
 package game.net.handling;
 
-import game.net.communication.JSONd;
-import game.net.communication.RequestMaker;
 import game.miscellaneous.Waiter;
+import game.net.communication.JSONd;
 import game.net.communication.NotConnectedException;
+import game.net.communication.RequestMaker;
 import game.net.communication.ServerCommunicationThread;
 import game.net.fieldsnames.GameFields;
 import game.net.fieldsnames.ServicesFields;
@@ -15,9 +15,8 @@ import game.net.fieldsnames.ServicesFields;
  */
 public class GameStatusWaiter implements Waiter {
 
-    private ServerCommunicationThread serverCommunicationThread = ServerCommunicationThread.getInstance();
-
-    private RequestMaker requestMaker;
+    private final ServerCommunicationThread serverCommunicationThread = ServerCommunicationThread.getInstance();
+    private final RequestMaker requestMaker;
 
     /**
      * Construct a new <code>GameStatusWaiter</code>.
@@ -38,4 +37,5 @@ public class GameStatusWaiter implements Waiter {
             e.printStackTrace();
         }
     }
+
 }

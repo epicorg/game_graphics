@@ -13,11 +13,10 @@ import game.controls.ButtonsControl;
  */
 public class TouchListener implements TouchListenerInterface {
 
-    public static final String LOG_TAG = "TouchListener";
+    private static final String LOG_TAG = "TouchListener";
 
-
-    private ButtonsControl buttonsControl;
-    private DirectionMoveListenerInterface directionMoveListener;
+    private final ButtonsControl buttonsControl;
+    private final DirectionMoveListenerInterface directionMoveListener;
 
     private int positionId = -1;
     private volatile boolean isPressing = false;
@@ -28,19 +27,19 @@ public class TouchListener implements TouchListenerInterface {
     private Thread moveThread;
 
     private boolean readyToPlay = false;
-    private long time_sleep;
+    private final long timeSleep;
 
     /**
      * Creates a new <code>TouchListener</code>.
      *
-     * @param buttonsControl        Control that contains the <code>Button</code> which <code>ButtonAction</code> are invoked when the listener detectes the pressing.
+     * @param buttonsControl        Control that contains the <code>Button</code> which <code>ButtonAction</code> are invoked when the listener detects the pressing.
      * @param directionMoveListener listener for direction move actions on the screen.
-     * @param time_sleep            time that indicates how long the pressed <code>Button</code> remains pressed, for <code>Button</code> that allow continuous pressing.
+     * @param timeSleep             time that indicates how long the pressed <code>Button</code> remains pressed, for <code>Button</code> that allow continuous pressing.
      */
-    public TouchListener(ButtonsControl buttonsControl, DirectionMoveListenerInterface directionMoveListener, int time_sleep) {
+    public TouchListener(ButtonsControl buttonsControl, DirectionMoveListenerInterface directionMoveListener, int timeSleep) {
         this.buttonsControl = buttonsControl;
         this.directionMoveListener = directionMoveListener;
-        this.time_sleep = (long) time_sleep;
+        this.timeSleep = timeSleep;
     }
 
     public void setReadyToPlay(boolean readyToPlay) {
@@ -57,7 +56,6 @@ public class TouchListener implements TouchListenerInterface {
             case MotionEvent.ACTION_POINTER_DOWN:
                 final float touchX = event.getX(index);
                 final float touchY = event.getY(index);
-
                 if (buttonsControl.isInsideAButton(touchX, touchY) && !isPressing) {
                     startPressing(event, index, touchX, touchY);
                 } else if (!isMoving) {
@@ -87,7 +85,6 @@ public class TouchListener implements TouchListenerInterface {
             if (event.getPointerId(i) == positionId && isPressing) {
                 final float touchX = event.getX(i);
                 final float touchY = event.getY(i);
-
                 if (!buttonsControl.isInsideAButton(touchX, touchY)) {
                     stopPressing();
                 }
@@ -108,12 +105,10 @@ public class TouchListener implements TouchListenerInterface {
                 if (event.getPointerId(i) == directionId) {
                     final float touchX = event.getX(i);
                     final float touchY = event.getY(i);
-
                     float dx = touchX - previousX;
                     float dy = touchY - previousY;
                     previousX = touchX;
                     previousY = touchY;
-
                     directionMoveListener.move(dx, dy);
                     return;
                 }
@@ -125,28 +120,25 @@ public class TouchListener implements TouchListenerInterface {
         isPressing = true;
         positionId = event.getPointerId(index);
 
-        moveThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (isPressing) {
-                    Button pressedButton = buttonsControl.getPressedButton(touchX, touchY);
+        moveThread = new Thread(() -> {
+            while (isPressing) {
+                Button pressedButton = buttonsControl.getPressedButton(touchX, touchY);
 
-                    if (pressedButton.isNeedToBeReady() && !readyToPlay) {
-                        Log.d(LOG_TAG, "Not readyToPlay.");
-                        return;
-                    }
+                if (pressedButton.isNeedToBeReady() && !readyToPlay) {
+                    Log.d(LOG_TAG, "Not readyToPlay.");
+                    return;
+                }
 
-                    //Log.d(LOG_TAG, "Pressed " + pressedButton.getName() + " button.");
-                    pressedButton.execute(time_sleep);
+                //Log.d(LOG_TAG, "Pressed " + pressedButton.getName() + " button.");
+                pressedButton.execute(timeSleep);
 
-                    if (!pressedButton.isContinuousPressing())
-                        return;
+                if (!pressedButton.isContinuousPressing())
+                    return;
 
-                    try {
-                        Thread.sleep(time_sleep);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    Thread.sleep(timeSleep);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -175,4 +167,5 @@ public class TouchListener implements TouchListenerInterface {
         isMoving = false;
         directionId = -1;
     }
+
 }

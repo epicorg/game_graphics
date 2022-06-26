@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-import shadow.math.SFVertex3f;
+import graphic.shadow.math.SFVertex3f;
 
 /**
  * Class used to automatize JSON requests, encapsulating default requests through the use of {@link JSONd}.
@@ -16,8 +16,7 @@ import shadow.math.SFVertex3f;
  */
 public class RequestMaker {
 
-    public static final String LOG_TAG = "RequestMaker";
-    private LinkedList<JSONd> defaultRequests;
+    private final LinkedList<JSONd> defaultRequests;
 
     /**
      * Creates a new <code>RequestMaker</code>, optionally with some default requests to call implicitly.
@@ -31,11 +30,11 @@ public class RequestMaker {
     /**
      * Creates a new <code>JSONObject</code> that contains the default requests added in the constructor and the given requests.
      *
-     * @param jsoNcouples <code>JSONd</code> that encapsulate the given requests.
+     * @param jsonCouples <code>JSONd</code> that encapsulate the given requests.
      * @return the generated <code>JSONObject</code> that contains all the requests.
      */
-    public JSONObject getNewRequestWithDefaultRequests(JSONd... jsoNcouples) {
-        JSONObject request = getNewRequest(jsoNcouples);
+    public JSONObject getNewRequestWithDefaultRequests(JSONd... jsonCouples) {
+        JSONObject request = getNewRequest(jsonCouples);
         try {
             for (JSONd d : defaultRequests) {
                 d.putRequest(request);
@@ -49,13 +48,13 @@ public class RequestMaker {
     /**
      * Creates a new <code>JSONObject</code> that contains only the given requests.
      *
-     * @param jsoNcouples <code>JSONd</code> that encapsulate the given requests.
+     * @param jsonCouples <code>JSONd</code> that encapsulate the given requests.
      * @return the generated <code>JSONObject</code> that contains the given requests.
      */
-    public JSONObject getNewRequest(JSONd... jsoNcouples) {
+    public JSONObject getNewRequest(JSONd... jsonCouples) {
         JSONObject request = new JSONObject();
         try {
-            for (JSONd d : jsoNcouples) {
+            for (JSONd d : jsonCouples) {
                 d.putRequest(request);
             }
         } catch (JSONException e) {
@@ -65,18 +64,20 @@ public class RequestMaker {
     }
 
     /**
-     * Creates a new J<code>JSONObject</code> that contains three requests mapped by names, and with values given by the component of a <code>SFVertex3f</code>.
+     * Creates a new J<code>JSONObject</code> that contains three requests mapped by names, and with
+     * values given by the component of a <code>SFVertex3f</code>.
      *
-     * @param names  <code>String</code> array that maps the three components of the <code>SFVertex3f</code>; must have length at least 3,
-     *               otherwise it calls an <code>JSONException</code>.
+     * @param names  <code>String</code> array that maps the three components of the
+     *               <code>SFVertex3f</code>; must have length at least 3, otherwise it calls
+     *               an <code>JSONException</code>.
      * @param values <code>SFVertex3f</code> that contains the values for the request.
      * @return the generated <code>JSONObject</code> that contains the given requests.
      */
-    public JSONObject getNewRequest(Enum[] names, SFVertex3f values) {
+    public JSONObject getNewRequest(Enum<?>[] names, SFVertex3f values) {
         JSONObject request = new JSONObject();
         try {
             if (names.length < 3)
-                throw new JSONException("ERROR with names");
+                throw new JSONException("Error with names");
             new JSONd(names[0], values.getX()).putRequest(request);
             new JSONd(names[1], values.getY()).putRequest(request);
             new JSONd(names[2], values.getZ()).putRequest(request);

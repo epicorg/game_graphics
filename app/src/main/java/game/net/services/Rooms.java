@@ -21,10 +21,9 @@ import game.net.fieldsnames.ServicesFields;
  * @author Micieli
  * @date 31/03/2015
  */
-
 public class Rooms implements Service {
 
-    public static final String LOG_TAG = "Rooms";
+    private static final String LOG_TAG = "Rooms";
 
     public static final int LIST = 0;
     public static final int JOIN = 1;
@@ -53,6 +52,7 @@ public class Rooms implements Service {
                     message = getJoinMessage();
                     break;
             }
+            assert message != null;
             message.sendToTarget();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -106,10 +106,10 @@ public class Rooms implements Service {
         this.handler = handler;
     }
 
-    public class RoomsResult {
+    public static class RoomsResult {
 
-        private String name;
-        private int maxPlayers, currentPlayers;
+        private final String name;
+        private final int maxPlayers, currentPlayers;
 
         public RoomsResult(String name, int maxPlayers, int currentPlayers) {
             this.name = name;
@@ -131,10 +131,10 @@ public class Rooms implements Service {
 
     }
 
-    public class RoomJoinResult {
+    public static class RoomJoinResult {
 
-        private String name;
-        private boolean result;
+        private final String name;
+        private final boolean result;
 
         public RoomJoinResult(String name, boolean result) {
             this.name = name;

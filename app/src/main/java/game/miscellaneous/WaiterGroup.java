@@ -10,9 +10,9 @@ import java.util.concurrent.CountDownLatch;
  */
 public class WaiterGroup {
 
-    private CountDownLatch countDownLatch;
+    private final CountDownLatch countDownLatch;
 
-    private ArrayList<Waiter> waiters = new ArrayList<>();
+    private final ArrayList<Waiter> waiters = new ArrayList<>();
 
     /**
      * Constructs an empty group of <code>Waiter</code> associated with the condition of the <code>CountDownLatch</code>.
@@ -36,18 +36,15 @@ public class WaiterGroup {
      * Start the waiting of all the <code>Waiter</code> for the condition.
      */
     public void startWaiting() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    countDownLatch.await();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        new Thread(() -> {
+            try {
+                countDownLatch.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-                for (Waiter w : waiters) {
-                    w.unleash();
-                }
+            for (Waiter w : waiters) {
+                w.unleash();
             }
         }).start();
     }

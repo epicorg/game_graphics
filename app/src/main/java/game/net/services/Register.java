@@ -18,6 +18,8 @@ import game.net.fieldsnames.CommonFields;
  */
 public class Register implements Service {
 
+    private static final String LOG_TAG = "Register";
+
     private JSONObject json;
     private Handler handler;
 
@@ -28,10 +30,9 @@ public class Register implements Service {
     }
 
     private void readFields() {
-
         try {
             boolean value = json.getBoolean(CommonFields.NO_ERRORS.toString());
-            Log.d("REGISTER_RESPONSE", json.toString());
+            Log.d(LOG_TAG, json.toString());
             RegistrationResult result;
             if (value) {
                 result = new RegistrationResult(true, null);
@@ -66,10 +67,10 @@ public class Register implements Service {
         this.handler = handler;
     }
 
-    public class RegistrationResult {
+    public static class RegistrationResult {
 
-        private boolean ok;
-        private ArrayList<String> errors;
+        private final boolean ok;
+        private final ArrayList<String> errors;
 
         public RegistrationResult(boolean result, ArrayList<String> errors) {
             this.ok = result;

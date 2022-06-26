@@ -15,10 +15,9 @@ import javax.crypto.SecretKey;
  * @author Noris
  * @author 27/04/2015
  */
-
 public class KeyWrapper {
 
-    private SecretKey symmetricKey;
+    private final SecretKey symmetricKey;
     private byte[] wrappedKey;
 
     public KeyWrapper(SecretKey symmetricKey) {
@@ -34,13 +33,10 @@ public class KeyWrapper {
      *                  the symmetric <code>Key</code>.
      */
     public void wrapKey(PublicKey publicKey) {
-
         try {
-
             Cipher cipher = Cipher.getInstance(EncryptionConst.ASYMMETRIC_DECODE);
             cipher.init(Cipher.WRAP_MODE, publicKey);
             wrappedKey = cipher.wrap(symmetricKey);
-
         } catch (InvalidKeyException e) {
             e.printStackTrace();
         } catch (NoSuchAlgorithmException e) {
@@ -50,7 +46,6 @@ public class KeyWrapper {
         } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
