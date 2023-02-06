@@ -9,7 +9,7 @@ import graphic.shadow.math.SFVertex3f;
 public class Node {
 
     protected SFTransform3f relativeTransform;
-    protected SFTransform3f effeciveTransform;
+    protected SFTransform3f effectiveTransform;
     private ArrayList<Node> sonNodes;
     private boolean enabled;
     private Model model;
@@ -32,32 +32,32 @@ public class Node {
 
     public void setup() {
         relativeTransform = new SFTransform3f();
-        effeciveTransform = new SFTransform3f();
+        effectiveTransform = new SFTransform3f();
         sonNodes = new ArrayList<Node>();
         model = null;
         enabled = true;
     }
 
-    public Node clodeNode() {
+    public Node cloneNode() {
         SFTransform3f transform = new SFTransform3f();
         transform.set(getRelativeTransform());
         Node node = new Node(transform, getModel());
         for (int i = 0; i < getSonNodes().size(); i++) {
-            node.getSonNodes().add(getSonNodes().get(i).clodeNode());
+            node.getSonNodes().add(getSonNodes().get(i).cloneNode());
         }
         return node;
     }
 
     public float getX() {
-        return this.effeciveTransform.getV()[9];
+        return this.effectiveTransform.getV()[9];
     }
 
     public float getY() {
-        return this.effeciveTransform.getV()[10];
+        return this.effectiveTransform.getV()[10];
     }
 
     public float getZ() {
-        return this.effeciveTransform.getV()[11];
+        return this.effectiveTransform.getV()[11];
     }
 
     public Model getModel() {
@@ -96,15 +96,15 @@ public class Node {
         matrix = fatherMatrix.multMatrix(matrix);
         /* M' = Fm * Q + Fq */
         fatherTransform.transform(position);
-        effeciveTransform.setPosition(position);
-        effeciveTransform.setMatrix(matrix);
+        effectiveTransform.setPosition(position);
+        effectiveTransform.setMatrix(matrix);
     }
 
     public void updateTree(SFTransform3f fatherTransform) {
         this.updateTransform(fatherTransform);
         if (enabled) {
             for (int i = 0; i < sonNodes.size(); i++) {
-                sonNodes.get(i).updateTree(effeciveTransform);
+                sonNodes.get(i).updateTree(effectiveTransform);
             }
         }
     }
@@ -113,8 +113,8 @@ public class Node {
 
         SFMatrix3f m = new SFMatrix3f();
         SFVertex3f vertex = new SFVertex3f();
-        effeciveTransform.getPosition(vertex);
-        effeciveTransform.getMatrix(m);
+        effectiveTransform.getPosition(vertex);
+        effectiveTransform.getMatrix(m);
 
         matrix[0] = m.getA();
         matrix[1] = m.getD();
@@ -152,7 +152,3 @@ public class Node {
         }
     }
 }
-
-
-
-

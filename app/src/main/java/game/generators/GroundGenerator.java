@@ -24,15 +24,14 @@ public class GroundGenerator {
     }
 
     /**
-     * Builds the ground with a squared grid of Model's copies.
-     * It is centered in a specified position.
+     * Builds the ground with a squared grid of Model's copies. It is centered in a specified position.
      *
-     * @param xCenter x of the center.
-     * @param zCenter z df the center.
-     * @param xSize   Ground x dimension.
-     * @param zSize   Ground z dimension.
-     * @param yCenter Ground y dimension.
-     * @return the <node>Node</node> that represents the ground.
+     * @param xCenter x of the center
+     * @param zCenter z df the center
+     * @param xSize   ground x dimension
+     * @param zSize   ground z dimension
+     * @param yCenter ground y dimension
+     * @return the <node>Node</node> that represents the ground
      */
     public Node getGroundNode(int xCenter, int zCenter, int xSize, int zSize, int yCenter) {
         Node node = new Node();

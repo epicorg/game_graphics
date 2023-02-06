@@ -9,9 +9,8 @@ import graphic.integration.Material;
 import graphic.integration.ShadingProgram;
 
 /**
- * Singleton that manages the {@link Material} loaded from files.
- * It allows to access the {@link Material}without load them several times or
- * automatically load them when needed.
+ * Singleton that manages the {@link Material} loaded from files. It allows to access the
+ * {@link Material}without load them several times or automatically load them when needed.
  *
  * @author Torlaschi
  * @date 17/05/2015

@@ -2,7 +2,6 @@ package graphic.sfogl2;
 
 import android.opengl.GLES20;
 
-
 public class SFOGLFrameBuffer {
 
     private int frameBufferObject;

@@ -26,9 +26,9 @@ public class PlayerView {
     /**
      * Creates a new <code>PlayerView</code> for a given <code>Player</code>.
      *
-     * @param player    <code>Player</code> to be represented.
-     * @param context   <code>Context</code> to retrieve resources.
-     * @param textureId id of the texture used for drawing the <code>PlayerView</code>.
+     * @param player    <code>Player</code> to be represented
+     * @param context   <code>Context</code> to retrieve resources
+     * @param textureId ID of the texture used for drawing the <code>PlayerView</code>
      */
     public PlayerView(Player player, Context context, int textureId) {
         this.player = player;

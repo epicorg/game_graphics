@@ -13,14 +13,14 @@ public interface TouchListenerInterface {
     /**
      * Called when the screen is touched.
      *
-     * @param event represents a motion event.
+     * @param event represents a motion event
      */
     void onTouchEvent(MotionEvent event);
 
     /**
      * This listener could be blocked and toggled with this method.
      *
-     * @param readyToPlay whether the listener should respont to touch methods or not.
+     * @param readyToPlay whether the listener should respond to touch methods or not
      */
     void setReadyToPlay(boolean readyToPlay);
 

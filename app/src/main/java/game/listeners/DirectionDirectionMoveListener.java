@@ -20,9 +20,9 @@ public class DirectionDirectionMoveListener implements DirectionMoveListenerInte
     /**
      * Creates a new <code>DirectionDirectionMoveListener</code>.
      *
-     * @param direction     <code>SFVertex3f</code> direction to modify.
-     * @param displayWidth  actual display width,
-     * @param displayHeight actual display height.
+     * @param direction     <code>SFVertex3f</code> direction to modify
+     * @param displayWidth  actual display width
+     * @param displayHeight actual display height
      */
     public DirectionDirectionMoveListener(SFVertex3f direction, float displayWidth, float displayHeight) {
         this.direction = direction;

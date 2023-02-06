@@ -19,8 +19,8 @@ public class GameSoundtracks {
     }
 
     /**
-     * @param context <code>Context</code> from which to load the soundtracks.
-     * @return Vector which contains the Uri of every soundtrack files.
+     * @param context <code>Context</code> from which to load the soundtracks
+     * @return vector which contains the Uri of every soundtrack files
      */
     public Uri[] getSoundtracks(Context context) {
         int n = soundtrackIds.length;

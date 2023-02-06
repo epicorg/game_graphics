@@ -16,10 +16,10 @@ public class Button {
     /**
      * Creates a new <code>Button</code>.
      *
-     * @param name               <code>Button</code>'s name.
-     * @param action             <code>ButtonAction</code> which represents the action to perform when pressed.
-     * @param continuousPressing Parameter which indicates if the <code>Button</code> operates with continuous pressure.
-     * @param needToBeReady      Parameter which marks a <code>Button</code> that can be disabled when needed.
+     * @param name               <code>Button</code>'s name
+     * @param action             <code>ButtonAction</code> which represents the action to perform when pressed
+     * @param continuousPressing indicates if the <code>Button</code> operates with continuous pressure
+     * @param needToBeReady      marks a <code>Button</code> that can be disabled when needed
      */
     public Button(String name, ButtonAction action, boolean continuousPressing, boolean needToBeReady) {
         this.name = name;
@@ -29,7 +29,7 @@ public class Button {
     }
 
     /**
-     * @return the <code>Button</code>'s name.
+     * @return the <code>Button</code>'s name
      */
     public String getName() {
         return name;
@@ -38,21 +38,21 @@ public class Button {
     /**
      * Performs the action which is encapsulated in the <code>ButtonAction</code>.
      *
-     * @param parameter Contingent parameter for the action.
+     * @param parameter contingent parameter for the action.
      */
     public void execute(Object parameter) {
         action.action(parameter);
     }
 
     /**
-     * @return 'true' if the <code>Button</code> operates with continuous pressure.
+     * @return 'true' if the <code>Button</code> operates with continuous pressure
      */
     public boolean isContinuousPressing() {
         return continuousPressing;
     }
 
     /**
-     * @return 'true' if the <code>Button</code> can be disabled.
+     * @return 'true' if the <code>Button</code> can be disabled
      */
     public boolean isNeedToBeReady() {
         return needToBeReady;

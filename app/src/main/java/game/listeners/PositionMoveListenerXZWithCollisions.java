@@ -21,9 +21,9 @@ public class PositionMoveListenerXZWithCollisions implements PositionMoveListene
     /**
      * Creates a new <code>PositionMoveListenerXZWithCollisions</code>.
      *
-     * @param playerStatus      <code>PlayerStatus</code> to move.
-     * @param collisionMediator <code>CollisionMediator</code> to perform collision checking.
-     * @param moveSpeed         speed of motion.
+     * @param playerStatus      <code>PlayerStatus</code> to move
+     * @param collisionMediator <code>CollisionMediator</code> to perform collision checking
+     * @param moveSpeed         speed of motion
      */
     public PositionMoveListenerXZWithCollisions(PlayerStatus playerStatus, CollisionMediator collisionMediator, float moveSpeed) {
         this.playerStatus = playerStatus;

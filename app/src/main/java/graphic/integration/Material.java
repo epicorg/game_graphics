@@ -13,7 +13,7 @@ import graphic.shadow.math.SFValue;
 public class Material {
 
     private SFValue[] values = new SFValue[0];
-    private final List<BitmapTexture> textures = new LinkedList<BitmapTexture>();
+    private final List<BitmapTexture> textures = new LinkedList<>();
     private final ShadingProgram program;
 
     public Material(ShadingProgram program) {

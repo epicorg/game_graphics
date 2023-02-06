@@ -33,8 +33,7 @@ import game.net.services.CurrentRoom;
 import game.player.Player;
 
 /**
- * Room screen: every user can see who is in the same room.
- * Here teams are casually built.
+ * Room screen: every user can see who is in the same room. The teams are casually built.
  *
  * @author Torlaschi
  * @date 18/04/2015

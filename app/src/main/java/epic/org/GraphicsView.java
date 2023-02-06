@@ -128,7 +128,6 @@ public class GraphicsView extends GLSurfaceView {
     public boolean onTouchEvent(MotionEvent event) {
         if (touchListener != null)
             touchListener.onTouchEvent(event);
-
         return true;
     }
 

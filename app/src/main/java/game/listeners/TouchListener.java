@@ -32,9 +32,11 @@ public class TouchListener implements TouchListenerInterface {
     /**
      * Creates a new <code>TouchListener</code>.
      *
-     * @param buttonsControl        Control that contains the <code>Button</code> which <code>ButtonAction</code> are invoked when the listener detects the pressing.
-     * @param directionMoveListener listener for direction move actions on the screen.
-     * @param timeSleep             time that indicates how long the pressed <code>Button</code> remains pressed, for <code>Button</code> that allow continuous pressing.
+     * @param buttonsControl        control that contains the <code>Button</code> which <code>ButtonAction</code>
+     *                              are invoked when the listener detects the pressing
+     * @param directionMoveListener listener for direction move actions on the screen
+     * @param timeSleep             time that indicates how long the pressed <code>Button</code> remains pressed,
+     *                              for <code>Button</code> that allow continuous pressing
      */
     public TouchListener(ButtonsControl buttonsControl, DirectionMoveListenerInterface directionMoveListener, int timeSleep) {
         this.buttonsControl = buttonsControl;

@@ -20,16 +20,13 @@ public class Shaders {
     }
 
     public static String loadText(Context context, String filename) {
-        String text = "";
-
-        String line = null;
+        StringBuilder text = new StringBuilder();
+        String line;
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(context.getAssets().open(filename)));
             line = reader.readLine();
             while (line != null) {
-
-                text += line + "\n";
-
+                text.append(line).append("\n");
                 line = reader.readLine();
             }
             reader.close();
@@ -38,7 +35,7 @@ public class Shaders {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return text;
+        return text.toString();
     }
 
 }

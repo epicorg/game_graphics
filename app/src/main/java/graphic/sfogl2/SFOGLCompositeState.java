@@ -1,7 +1,7 @@
 package graphic.sfogl2;
 
 /**
- * A sequence of SFOGLState
+ * A sequence of SFOGLState.
  *
  * @author Alessandro Martinelli
  */

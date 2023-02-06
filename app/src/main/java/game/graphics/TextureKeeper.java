@@ -13,9 +13,8 @@ import graphic.sfogl2.SFOGLTextureModel;
 import graphic.shadow.graphics.SFImageFormat;
 
 /**
- * It manages the texture loaded from resources.
- * It allows to access the texture as {@link BitmapTexture} without load them several times or
- * automatically load them when needed.
+ * It manages the texture loaded from resources. It allows to access the texture as
+ * {@link BitmapTexture} without load them several times or automatically load them when needed.
  *
  * @author De Pace
  */
@@ -29,12 +28,12 @@ public enum TextureKeeper {
     private final HashMap<Integer, BitmapTexture> mapFromColors = new HashMap<>();
 
     /**
-     * Loads a new texture from an image in the resources
-     * or return the BitmapTexture if the image has already been loaded.
+     * Loads a new texture from an image in the resources or return the BitmapTexture if the image
+     * has already been loaded.
      *
-     * @param context   <code>Context</code> to find resources.
-     * @param textureId Image index in the resources.
-     * @return <code>BitmapTexture</code> which represents the loaded texture.
+     * @param context   <code>Context</code> to find resources
+     * @param textureId image index in the resources
+     * @return <code>BitmapTexture</code> which represents the loaded texture
      */
     public BitmapTexture getTexture(Context context, int textureId) {
         if (mapFromResources.containsKey(textureId))
@@ -44,11 +43,10 @@ public enum TextureKeeper {
     }
 
     /**
-     * Creates a texture from a color and stores it.
-     * Represents a uniform color.
+     * Creates a texture from a color and stores it. Represents a uniform color.
      *
-     * @param color Color from which the texture is obtained.
-     * @return <code>BitmapTexture</code> which represents the loaded texture.
+     * @param color color from which the texture is obtained
+     * @return <code>BitmapTexture</code> which represents the loaded texture
      */
     public BitmapTexture getColorTexture(int color) {
         if (mapFromColors.containsKey(color))
@@ -60,7 +58,7 @@ public enum TextureKeeper {
     /**
      * Loads every loaded image, when needed.
      *
-     * @param context <code>Context</code> to find resources.
+     * @param context <code>Context</code> to find resources
      */
     public void reload(Context context) {
         for (int texture : mapFromResources.keySet())

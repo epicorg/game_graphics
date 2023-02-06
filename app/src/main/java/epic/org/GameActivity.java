@@ -87,8 +87,7 @@ public class GameActivity extends Activity implements GameHandlerListener {
 
         LinearLayout messageContainer = findViewById(R.id.game_message_container);
         LinearLayout menuContainer = findViewById(R.id.game_menu_container);
-        messageScreen = new MessageScreen(this, Color.argb(res.getInteger(R.integer.mScreenColA), res.getInteger(R.integer.mScreenColR),
-                res.getInteger(R.integer.mScreenColG), res.getInteger(R.integer.mScreenColB)), messageContainer);
+        messageScreen = new MessageScreen(this, Color.argb(res.getInteger(R.integer.mScreenColA), res.getInteger(R.integer.mScreenColR), res.getInteger(R.integer.mScreenColG), res.getInteger(R.integer.mScreenColB)), messageContainer);
         settingsScreen = new SettingsScreen(this, menuContainer, requestMaker);
 
         backgroundSound = new BackgroundSound(context, new GameSoundtracks(R.raw.soundtrack_01, R.raw.soundtrack_02).getSoundtracks(context));
@@ -153,7 +152,8 @@ public class GameActivity extends Activity implements GameHandlerListener {
         audioCallManager.initAudioGroup();
         try {
             int audioPort = audioCallManager.newAudioStream();
-            serverCommunicationThread.send(requestMaker.getNewRequestWithDefaultRequests(new JSONd(ServicesFields.SERVICE, ServicesFields.AUDIO.toString()),
+            serverCommunicationThread.send(requestMaker.getNewRequestWithDefaultRequests(
+                    new JSONd(ServicesFields.SERVICE, ServicesFields.AUDIO.toString()),
                     new JSONd(AudioFields.AUDIO_PORT_CLIENT, audioPort)));
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -164,7 +164,6 @@ public class GameActivity extends Activity implements GameHandlerListener {
             e.printStackTrace();
         }
     }
-
 
     @Override
     public void onMapReceived() {

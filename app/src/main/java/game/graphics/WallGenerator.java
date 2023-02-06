@@ -31,12 +31,12 @@ public class WallGenerator {
     /**
      * Creates a new WallGenerator with the parameters to build a parallelepiped.
      *
-     * @param context <code>Context</code> to find resources.
-     * @param program <code>ShadingProgram</code> to obtain the shader for the texture.
-     * @param texture Texture index.
-     * @param w       x dimension of the parallelepiped.
-     * @param h       y dimension of the parallelepiped.
-     * @param l       z dimension of the parallelepiped.
+     * @param context <code>Context</code> to find resources
+     * @param program <code>ShadingProgram</code> to obtain the shader for the texture
+     * @param texture texture index
+     * @param w       x dimension of the parallelepiped
+     * @param h       y dimension of the parallelepiped
+     * @param l       z dimension of the parallelepiped
      */
     public WallGenerator(Context context, ShadingProgram program, int texture, float w, float h, float l) {
         this.program = program;

@@ -27,7 +27,7 @@ public class BackgroundSound {
     /**
      * Create a new Soundtracks player
      *
-     * @param context     Context
+     * @param context     the context
      * @param soundtracks URIs of the soundtracks
      */
     public BackgroundSound(Context context, Uri[] soundtracks) {

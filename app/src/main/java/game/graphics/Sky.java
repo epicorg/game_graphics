@@ -3,10 +3,9 @@ package game.graphics;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 
-import epic.org.R;
-
 import java.util.List;
 
+import epic.org.R;
 import game.generators.FundamentalGenerator;
 import graphic.integration.ArrayObject;
 import graphic.integration.Node;
@@ -127,9 +126,9 @@ public class Sky {
     /**
      * Creates a new <code>Sky</code> cube centered in the given position.
      *
-     * @param context  <code>Context</code> from which to retrieve the resources.
-     * @param program  <code>ShadingProgram</code> to use for drawing the <code>Sky</code>.
-     * @param position position of the center of the <code>Sky</code>;
+     * @param context  <code>Context</code> from which to retrieve the resources
+     * @param program  <code>ShadingProgram</code> to use for drawing the <code>Sky</code>
+     * @param position position of the center of the <code>Sky</code>
      */
     public Sky(Context context, ShadingProgram program, SFVertex3f position) {
         this.program = program;

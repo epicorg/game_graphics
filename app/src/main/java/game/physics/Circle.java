@@ -19,8 +19,8 @@ public class Circle implements CollisionBox {
     /**
      * Builds a new circular <code>CollisionBox</code>.
      *
-     * @param pos    <code>CollisionBox</code> center.
-     * @param radius <code>CollisionBox</code> radius.
+     * @param pos    <code>CollisionBox</code> center
+     * @param radius <code>CollisionBox</code> radius
      */
     public Circle(SFVertex3f pos, double radius) {
         this.pos = pos;

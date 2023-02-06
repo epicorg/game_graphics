@@ -28,10 +28,10 @@ public class SettingsButtonsGenerator {
     /**
      * Creates a new <code><SettingsButtonGenerator</code>.
      *
-     * @param context        <code>Context to find resources.
-     * @param program        <code>ShadingProgram</code> to represent the <code>Button</code>.
-     * @param buttonMaster   <code>ButtonMaster</code> which the movement <code>Button</code> has to be associated with.
-     * @param settingsScreen <code>SettingScreen</code> to be shown when the <code>Button</code> is pressed.
+     * @param context        <code>Context to find resources
+     * @param program        <code>ShadingProgram</code> to represent the <code>Button</code>
+     * @param buttonMaster   <code>ButtonMaster</code> which the movement <code>Button</code> has to be associated with
+     * @param settingsScreen <code>SettingScreen</code> to be shown when the <code>Button</code> is pressed
      */
     public SettingsButtonsGenerator(Context context, ShadingProgram program, ButtonMaster buttonMaster, SettingsScreen settingsScreen) {
         this.context = context;
@@ -43,8 +43,8 @@ public class SettingsButtonsGenerator {
     /**
      * Creates pause <code>Button</code>.
      *
-     * @param position <code>Button</code> position.
-     * @param scale    Scale factor.
+     * @param position <code>Button</code> position
+     * @param scale    scale factor
      */
     public void generate(SFVertex3f position, float scale) {
         Node parentNode = new Node();

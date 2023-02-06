@@ -20,10 +20,10 @@ public class Square implements CollisionBox {
     /**
      * Builds a new rectangular <code>CollisionBox</code>.
      *
-     * @param position   <code>CollisionBox</code> center position.
-     * @param xSize x <code>CollisionBox</code> dimension.
-     * @param ySize y <code>CollisionBox</code> dimension.
-     * @param zSize z <code>CollisionBox</code> dimension.
+     * @param position <code>CollisionBox</code> center position
+     * @param xSize    x <code>CollisionBox</code> dimension
+     * @param ySize    y <code>CollisionBox</code> dimension
+     * @param zSize    z <code>CollisionBox</code> dimension
      */
     public Square(SFVertex3f position, double xSize, double ySize, double zSize) {
         this.position = position;
@@ -96,21 +96,21 @@ public class Square implements CollisionBox {
     }
 
     /**
-     * @return CollisionBox dimension along x.
+     * @return <code>CollisionBox</code> dimension along x
      */
     public float getXSize() {
         return xSize;
     }
 
     /**
-     * @return CollisionBox dimension along y.
+     * @return <code>CollisionBox</code> dimension along y
      */
     public float getYSize() {
         return ySize;
     }
 
     /**
-     * @return CollisionBox dimension along z.
+     * @return <code>CollisionBox</code> dimension along z
      */
     public float getZSize() {
         return zSize;

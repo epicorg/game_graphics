@@ -16,7 +16,7 @@ public class FloatLoader {
     /**
      * Creates a new <code>FloatLoader</code> with the given Context.
      *
-     * @param context <code>Context</code> from which to retrieve resources.
+     * @param context <code>Context</code> from which to retrieve resources
      */
     public FloatLoader(Context context) {
         this.resources = context.getResources();
@@ -25,8 +25,8 @@ public class FloatLoader {
     /**
      * Returns a float value from resources.
      *
-     * @param id id of the float value in resources, from R.dimen.
-     * @return the requested float value.
+     * @param id ID of the float value in resources, from R.dimen
+     * @return the requested float value
      */
     public float getFloat(int id) {
         TypedValue typedValue = new TypedValue();

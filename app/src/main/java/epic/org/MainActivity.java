@@ -1,5 +1,7 @@
 package epic.org;
 
+import static java.util.Objects.requireNonNull;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -16,7 +18,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 import game.net.communication.ConnectionStateMap;
 import game.net.communication.JSONd;
@@ -65,9 +66,12 @@ public class MainActivity extends AppCompatActivity implements ServerCommunicati
         getViews();
 
         loginPreference = getSharedPreferences("LOGIN_PREF", Context.MODE_PRIVATE);
-        progressShower = new ProgressShower(views.get(R.id.login_progress), views.get(R.id.login_form), getResources().getInteger(android.R.integer.config_shortAnimTime));
+        progressShower = new ProgressShower(views.get(R.id.login_progress), views.get(R.id.login_form),
+                getResources().getInteger(android.R.integer.config_shortAnimTime));
 
-        Objects.requireNonNull(views.get(R.id.main_refresh)).setOnClickListener(v -> startThreadIfNotStarted());
+        findViewById(R.id.log_in).setOnClickListener(this::attemptLogin);
+
+        requireNonNull(views.get(R.id.main_refresh)).setOnClickListener(v -> startThreadIfNotStarted());
 
         checkRememberMe();
         startThreadIfNotStarted();
@@ -126,11 +130,11 @@ public class MainActivity extends AppCompatActivity implements ServerCommunicati
             String username = loginPreference.getString(CommonFields.USERNAME.toString(), null);
             String password = loginPreference.getString(CommonFields.PASSWORD.toString(), null);
             if ((username != null) && (password != null)) {
-                ((TextView) Objects.requireNonNull(views.get(R.id.username))).setText(username);
-                ((TextView) Objects.requireNonNull(views.get(R.id.password))).setText(password);
-                ((CheckBox) Objects.requireNonNull(views.get(R.id.rememberMeBox))).setChecked(true);
+                ((TextView) requireNonNull(views.get(R.id.username))).setText(username);
+                ((TextView) requireNonNull(views.get(R.id.password))).setText(password);
+                ((CheckBox) requireNonNull(views.get(R.id.rememberMeBox))).setChecked(true);
             } else {
-                ((CheckBox) Objects.requireNonNull(views.get(R.id.rememberMeBox))).setChecked(false);
+                ((CheckBox) requireNonNull(views.get(R.id.rememberMeBox))).setChecked(false);
             }
         }
     }
@@ -163,7 +167,6 @@ public class MainActivity extends AppCompatActivity implements ServerCommunicati
         startActivity(intent);
     }
 
-
     @Override
     public void start(Object parameter) {
         canLogin = true;
@@ -176,15 +179,16 @@ public class MainActivity extends AppCompatActivity implements ServerCommunicati
      */
     public void attemptLogin(View view) {
         if (canLogin) {
-            ((TextView) Objects.requireNonNull(views.get(R.id.username))).setError(null);
-            ((TextView) Objects.requireNonNull(views.get(R.id.password))).setError(null);
+            ((TextView) requireNonNull(views.get(R.id.username))).setError(null);
+            ((TextView) requireNonNull(views.get(R.id.password))).setError(null);
             loginData = getData();
-            boolean cancel = loginData.checkData(getApplicationContext(), views);
 
+            boolean cancel = loginData.checkData(getApplicationContext(), views);
             if (!cancel) {
                 progressShower.showProgress(true);
                 try {
-                    serverCommunicationThread.send(requestMaker.getNewRequest(new JSONd(ServicesFields.SERVICE, ServicesFields.LOGIN.toString()),
+                    serverCommunicationThread.send(requestMaker.getNewRequest(
+                            new JSONd(ServicesFields.SERVICE, ServicesFields.LOGIN.toString()),
                             new JSONd(CommonFields.USERNAME, loginData.getUsername()),
                             new JSONd(CommonFields.PASSWORD, loginData.getPassword())));
                 } catch (NotConnectedException e) {
@@ -197,11 +201,10 @@ public class MainActivity extends AppCompatActivity implements ServerCommunicati
             Toast.makeText(this, getString(R.string.encrypting_try_login), Toast.LENGTH_SHORT).show();
     }
 
-
     /* Retrieves data from text fields */
     private LoginData getData() {
-        String username = ((TextView) Objects.requireNonNull(views.get(R.id.username))).getText().toString();
-        String password = ((TextView) Objects.requireNonNull(views.get(R.id.password))).getText().toString();
+        String username = ((TextView) requireNonNull(views.get(R.id.username))).getText().toString();
+        String password = ((TextView) requireNonNull(views.get(R.id.password))).getText().toString();
         return new LoginData(username, password);
     }
 

@@ -7,6 +7,7 @@ import static game.net.communication.ServerCommunicationThreadState.NOT_CONNECTE
 
 import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,7 +25,10 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
+import epic.org.R;
 import game.net.connection_encryption.ConnectionEncrypter;
+import game.net.fieldsnames.CommonFields;
+import game.net.fieldsnames.RegisterFields;
 import game.net.fieldsnames.ServicesFields;
 import game.net.services.Service;
 
@@ -202,7 +206,6 @@ public class ServerCommunicationThread extends Thread {
         Log.e(LOG_TAG, "Exit successful");
     }
 
-
     public void setHandler(Handler handler) {
         this.handler = handler;
     }
@@ -210,15 +213,16 @@ public class ServerCommunicationThread extends Thread {
     public void send(JSONObject object) throws NotConnectedException {
         if (writer == null || (threadState != CONNECTED && threadState != ENCRYPTING))
             throw new NotConnectedException();
-
-        try {
-            if (object.getString(ServicesFields.SERVICE.toString()).equals(ServicesFields.ENCRYPT.toString()))
+        new Thread(() -> {
+            try {
+                if (object.getString(ServicesFields.SERVICE.toString()).equals(ServicesFields.ENCRYPT.toString()))
+                    writer.println(object);
+                else
+                    writer.println(ConnectionEncrypter.encryptRequest(object.toString()));
+            } catch (JSONException e) {
                 writer.println(object);
-            else
-                writer.println(ConnectionEncrypter.encryptRequest(object.toString()));
-        } catch (JSONException e) {
-            writer.println(object);
-        }
+            }
+        }).start();
     }
 
     public void setStateAndUpdate(ServerCommunicationThreadState state) {

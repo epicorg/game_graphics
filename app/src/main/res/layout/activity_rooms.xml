@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,5 +29,5 @@
         android:padding="16dp"
         android:scaleType="fitCenter"
         android:src="@drawable/fab_ic_add"
-        android:tint="@android:color/white" />
+        app:tint="@android:color/white" />
 </RelativeLayout>

@@ -18,8 +18,8 @@ public class JSONd {
     /**
      * Creates a new <code>JSONd</code>, with represents a request with the given name and value.
      *
-     * @param name  <code>Enum</code> that maps the value of the request.
-     * @param value Value of the request.
+     * @param name  <code>Enum</code> that maps the value of the request
+     * @param value value of the request
      */
     public JSONd(Enum<?> name, Object value) {
         this.name = name;
@@ -29,7 +29,7 @@ public class JSONd {
     /**
      * Creates a JSON request with the data given in the constructor.
      *
-     * @param request <code>JSONObject</code> that represents the request.
+     * @param request <code>JSONObject</code> that represents the request
      */
     public void putRequest(JSONObject request) throws JSONException {
         request.put(name.toString(), value);

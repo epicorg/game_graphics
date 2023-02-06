@@ -16,7 +16,6 @@ public class HeadsetListener extends BroadcastReceiver {
 
     public HeadsetListener(Context context) {
         this.context = context;
-
     }
 
     public void init() {
@@ -28,7 +27,6 @@ public class HeadsetListener extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         int state = intent.getIntExtra("state", 0);
         AudioManager Audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-
         Audio.setSpeakerphoneOn(state == 0);
     }
 

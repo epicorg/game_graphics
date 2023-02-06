@@ -25,15 +25,15 @@ public class TextLabel {
     private final float h;
 
     /**
-     * Creates a new textLabel
+     * Creates a new textLabel.
      *
-     * @param textSize  Text quality (dimension in pixels).
-     * @param height    <code>TextLabel</code> height.
-     * @param h         Vertical <code>TextLabel</code> position.
-     * @param direction <code>TextLabel</code> is oriented in order to be visible looking int this direction.
-     * @param position  <code>TextLabel</code> position.
-     * @param text      <code>TextLabel</code> text.
-     * @param color     Text color.
+     * @param textSize  text quality (dimension in pixels)
+     * @param height    <code>TextLabel</code> height
+     * @param h         vertical <code>TextLabel</code> position
+     * @param direction <code>TextLabel</code> is oriented in order to be visible looking int this direction
+     * @param position  <code>TextLabel</code> position
+     * @param text      <code>TextLabel</code> text
+     * @param color     text color
      */
     public TextLabel(int textSize, float height, float h, SFVertex3f direction, SFVertex3f position, String text, int color) {
         this.direction = direction;
@@ -99,7 +99,8 @@ public class TextLabel {
         int ww = rect.width(), hh = rect.height();
         Bitmap bitmap = getBitmap(ww, hh, text, paint, rect);
         float hb = height * hh / 16;
-        node = FundamentalGenerator.generateNode(getBoard(hb * (float) ww / hh, hb), bitmap, ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER));
+        node = FundamentalGenerator.generateNode(getBoard(hb * (float) ww / hh, hb), bitmap,
+                ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER));
     }
 
     private Bitmap getBitmap(int ww, int hh, String text, Paint paint, Rect rect) {

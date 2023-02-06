@@ -32,18 +32,18 @@ public class Map {
     /**
      * Adds one or more <code>MazeObjects</code> to the Map.
      *
-     * @param ms one or more <code>MazeObjects</code> to add to the Map.
+     * @param ms one or more <code>MazeObjects</code> to add to the Map
      */
     public void addObjects(MazeObject... ms) {
         Collections.addAll(list, ms);
     }
 
     /**
-     * Loads all the <code>MazeObjects</code>'s <code>CollisionBox</code> that are not null in the given <code>CollisionMediator</code>, and
-     * loads their <code>Node</code> for the rendering.
+     * Loads all the <code>MazeObjects</code>'s <code>CollisionBox</code> that are not null in the
+     * given <code>CollisionMediator</code>, and loads their <code>Node</code> for the rendering.
      *
-     * @param cm      <code>CollisionMediator</code> where to insert the <code>MazeObjects</code>'s <code>CollisionBox</code>.
-     * @param context <code>Context</code> from which to get the resources to represent the <code>MazeObjects</code>.
+     * @param cm      <code>CollisionMediator</code> where to insert the <code>MazeObjects</code>'s <code>CollisionBox</code>
+     * @param context <code>Context</code> from which to get the resources to represent the <code>MazeObjects</code>
      */
     public void loadMap(CollisionMediator cm, Context context) {
         for (MazeObject m : list) {
@@ -62,21 +62,20 @@ public class Map {
     public void draw() {
         boolean currentCullingState = true;
         sfsWithCulling.applyState();
-
         for (MapNodeData n : nodes) {
             if (n.supportCulling != currentCullingState) {
                 currentCullingState = n.supportCulling;
                 if (currentCullingState)
                     sfsWithCulling.applyState();
-                else {
+                else
                     sfsWithoutCulling.applyState();
-                }
             }
             n.node.draw();
         }
     }
 
     private static class MapNodeData {
+
         private final Node node;
         private final boolean supportCulling;
 
@@ -84,6 +83,7 @@ public class Map {
             this.node = node;
             this.supportCulling = supportCulling;
         }
+
     }
 
 }

@@ -1,5 +1,7 @@
 package epic.org;
 
+import static java.util.Objects.requireNonNull;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -14,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 import game.net.communication.JSONd;
 import game.net.communication.NotConnectedException;
@@ -29,8 +30,7 @@ import game.net.interaction.RegistrationErrorStrings;
 import game.net.services.Register;
 
 /**
- * A login screen where the user can register with username,
- * email and password.
+ * A login screen where the user can register with username, email and password.
  */
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -42,6 +42,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private final HashMap<Integer, View> views = new HashMap<>();
     private ProgressShower progressShower;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +53,9 @@ public class RegistrationActivity extends AppCompatActivity {
         progressShower = new ProgressShower(views.get(R.id.login_progress), views.get(R.id.registration_form),
                 getResources().getInteger(android.R.integer.config_shortAnimTime));
 
-        Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.registration_title));
+        requireNonNull(getSupportActionBar()).setTitle(getString(R.string.registration_title));
+
+        findViewById(R.id.registrationButton).setOnClickListener(this::attemptRegistration);
     }
 
     @Override
@@ -71,16 +74,15 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
+     * Attempts to sign in or register the account specified by the login form. If there are form errors
+     * (invalid email, missing fields, etc.), the errors are presented and no actual login attempt is made.
      */
     public void attemptRegistration(View view) {
-        // Reset errors.
-        ((EditText) Objects.requireNonNull(views.get(R.id.email))).setError(null);
-        ((EditText) Objects.requireNonNull(views.get(R.id.password))).setError(null);
-        ((EditText) Objects.requireNonNull(views.get(R.id.username))).setError(null);
-        ((EditText) Objects.requireNonNull(views.get(R.id.confirm_password))).setError(null);
+        // Reset errors
+        ((EditText) requireNonNull(views.get(R.id.email))).setError(null);
+        ((EditText) requireNonNull(views.get(R.id.password))).setError(null);
+        ((EditText) requireNonNull(views.get(R.id.username))).setError(null);
+        ((EditText) requireNonNull(views.get(R.id.confirm_password))).setError(null);
 
         RegistrationData registrationData = getRegistrationData();
 
@@ -89,7 +91,8 @@ public class RegistrationActivity extends AppCompatActivity {
         if (!cancel) {
             progressShower.showProgress(true);
             try {
-                serverCommunicationThread.send(requestMaker.getNewRequest(new JSONd(ServicesFields.SERVICE, ServicesFields.REGISTER.toString()),
+                serverCommunicationThread.send(requestMaker.getNewRequest(
+                        new JSONd(ServicesFields.SERVICE, ServicesFields.REGISTER.toString()),
                         new JSONd(RegisterFields.EMAIL, registrationData.getEmail()),
                         new JSONd(CommonFields.USERNAME, registrationData.getUsername()),
                         new JSONd(CommonFields.PASSWORD, registrationData.getPassword())));
@@ -104,11 +107,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
     /* Retrieves data from text fields */
     private RegistrationData getRegistrationData() {
-        String email = ((EditText) Objects.requireNonNull(views.get(R.id.email))).getText().toString();
-        String username = ((EditText) Objects.requireNonNull(views.get(R.id.username))).getText().toString();
-        String password = ((EditText) Objects.requireNonNull(views.get(R.id.password))).getText().toString();
-        String confirmPassword = ((EditText) Objects.requireNonNull(views.get(R.id.confirm_password))).getText().toString();
-
+        String email = ((EditText) requireNonNull(views.get(R.id.email))).getText().toString();
+        String username = ((EditText) requireNonNull(views.get(R.id.username))).getText().toString();
+        String password = ((EditText) requireNonNull(views.get(R.id.password))).getText().toString();
+        String confirmPassword = ((EditText) requireNonNull(views.get(R.id.confirm_password))).getText().toString();
         return new RegistrationData(username, email, password, confirmPassword);
     }
 
@@ -140,9 +142,8 @@ public class RegistrationActivity extends AppCompatActivity {
     private String generateErrorString(ArrayList<String> errors) {
         StringBuilder error = new StringBuilder();
         RegistrationErrorStrings strings = new RegistrationErrorStrings();
-        for (String string : errors) {
+        for (String string : errors)
             error.append(getString(strings.getStringIdByError(string))).append("\n");
-        }
         return error.toString();
     }
 

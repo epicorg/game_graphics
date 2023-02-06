@@ -26,10 +26,10 @@ public class Obstacle implements MazeObject {
     /**
      * Creates a new Obstacle from specified dimension and texture.
      *
-     * @param c              <code>Circle</code> which makes up the <code>CollisionBox</code> and defines the dimension of xz plane.
-     * @param height         Height in y direction.
-     * @param texture_id     Texture index.
-     * @param supportCulling If this object support face culling
+     * @param c              <code>Circle</code> which makes up the <code>CollisionBox</code> and defines the dimension of xz plane
+     * @param height         height in y direction
+     * @param texture_id     texture index
+     * @param supportCulling if this object support face culling
      */
     public Obstacle(Circle c, double height, int texture_id, String model, boolean supportCulling) {
         this.c = c;
@@ -42,8 +42,8 @@ public class Obstacle implements MazeObject {
     @Override
     public Node getNode(Context context) {
         Node node = new Node();
-        node.setModel(FundamentalGenerator.getModel(context, ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER),
-                texture_id, model));
+        node.setModel(FundamentalGenerator.getModel(context,
+                ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER), texture_id, model));
         node.getRelativeTransform().setPosition(c.getPosition());
         node.getRelativeTransform().setMatrix(SFMatrix3f.getScale(c.getRadius(), height, c.getRadius()));
         return node;

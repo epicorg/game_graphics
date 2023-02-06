@@ -30,8 +30,8 @@ public class RequestMaker {
     /**
      * Creates a new <code>JSONObject</code> that contains the default requests added in the constructor and the given requests.
      *
-     * @param jsonCouples <code>JSONd</code> that encapsulate the given requests.
-     * @return the generated <code>JSONObject</code> that contains all the requests.
+     * @param jsonCouples <code>JSONd</code> that encapsulate the given requests
+     * @return the generated <code>JSONObject</code> that contains all the requests
      */
     public JSONObject getNewRequestWithDefaultRequests(JSONd... jsonCouples) {
         JSONObject request = getNewRequest(jsonCouples);
@@ -48,8 +48,8 @@ public class RequestMaker {
     /**
      * Creates a new <code>JSONObject</code> that contains only the given requests.
      *
-     * @param jsonCouples <code>JSONd</code> that encapsulate the given requests.
-     * @return the generated <code>JSONObject</code> that contains the given requests.
+     * @param jsonCouples <code>JSONd</code> that encapsulate the given requests
+     * @return the generated <code>JSONObject</code> that contains the given requests
      */
     public JSONObject getNewRequest(JSONd... jsonCouples) {
         JSONObject request = new JSONObject();
@@ -69,9 +69,9 @@ public class RequestMaker {
      *
      * @param names  <code>String</code> array that maps the three components of the
      *               <code>SFVertex3f</code>; must have length at least 3, otherwise it calls
-     *               an <code>JSONException</code>.
-     * @param values <code>SFVertex3f</code> that contains the values for the request.
-     * @return the generated <code>JSONObject</code> that contains the given requests.
+     *               an <code>JSONException</code>
+     * @param values <code>SFVertex3f</code> that contains the values for the request
+     * @return the generated <code>JSONObject</code> that contains the given requests
      */
     public JSONObject getNewRequest(Enum<?>[] names, SFVertex3f values) {
         JSONObject request = new JSONObject();

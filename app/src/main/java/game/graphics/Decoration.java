@@ -25,12 +25,12 @@ public class Decoration implements MazeObject {
     /**
      * Creates a new <code>Decoration</code>.
      *
-     * @param position       Position of the <code>Decoration</code>.
-     * @param model          String name of the 3D model file to represent this <code>Decoration</code>.
-     * @param textureId      Id of the texture that represents this <code>Decoration</code>.
-     * @param scaleXZ        Scale factor on the x-z plane.
-     * @param scaleY         Scale factor in the y direction.
-     * @param supportCulling If this object support face culling
+     * @param position       position of the <code>Decoration</code>
+     * @param model          string name of the 3D model file to represent this <code>Decoration</code>
+     * @param textureId      ID of the texture that represents this <code>Decoration</code>
+     * @param scaleXZ        scale factor on the x-z plane
+     * @param scaleY         scale factor in the y direction
+     * @param supportCulling if this object support face culling
      */
     public Decoration(SFVertex3f position, String model, int textureId, float scaleXZ, float scaleY, boolean supportCulling) {
         this.textureId = textureId;
@@ -44,8 +44,8 @@ public class Decoration implements MazeObject {
     @Override
     public Node getNode(Context context) {
         Node node = new Node();
-        node.setModel(FundamentalGenerator.getModel(context, ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER),
-                textureId, model));
+        node.setModel(FundamentalGenerator.getModel(context,
+                ShadersKeeper.getProgram(ShadersKeeper.STANDARD_TEXTURE_SHADER), textureId, model));
         node.getRelativeTransform().setPosition(position);
         node.getRelativeTransform().setMatrix(SFMatrix3f.getScale(scaleXZ, scaleY, scaleXZ));
         return node;

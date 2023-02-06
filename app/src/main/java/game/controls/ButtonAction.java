@@ -10,7 +10,7 @@ public interface ButtonAction {
     /**
      * An action which can be invoked.
      *
-     * @param parameter Generic parameter for an action.
+     * @param parameter generic parameter for an action.
      */
     void action(Object parameter);
 

@@ -33,7 +33,7 @@ public class SFValuenf extends SFValue {
     /**
      * Generate a new SFValuenf given its vector
      *
-     * @param v
+     * @param v vector
      */
     public SFValuenf(float[] v) {
         super();
@@ -41,12 +41,11 @@ public class SFValuenf extends SFValue {
     }
 
     /**
-     * Generate the middle Point between two poits A and B
+     * Generate the middle Point between two points A and B
      *
      * @param A the first Point
      * @param B the second Point
      * @return the middle Point
-     * @throws ArrayIndexOutOfBoundsException
      */
     public static SFValuenf middle(SFValuenf A, SFValuenf B)
             throws ArrayIndexOutOfBoundsException {
@@ -58,11 +57,9 @@ public class SFValuenf extends SFValue {
     }
 
     /**
-     * @param value the Value to be Added
-     * @throws ArrayIndexOutOfBoundsException
-     * @deprecated please, create a new vertex than call set or set2f
-     * <p/>
      * Generate a clone of this Value
+     *
+     * @deprecated please, create a new vertex than call set or set2f
      */
     public SFValuenf cloneValue() {
         SFValuenf v = new SFValuenf(this.getV().length);

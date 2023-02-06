@@ -48,9 +48,9 @@ public class SettingsScreen {
     /**
      * Creates a new <code>SettingsScreen</code> with a given Layout.
      *
-     * @param activity     <code>Activity</code> on which thread the <code>SettingsScreen</code> should work.
-     * @param container    Layout to which the <code>SettingsScreen</code> should be added.
-     * @param requestMaker <code>RequestMaker</code> used to send the exit request.
+     * @param activity     <code>Activity</code> on which thread the <code>SettingsScreen</code> should work
+     * @param container    layout to which the <code>SettingsScreen</code> should be added
+     * @param requestMaker <code>RequestMaker</code> used to send the exit request
      */
     public SettingsScreen(Activity activity, LinearLayout container, RequestMaker requestMaker) {
         this.activity = activity;
@@ -81,13 +81,13 @@ public class SettingsScreen {
         muteButton.setOnClickListener(view -> {
             Toast.makeText(activity, R.string.messageMuting, Toast.LENGTH_SHORT).show();
             AudioCallManager.getInstance().muteUnMute();
-
         });
 
         quitButton.setOnClickListener(view -> {
             Toast.makeText(activity, R.string.messageQuitting, Toast.LENGTH_SHORT).show();
             try {
-                serverCommunicationThread.send(requestMaker.getNewRequestWithDefaultRequests(new JSONd(ServicesFields.SERVICE, ServicesFields.GAME.toString()),
+                serverCommunicationThread.send(requestMaker.getNewRequestWithDefaultRequests(
+                        new JSONd(ServicesFields.SERVICE, ServicesFields.GAME.toString()),
                         new JSONd(ServicesFields.SERVICE_TYPE, GameFields.GAME_STATUS.toString()),
                         new JSONd(GameFields.GAME_EXIT, true)));
             } catch (NotConnectedException e) {
@@ -158,6 +158,7 @@ public class SettingsScreen {
         public boolean onTouchEvent(MotionEvent event) {
             return true;
         }
+
     }
 
 }

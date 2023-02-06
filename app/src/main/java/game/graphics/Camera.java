@@ -14,8 +14,7 @@ import game.player.Player;
  */
 public class Camera {
 
-    private final float[] orthogonalMatrix = new float[16],
-            resultMatrix = new float[16];
+    private final float[] orthogonalMatrix = new float[16], resultMatrix = new float[16];
     private final float[] projectionMatrix = new float[16];
     private final Player me;
     private final float zNear, zFar, k;
@@ -23,12 +22,12 @@ public class Camera {
     /**
      * Creates a new camera object from a <code>Player</code> position, on the strength of its direction.
      *
-     * @param player The <code>Player</code> to be followed.
-     * @param zNear  Minimum distance between an object and the camera
-     *               to have the object displayed in the 3D projection.
-     * @param zFar   Maximum distance between an object and the camera
-     *               to have the object displayed in the 3D projection.
-     * @param angle  Vision angle of the 3D projection between up-down and right-left, expressed in degrees.
+     * @param player the <code>Player</code> to be followed.
+     * @param zNear  minimum distance between an object and the camera
+     *               to have the object displayed in the 3D projection
+     * @param zFar   maximum distance between an object and the camera
+     *               to have the object displayed in the 3D projection
+     * @param angle  vision angle of the 3D projection between up-down and right-left, expressed in degrees
      */
     public Camera(Player player, float zNear, float zFar, float angle) {
         this.me = player;
@@ -41,7 +40,7 @@ public class Camera {
      * Updated the matrices of the 3D and 2D projection.
      * Has to be invoked if screen dimension changes.
      *
-     * @param ratio Screen width/height ratio.
+     * @param ratio screen width/height ratio
      */
     public void updateMatrices(float ratio) {
         setProjection(ratio);
@@ -49,14 +48,14 @@ public class Camera {
     }
 
     /**
-     * @return 2D projection matrix.
+     * @return 2D projection matrix
      */
     public float[] getOrthogonalMatrix() {
         return orthogonalMatrix;
     }
 
     /**
-     * @return Current 3D projection matrix.
+     * @return current 3D projection matrix
      */
     public float[] getResultMatrix() {
         setResultMatrix();

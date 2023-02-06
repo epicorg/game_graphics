@@ -29,10 +29,10 @@ public class SplashScreen implements Waiter {
     /**
      * Creates a new <code>SplashScreen</code> with a given <code>ImageView</code> and <code>TextView</code>.
      *
-     * @param activity      <code>Activity</code> on which thread the <code>SplashScreen</code> works.
-     * @param frameLayoutId id of the <code>FrameLayout</code> used to control the disappearing of the <code>SplashScreen</code>.
-     * @param imageViewId   id of the <code>ImageView</code> to draw the image on the <code>SplashScreen</code>.
-     * @param textViewId    id of the <code>TextView</code> to draw text on the <code>SplashScreen</code>.
+     * @param activity      <code>Activity</code> on which thread the <code>SplashScreen</code> works
+     * @param frameLayoutId ID of the <code>FrameLayout</code> used to control the disappearing of the <code>SplashScreen</code>
+     * @param imageViewId   ID of the <code>ImageView</code> to draw the image on the <code>SplashScreen</code>
+     * @param textViewId    ID of the <code>TextView</code> to draw text on the <code>SplashScreen</code>
      */
     public SplashScreen(Activity activity, int frameLayoutId, int imageViewId, int textViewId) {
         frameLayout = activity.findViewById(frameLayoutId);

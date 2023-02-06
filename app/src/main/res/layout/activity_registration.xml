@@ -57,7 +57,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_password"
-                android:imeActionId="@+id/login"
                 android:imeActionLabel="@string/action_next_field"
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
@@ -69,7 +68,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_confirm_password"
-                android:imeActionId="@+id/login"
                 android:imeActionLabel="@string/action_next_field"
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
@@ -77,12 +75,11 @@
                 android:singleLine="true" />
 
             <Button
-                android:id="@+id/registration"
+                android:id="@+id/registrationButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/button_background"
-                android:onClick="attemptRegistration"
                 android:text="@string/action_registration"
                 android:textColor="@color/icons" />
 

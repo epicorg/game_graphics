@@ -46,7 +46,7 @@ public class ShadingProgram implements SFInitiable {
     }
 
     public void loadData(ShadingParameter[] parameters) {
-        ArrayList<String> uniformNames = new ArrayList<String>();
+        ArrayList<String> uniformNames = new ArrayList<>();
         uniformNames.add("projection");
         uniformNames.add("transform");
         uniformNames.add("vTransform");
@@ -54,9 +54,8 @@ public class ShadingProgram implements SFInitiable {
         ArrayList<Integer> textures = new ArrayList<>();
 
         for (ShadingParameter param : parameters) {
-            if (param.getType() == ParameterType.GLOBAL_TEXTURE) {
+            if (param.getType() == ParameterType.GLOBAL_TEXTURE)
                 textures.add(uniformNames.size());
-            }
             uniformNames.add(param.getName());
         }
 

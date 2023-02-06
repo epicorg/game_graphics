@@ -30,9 +30,9 @@ public class MessageScreen implements Waiter {
     /**
      * Creates a new <code>MessageScreen</code> with given color and layout.
      *
-     * @param activity        <code>Activity</code> on which thread the <code>MessageScreen</code> should work.
-     * @param backgroundColor color of the background of the <code>MessageScreen</code>.
-     * @param container       Layout to which add the <code>MessageScreen</code>.
+     * @param activity        <code>Activity</code> on which thread the <code>MessageScreen</code> should work
+     * @param backgroundColor color of the background of the <code>MessageScreen</code>
+     * @param container       layout to which add the <code>MessageScreen</code>
      */
     public MessageScreen(Activity activity, int backgroundColor, LinearLayout container) {
         this.activity = activity;
@@ -57,8 +57,8 @@ public class MessageScreen implements Waiter {
     /**
      * Sets the text message of the <code>MessageScreen</code>.
      *
-     * @param text  Text of the message.
-     * @param color color of the message text.
+     * @param text  text of the message
+     * @param color color of the text message
      */
     public void setText(String text, int color) {
         textColor = color;

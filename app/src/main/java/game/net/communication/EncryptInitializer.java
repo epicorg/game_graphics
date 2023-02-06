@@ -20,7 +20,8 @@ public class EncryptInitializer {
 
         RequestMaker requestMaker = UserData.DATA.getRequestMaker();
 
-        JSONObject request = requestMaker.getNewRequest(new JSONd(ServicesFields.SERVICE, ServicesFields.ENCRYPT),
+        JSONObject request = requestMaker.getNewRequest(
+                new JSONd(ServicesFields.SERVICE, ServicesFields.ENCRYPT),
                 new JSONd(ServicesFields.SERVICE_TYPE, EncryptFields.PUBLIC_KEY_REQUEST));
 
         try {

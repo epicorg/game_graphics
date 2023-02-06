@@ -26,8 +26,8 @@ public class PlayerStatus {
     /**
      * Creates a new <code>PlayerStatus</code> with a given direction and <code>Circle</code> as <code>CollisionBox</code>.
      *
-     * @param direction Direction towards which the <code>Player</code> is looking.
-     * @param circle    Circle that represents the <code>Player</code>'s <code>CollisionBox</code>.
+     * @param direction direction towards which the <code>Player</code> is looking
+     * @param circle    circle that represents the <code>Player</code>'s <code>CollisionBox</code>
      */
     public PlayerStatus(SFVertex3f direction, Circle circle) {
         this.position = new SFVertex3f(circle.getPosition());
@@ -38,9 +38,9 @@ public class PlayerStatus {
     /**
      * Sets <code>PlayerStatus</code> position.
      *
-     * @param x x-component of the position.
-     * @param y y-component of the position.
-     * @param z z-component of the position.
+     * @param x x-component of the position
+     * @param y y-component of the position
+     * @param z z-component of the position
      */
     public void setPositionValue(float x, float y, float z) {
         position.set3f(x, y, z);
@@ -50,8 +50,8 @@ public class PlayerStatus {
     /**
      * Moves the <code>PlayerStatus</code> for a distance and direction given.
      *
-     * @param motion represents direction and distance of motion.
-     * @param cm     manages the collisions with other <code>CollisionBox</code>.
+     * @param motion represents direction and distance of motion
+     * @param cm     manages the collisions with other <code>CollisionBox</code>
      */
     public void move(SFVertex3f motion, CollisionMediator cm) {
         circle.getPosition().set(position);

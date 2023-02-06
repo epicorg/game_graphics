@@ -5,9 +5,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
-import epic.org.R;
-
 import java.util.HashMap;
+
+import epic.org.R;
 
 /**
  * This class gets the registration data.

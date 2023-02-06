@@ -11,9 +11,9 @@ public interface PositionMoveListenerInterface {
     /**
      * Performs a position move action.
      *
-     * @param angleXZ Angle over the XZ plane in which direction to move.
-     * @param angleYZ Angle over the YZ plane in which direction to move.
-     * @param delta   Timestamp that indicated how long to move.
+     * @param angleXZ angle over the XZ plane in which direction to move
+     * @param angleYZ angle over the YZ plane in which direction to move
+     * @param delta   timestamp that indicated how long to move
      */
     void move(float angleXZ, float angleYZ, long delta);
 

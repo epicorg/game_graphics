@@ -38,7 +38,6 @@ public class ObjFileIterator implements Iterator<String> {
     public boolean hasNext() {
         try {
             String line = reader.readLine();
-
             if (line == null)
                 return false;
             this.nextLine = "";

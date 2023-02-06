@@ -38,9 +38,8 @@ import game.net.interaction.RoomsErrorStrings;
 import game.net.services.Rooms;
 
 /**
- * In this screen the list of rooms is shown.
- * Every user can create a new room or join to an existing one,
- * if the maximum number of players hasn't been reached yet.
+ * In this screen the list of rooms is shown. Every user can create a new room or join to an
+ * existing one, if the maximum number of players hasn't been reached yet.
  *
  * @author Torlaschi
  * @date 18/04/2015

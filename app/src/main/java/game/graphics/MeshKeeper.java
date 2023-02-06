@@ -4,19 +4,17 @@ import android.content.Context;
 
 import java.util.HashMap;
 
-import graphic.objLoader.ObjLoader;
 import graphic.integration.ArrayObject;
 import graphic.integration.Mesh;
+import graphic.objLoader.ObjLoader;
 
 /**
- * Singleton that manages the {@link Mesh} loaded from files.
- * It allows to access the {@link Mesh} without load them several times or
- * automatically load them when needed.
+ * Singleton that manages the {@link Mesh} loaded from files. It allows to access the {@link Mesh}
+ * without load them several times or automatically load them when needed.
  *
  * @author Torlaschi
  * @date 30/05/2015
  */
-
 public enum MeshKeeper {
 
     MESH_KEEPER;
@@ -28,10 +26,10 @@ public enum MeshKeeper {
     /**
      * Returns a <code>Mesh</code> object from geometry file.
      *
-     * @param context <code>Context</code> from which to retrieve the file.
-     * @param obj     <code>String</code> name of the file containing the <code>Mesh</code> geometry.
-     * @return a <code>Mesh</code> object from the given geometry file, or the previusly mapped one if
-     * the same obj was was requested before.
+     * @param context <code>Context</code> from which to retrieve the file
+     * @param obj     <code>String</code> name of the file containing the <code>Mesh</code> geometry
+     * @return a <code>Mesh</code> object from the given geometry file, or the previously mapped one
+     * if the same obj was was requested before
      */
     public Mesh getMesh(Context context, String obj) {
         if (map.containsKey(obj))

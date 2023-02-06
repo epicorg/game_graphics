@@ -10,9 +10,8 @@ import graphic.integration.Mesh;
 import graphic.integration.Model;
 
 /**
- * Singleton that manages the {@link Model} loaded from files.
- * It allows to access the {@link Model} without load them several times or
- * automatically load them when needed.
+ * Singleton that manages the {@link Model} loaded from files. It allows to access the {@link Model}
+ * without load them several times or automatically load them when needed.
  */
 public enum ModelKeeper {
 
@@ -23,11 +22,11 @@ public enum ModelKeeper {
     /**
      * Builds a <code>Model</code> from file, or returns it immediately in case it was already loaded.
      *
-     * @param context  <code>Context</code> to load the files.
-     * @param name     Name of the file that contains the model geometry.
-     * @param material <code>Material</code> to use to build the Model.
-     * @return The required Model; if a <code>Model</code> from the same file name was previously requested and loaded, that one is
-     * returned, regardless of the other parameters.
+     * @param context  <code>Context</code> to load the files
+     * @param name     Name of the file that contains the model geometry
+     * @param material <code>Material</code> to use to build the Model
+     * @return the required Model; if a <code>Model</code> from the same file name was previously
+     * requested and loaded, that one is returned, regardless of the other parameters
      */
     public Model getModel(Context context, String name, Material material) {
         ModelData modelData = new ModelData(name, material);

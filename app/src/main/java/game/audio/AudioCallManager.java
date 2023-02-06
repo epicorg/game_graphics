@@ -15,9 +15,8 @@ import java.net.UnknownHostException;
 import game.net.communication.ServerCommunicationThread;
 
 /**
- * This class manages all the audio function.
- * It allows every player to talk to all the other players
- * who join the same team.
+ * This class manages all the audio function. It allows every player to talk to all the other
+ * players who join the same team.
  *
  * @author Micieli
  * @date 30/03/2015

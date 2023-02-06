@@ -34,14 +34,14 @@ public class ButtonMaster {
     }
 
     /**
-     * Adds a <code>Button</code>, representing it with the last set Model.
-     * The <code>Button</code> is represented with a <code>Node</code> placed and rotated compared with the parentNode.
-     * Is useful to give a common pre-transformation to more <code>Button</code>.
+     * Adds a <code>Button</code>, representing it with the last set Model. The <code>Button</code>
+     * is represented with a <code>Node</code> placed and rotated compared with the parentNode. Is
+     * useful to give a common pre-transformation to more <code>Button</code>.
      *
-     * @param button     <code>Button</code> to be added.
-     * @param position   <code>Button</code> position relative to the parentNode.
-     * @param angle      <code>Button</code> rotation angle relative to the parentNode.
-     * @param parentNode <code>Node</code> which can contain transformations for more Button.
+     * @param button     <code>Button</code> to be added
+     * @param position   <code>Button</code> position relative to the parentNode
+     * @param angle      <code>Button</code> rotation angle relative to the parentNode
+     * @param parentNode <code>Node</code> which can contain transformations for more Button
      */
     public void addButton(Button button, SFVertex3f position, float angle, Node parentNode) {
         Node node = new Node();
@@ -58,15 +58,15 @@ public class ButtonMaster {
     }
 
     /**
-     * @return Associated <code>Button</code> set.
+     * @return associated <code>Button</code> set
      */
     public Set<Button> getButtons() {
         return map.keySet();
     }
 
     /**
-     * @param button <code>Button</code> which <code>Node</code> representation is requested.
-     * @return Node which represents the specified <code>Button</code>.
+     * @param button <code>Button</code> which <code>Node</code> representation is requested
+     * @return node which represents the specified <code>Button</code>
      */
     public Node getButtonNode(Button button) {
         return map.get(button);

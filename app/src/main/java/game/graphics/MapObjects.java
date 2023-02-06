@@ -19,11 +19,11 @@ public enum MapObjects {
     private MapResources<Integer> codes;
 
     /**
-     * @param object   <code>MazeObject</code> name.
-     * @param position <code>MazeObject</code> position.
-     * @param size     <code>MazeObject</code> dimension.
-     * @param texture  <code>MazeObject</code> texture's name.
-     * @return <code>MazeObject</code> which is built from the specified parameters.
+     * @param object   <code>MazeObject</code> name
+     * @param position <code>MazeObject</code> position
+     * @param size     <code>MazeObject</code> dimension
+     * @param texture  <code>MazeObject</code> texture's name
+     * @return <code>MazeObject</code> which is built from the specified parameters
      */
     public MazeObject getObjectFromNameAndData(String object, String position, String size, String texture) {
         return map.getResourceFromName(object).cloneFromData(position, size, codes.getResourceFromName(texture));

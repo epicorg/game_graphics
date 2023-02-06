@@ -5,11 +5,12 @@ import java.util.LinkedList;
 import graphic.shadow.math.SFTransform3f;
 
 public class SFOGLNode {
+
     private SFTransform3f transform = new SFTransform3f();
     private SFTransform3f effectiveTransform = new SFTransform3f();
     private SFOGLNode father = null;
     //Really?
-    private LinkedList<SFOGLNode> sons = new LinkedList<SFOGLNode>();
+    private LinkedList<SFOGLNode> sons = new LinkedList<>();
 
     public void update() {
         if (getFather() == null) {

@@ -18,9 +18,9 @@ public class MapResources<R> {
     /**
      * Creates a new <code>MapResources</code>  for a given type.
      *
-     * @param defaultValue Value of the default parameter to return from getResource in case of not mapped <code>String</code> .
-     * @param resourceType <code>String</code> that describes the type of resource of this <code>MapResources</code>.
-     * @param logTag       <code>Log</code> tag for error messages in case a resource is not mapped.
+     * @param defaultValue value of the default parameter to return from getResource in case of not mapped <code>String</code>
+     * @param resourceType <code>String</code> that describes the type of resource of this <code>MapResources</code>
+     * @param logTag       <code>Log</code> tag for error messages in case a resource is not mapped
      */
     public MapResources(R defaultValue, String resourceType, String logTag) {
         this.defaultValue = defaultValue;
@@ -31,9 +31,10 @@ public class MapResources<R> {
     /**
      * Returns a mapped resource from String.
      *
-     * @param name Name of the resource needed.
-     * @return the mapped resource. If not mapped, returns the default one, and add a message to the <code>Log</code> which indicates the name
-     * of the not mapped resource. If the default one is null, throws a <code><RuntimeException</code> with the same message.
+     * @param name the name of the resource needed
+     * @return the mapped resource. If not mapped, returns the default one, and add a message to the
+     * <code>Log</code> which indicates the name of the not mapped resource. If the default one is
+     * null, throws a <code><RuntimeException</code> with the same message
      */
     public R getResourceFromName(String name) {
         if (map.containsKey(name))
@@ -51,8 +52,8 @@ public class MapResources<R> {
     /**
      * Maps a new Resource with the given name.
      *
-     * @param name     Name of the resource to map.
-     * @param resource Resource needed to be mapped.
+     * @param name     the name of the resource to map
+     * @param resource the resource needed to be mapped
      */
     public void mapResource(String name, R resource) {
         map.put(name, resource);

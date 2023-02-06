@@ -20,7 +20,7 @@ public class CollisionMediator {
     /**
      * Adds a <code>CollisionBox</code> to the list of objects in the system of collision checking.
      *
-     * @param c <code>CollisionBox</code> to be added to the list of objects.
+     * @param c <code>CollisionBox</code> to be added to the list of objects
      */
     public void addObject(CollisionBox c) {
         list.add(c);
@@ -29,7 +29,7 @@ public class CollisionMediator {
     /**
      * Checks if a specific <code>CollisionBox</code> collides with another one in the system.
      *
-     * @return The first <code>CollisionBox</code> in the system with which a collision has happened.
+     * @return the first <code>CollisionBox</code> in the system with which a collision has happened
      */
     public CollisionBox collide(CollisionBox box) {
         for (CollisionBox b : list) {
@@ -45,7 +45,7 @@ public class CollisionMediator {
      * Check if there is a collision between the two specified <code>CollisionBox</code>.
      * The result is independent from the order.
      *
-     * @return 'true' if there is a collision.
+     * @return 'true' if there is a collision
      */
     public static boolean checkCollision(CollisionBox box1, CollisionBox box2) {
         if (box1 == null || box2 == null)

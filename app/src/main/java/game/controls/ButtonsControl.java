@@ -34,9 +34,9 @@ public class ButtonsControl {
     /**
      * Creates a nwe <code>ButtonControl</code>.
      *
-     * @param program          <code>ShadingProgram</code> to be used.
-     * @param orthogonalMatrix 2D projection matrix.
-     * @param buttonMaster     <code>ButtonMaster</code> which contains the <code>Button</code> to be controlled.
+     * @param program          <code>ShadingProgram</code> to be used
+     * @param orthogonalMatrix 2D projection matrix
+     * @param buttonMaster     <code>ButtonMaster</code> which contains the <code>Button</code> to be controlled
      */
     public ButtonsControl(ShadingProgram program, float[] orthogonalMatrix, ButtonMaster buttonMaster) {
         this.program = program;
@@ -54,8 +54,8 @@ public class ButtonsControl {
      * Sets (and updates) the <code>ButtonControl</code> if screen dimension has changed.
      * Needs to be called at the beginning.
      *
-     * @param width  Screen width.
-     * @param height Screen height.
+     * @param width  screen width
+     * @param height screen high
      */
     public void update(int width, int height) {
         program.setupProjection(orthogonalMatrix);
@@ -78,14 +78,14 @@ public class ButtonsControl {
     }
 
     /**
-     * @return 'true' if the point (touchX,touchY) is within a <code>Button</code>.
+     * @return 'true' if the point (touchX,touchY) is within a <code>Button</code>
      */
     public boolean isInsideAButton(float touchX, float touchY) {
         return getColorAt(touchX, touchY) != Color.rgb(0, 0, 0);
     }
 
     /**
-     * @return The <code>Button</code> in the specified position (touchX,touchY).
+     * @return the <code>Button</code> in the specified position (touchX,touchY)
      */
     public Button getPressedButton(float touchX, float touchY) {
         return Objects.requireNonNull(buttonsMap.get(getColorAt(touchX, touchY))).button;
